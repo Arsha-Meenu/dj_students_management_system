@@ -3,7 +3,9 @@ from django.views.generic import View
 from django.views.generic.base import TemplateView
 from django.contrib.auth import authenticate,login,logout
 from django.contrib import messages
-from .models import HodDetails,StaffDetails,StudentDetails,SubjectDetails,CourseDetails,Attendance,StudentAttendanceReport,StudentLeaveReport,StaffLeaveReport
+from .models import (User,HodDetails,StaffDetails,StudentDetails,SubjectDetails,CourseDetails,
+                     Attendance,StudentAttendanceReport,StudentLeaveReport,StaffLeaveReport)
+
 
 class HomePageView(TemplateView):
     template_name = 'hod/create_staff.html'
@@ -23,13 +25,14 @@ class LoginView(View):
         user = authenticate(email = email,password = password)
         if user != None:
             login(request,user) # Save session as cookie to login the user
-            return render(request,'hod/dashboard.html')
+            return redirect('admin-dashboard')
         else:
             # Incorrect credentials, let's throw an error to the screen.
             messages.error(request, "Incorrect email or/and password")
             return render(request,self.template_name)
 
 class AdminDashboardView(View):
+    ''' dashboard view for admin user '''
     def get(self, request):
         course_data = CourseDetails.objects.all()
         student_data = StudentDetails.objects.all()
@@ -111,6 +114,39 @@ class AdminDashboardView(View):
         }
         return render(request, 'hod/dashboard.html', context=data)
 
-class AdminManageStaffView(TemplateView):
+class ManageStaffView(View):
     template_name = 'hod/manage_staff.html'
+
+    def get(self, request):
+        staff =StaffDetails.objects.all().order_by('-staff_id')
+        context = {
+            'staff_data':staff
+        }
+        return render(request, self.template_name,context=context)
+
+
+class CreateStaffView(View):
+    template_name = 'hod/create_staff.html'
+    def get(self,request):
+        return render(request, self.template_name)
+    def post(self,request):
+        try:
+            firstname = request.POST.get('firstname','')
+            lastname = request.POST.get('lastname','')
+            username = request.POST.get('username','')
+            email = request.POST.get('email','')
+            mobile_number = request.POST.get('mobile_number','')
+            address = request.POST.get('address','')
+            profile_pic = request.POST.get('profile_pic','')
+            user = User.objects.create(username = username,first_name = firstname,last_name = lastname,
+                                                mobile_number = mobile_number,email = email )
+            staff = StaffDetails(user = user,address = address,profile_pic = profile_pic)
+            staff.save()
+            messages.success(request, "Staff Added Successfully!")
+            return redirect('admin-manage-staff')
+        except:
+            messages.error(request, "Failed to Add Staff!")
+            return redirect('create-staff')
+
+
 
