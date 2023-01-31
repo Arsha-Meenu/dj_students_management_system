@@ -121,7 +121,7 @@ class StudentDetails(models.Model):
     gender = models.CharField(max_length=1,choices= GENDER_CHOICES, blank=True,null=True)
     profile_pic = models.FileField(upload_to='student_profile', null=True, verbose_name='student profile',
                                    validators=[FileExtensionValidator(['svg', 'jpg', 'jpeg', 'png', 'webp'])])
-    admission_year_id = models.ForeignKey(AdmissionYear, on_delete=models.CASCADE)
+    admission_year_id = models.ForeignKey(AdmissionYear, on_delete=models.CASCADE, blank=True,null=True)
     course_id = models.ForeignKey(CourseDetails,on_delete=models.CASCADE,default=1)
     created_at = models.DateTimeField(_('Created'), auto_now_add=True)
     updated_at = models.DateTimeField(_('Updated'), auto_now=True)
@@ -160,3 +160,67 @@ class SubjectDetails(models.Model):
 
     def __str__(self):
         return self.subject_name
+
+
+class Attendance(models.Model):
+    attendance_id =  models.CharField(_("attendance_id"), max_length=200, unique=True, blank=True)
+    attendance_date = models.DateField()
+    subject_id = models.ForeignKey(SubjectDetails,on_delete=models.DO_NOTHING)
+    admission_year_id = models.ForeignKey(AdmissionYear,on_delete=models.CASCADE)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    def save(self, *args, **kwargs):
+        if not self.attendance_id:
+            max_id = Attendance.objects.aggregate(id_max=Max('id'))['id_max']
+            self.attendance_id = "{}{:03d}".format('A', (max_id + 1) if max_id is not None else 1)
+        super(Attendance, self).save(*args, **kwargs)
+
+
+class StudentAttendanceReport(models.Model):
+    report_id =  models.CharField(_("report_id"), max_length=200, unique=True, blank=True)
+    student_id = models.ForeignKey(StudentDetails,on_delete=models.DO_NOTHING)
+    attendance_id = models.ForeignKey(Attendance,on_delete=models.CASCADE)
+    status = models.BooleanField(default=False)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    def save(self, *args, **kwargs):
+        if not self.report_id:
+            max_id = StudentAttendanceReport.objects.aggregate(id_max=Max('id'))['id_max']
+            self.report_id = "{}{:03d}".format('R', (max_id + 1) if max_id is not None else 1)
+        super(StudentAttendanceReport, self).save(*args, **kwargs)
+
+
+class StudentLeaveReport(models.Model):
+    report_id =  models.CharField(_("report_id"), max_length=200, unique=True, blank=True)
+    student_id = models.ForeignKey(StudentDetails, on_delete=models.CASCADE)
+    leave_date = models.DateField()
+    leave_message = models.TextField()
+    status = models.IntegerField(default=0)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+
+    def save(self, *args, **kwargs):
+        if not self.report_id:
+            max_id = StudentLeaveReport.objects.aggregate(id_max=Max('id'))['id_max']
+            self.report_id = "{}{:03d}".format('R', (max_id + 1) if max_id is not None else 1)
+        super(StudentLeaveReport, self).save(*args, **kwargs)
+
+
+class StaffLeaveReport(models.Model):
+    report_id =  models.CharField(_("report_id"), max_length=200, unique=True, blank=True)
+    staff_id = models.ForeignKey(StaffDetails, on_delete=models.CASCADE)
+    leave_date = models.CharField(max_length=255)
+    leave_message = models.TextField()
+    status = models.IntegerField(default=0)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+
+    def save(self, *args, **kwargs):
+        if not self.report_id:
+            max_id = StaffLeaveReport.objects.aggregate(id_max=Max('id'))['id_max']
+            self.report_id = "{}{:03d}".format('R', (max_id + 1) if max_id is not None else 1)
+        super(StaffLeaveReport, self).save(*args, **kwargs)
