@@ -7,5 +7,4 @@ urlpatterns = [
     path('admin-dashboard/', views.AdminDashboardView.as_view(), name='admin-dashboard'),
     path('admin-manage-staff/', views.ManageStaffView.as_view(), name='admin-manage-staff'),
     path('create-staff/', views.CreateStaffView.as_view(), name='create-staff'),
-
 ]

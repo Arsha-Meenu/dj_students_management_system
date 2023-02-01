@@ -8,7 +8,7 @@ from .models import (User,HodDetails,StaffDetails,StudentDetails,SubjectDetails,
 
 
 class HomePageView(TemplateView):
-    template_name = 'hod/create_staff.html'
+    template_name = 'authentication/login.html'
 
 
 class LoginView(View):
@@ -147,6 +147,5 @@ class CreateStaffView(View):
         except:
             messages.error(request, "Failed to Add Staff!")
             return redirect('create-staff')
-
 
 
