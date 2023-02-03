@@ -23,7 +23,7 @@
                 <div class="row">
                     <!-- form start -->
 
-                    <form role="form" method="POST" action="">
+                    <form role="form" method="POST">
                         {% csrf_token %}
                         {% comment %} Display Messages {% endcomment %}
                         {% if messages %}
@@ -70,7 +70,7 @@
 
                             <div class="form-group">
                                 <label>Email address</label>
-                                <input type="email" class="form-control" name="email" value="{{staff.user.email}}" id="id_email">
+                                <input type="email" class="form-control" name="email" value="{{staff.user.email}}" id="id_email" disabled>
                             </div>
 
                              <div class="form-group">

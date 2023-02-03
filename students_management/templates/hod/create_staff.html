@@ -23,7 +23,7 @@
                 <div class="row">
                     <!-- form start -->
 
-                    <form role="form" method="POST" action="">
+                    <form role="form" method="POST" action="{% url 'create-staff' %}">
                         {% csrf_token %}
                         {% comment %} Display Messages {% endcomment %}
                         {% if messages %}
@@ -49,7 +49,6 @@
                             </div>
                         </div>
                         {% endif %}
-
 
                         <div class="card-body">
                             <div class="form-group">

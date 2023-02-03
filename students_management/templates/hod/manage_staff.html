@@ -52,8 +52,8 @@
                                 <td>{{ staff.address }}</td>
                                 <td>{{ staff.user.date_joined }}</td>
                                 <td>
-                                    <a href="{% url 'update-staff' staff.user.id %}" class="btn btn-success">Edit</a>
-                                    <a href="{% url 'delete-staff' %}" class="btn btn-danger">Delete</a>
+                                    <a href="{% url 'update-staff' staff.id %}" class="btn btn-success">Edit</a>
+                                    <a href="{% url 'delete-staff' staff.id %}" class="btn btn-danger">Delete</a>
                                 </td>
                                 </tr>
                                 {% endfor %}

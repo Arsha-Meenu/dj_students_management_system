@@ -1,5 +1,6 @@
 from django.shortcuts import render,redirect
-from django.views.generic import View
+from django.urls import reverse_lazy
+from django.views.generic import View,CreateView,ListView,UpdateView,DeleteView
 from django.views.generic.base import TemplateView
 from django.contrib.auth import authenticate,login,logout
 from django.contrib import messages
@@ -147,5 +148,32 @@ class CreateStaffView(View):
         except:
             messages.error(request, "Failed to Add Staff!")
             return redirect('create-staff')
+
+
+
+class UpdateStaffView(View):
+    def get(self,request,pk=None):
+        return render(request,'hod/update_staff.html')
+
+    def post(self,request,pk):
+        staff = StaffDetails.objects.filter(id = pk).first()
+        print('staff',staff)
+        User.objects.filter(id = staff.user.id).update(first_name = request.POST.get('firstname'),last_name = request.POST.get('lastname'),
+                                                      username = request.POST.get('username'),
+                                                      mobile_number = request.POST.get('mobile_number'))
+        staff.profile_pic = request.POST.get('profile_pic')
+        staff.address =  request.POST.get('address')
+        staff.save()
+        return redirect('admin-manage-staff')
+
+
+
+class DeleteStaffView(View):
+    def get(self,request,pk):
+        print('deleted')
+        staff = StaffDetails.objects.filter(id=pk).first()
+        staff.delete()
+        return redirect('admin-manage-staff')
+
 
 
