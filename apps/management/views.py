@@ -139,6 +139,7 @@ class CreateStaffView(View):
             mobile_number = request.POST.get('mobile_number','')
             address = request.POST.get('address','')
             profile_pic = request.POST.get('profile_pic','')
+            print('profile_pic',profile_pic)
             user = User.objects.create(username = username,first_name = firstname,last_name = lastname,
                                                 mobile_number = mobile_number,email = email )
             staff = StaffDetails(user = user,address = address,profile_pic = profile_pic)
