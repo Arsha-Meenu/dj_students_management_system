@@ -38,7 +38,7 @@ INSTALLED_APPS = [
     'rest_framework.authtoken',
     'widget_tweaks',
     # custom app
-    'apps.management'
+    'apps.user'
 
 ]
 
@@ -139,4 +139,4 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 
 
-AUTH_USER_MODEL = 'management.User'
+AUTH_USER_MODEL = 'user.User'

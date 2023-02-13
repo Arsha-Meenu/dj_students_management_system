@@ -32,8 +32,8 @@
     <link href="{% static 'management/css/style.css' %}" rel="stylesheet">
     <!-- fontawesome cdn-->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-<!--bootstrap cdn-->
-     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
+    <!--bootstrap cdn-->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
 
 </head>
@@ -60,52 +60,19 @@
     </div>
 </header>
 
-<section class="content p-3 text-center">
-    <div class="container-fluid">
-        <div class="row">
-            <div class="col-md-12">
-                <div class="form-group">
-                    {% if messages %}
-                    {% for message in messages  %}
-                    {% if message.tags == 'success' %}
-                    <div class="alert alert-success">
-                        {{message}}
-                    </div>
-                    {% else %}
-                    <div class="alert alert-danger">
-                        {{message}}
-                    </div>
-                    {% endif %}
-                    {% endfor %}
-                    {% endif %}
-                </div>
-            </div>
-        </div>
-    </div>
-</section>
+
 
 <!--sidebar for each user-->
 {% include "common/sidebar.html" %}
-<!--{% include "common/sidebar.html" with user=user %}   : based on users-->
-
 
 {% block content %}
 <!--Contents-->
 {% endblock content %}
 
-<!-- ======= Footer ======= -->
-<div class="p-5">
-    <footer id="footer" class="footer">
-        <div class="copyright">
-            &copy; Copyright <strong><span>StudentsManagementSystem</span></strong>. All Rights Reserved
-        </div>
-        <div class="credits">
-            Designed by <span href="#">ArshaMeenu</span>
-        </div>
-    </footer>
-    <!-- End Footer -->
-    <a href="#" class="back-to-top d-flex align-items-center justify-content-center"><i class="bi bi-arrow-up-short"></i></a>
-</div>
+<!--footer -->
+{% include "common/footer.html" %}
+
+
 <!-- Vendor JS Files -->
 <script src="{% static 'management/vendor/apexcharts/apexcharts.min.js' %}"></script>
 <script src="{% static 'management/vendor/bootstrap/js/bootstrap.bundle.min.js' %}"></script>

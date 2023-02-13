@@ -2,84 +2,40 @@
 {% load static %}
 
 
-<aside id="sidebar" class="sidebar">
-
+<aside id="sidebar" class="sidebar" style="width:310px">
     <ul class="sidebar-nav" id="sidebar-nav">
-
         <li class="nav-item">
-            <a class="nav-link " href="{% url 'admin-dashboard' %}">
+            <a class="nav-link " href="{% url 'dashboard' %}">
                 <i class="bi bi-grid"></i>
                 <span>Dashboard</span>
             </a>
         </li>
 
         <li class="nav-item">
-            <a class="nav-link " href="{% url 'admin-manage-staff' %}">
+            <a class="nav-link " href="{% url 'profile' %}">
                 <i class="fa fa-users" aria-hidden="true"></i>
-                <span>Manage Staff</span>
+                <span>Profile</span>
             </a>
         </li>
 
         <li class="nav-item">
             <a class="nav-link " href="">
                 <i class="fa fa-user" aria-hidden="true"></i>
-                <span>Manage Student</span>
+                <span>Student</span>
             </a>
         </li>
 
         <li class="nav-item">
             <a class="nav-link " href="">
                 <i class="fa fa-graduation-cap" aria-hidden="true"></i>
-                <span>Manage Course</span>
+                <span>Course</span>
             </a>
         </li>
 
         <li class="nav-item">
             <a class="nav-link " href="">
                 <i class="fa fa-book" aria-hidden="true"></i>
-                <span>Manage Subject</span>
-            </a>
-        </li>
-
-        <li class="nav-item">
-            <a class="nav-link " href="">
-                <i class="fa fa-puzzle-piece" aria-hidden="true"></i>
-                <span>Manage Session</span>
-            </a>
-        </li>
-
-        <li class="nav-item">
-            <a class="nav-link " href="">
-                <i class="fa fa-address-book" aria-hidden="true"></i>
-                <span>View Attendance</span>
-            </a>
-        </li>
-
-        <li class="nav-item">
-            <a class="nav-link " href="">
-                <i class="fa fa-comments" aria-hidden="true"></i>
-                <span>Student Feedback</span>
-            </a>
-        </li>
-
-        <li class="nav-item">
-            <a class="nav-link " href="">
-                <i class="fa fa-comments-o" aria-hidden="true"></i>
-                <span>Staff Feedback</span>
-            </a>
-        </li>
-
-        <li class="nav-item">
-            <a class="nav-link " href="">
-                <i class="fa fa-calendar-times-o" aria-hidden="true"></i>
-                <span>Student Leave</span>
-            </a>
-        </li>
-
-        <li class="nav-item">
-            <a class="nav-link " href="">
-                <i class="fa fa-calendar-minus-o" aria-hidden="true"></i>
-                <span>Staff Leave</span>
+                <span>Lecturer</span>
             </a>
         </li>
 
