@@ -1,0 +1,184 @@
+{% extends 'common/base.html' %}
+{% load static %}
+
+{% block page_title %}{{page_title}}{% endblock page_title %}
+
+{% block content %}
+
+<section style="background-color: #eee;">
+  <div class="container px-4 py-5 ">
+    <br><br>
+    <div class="row " >
+      <div class="col"style="padding-left:160px" >
+        <div class="card mb-4" style="width:400px;background:#cdcdd1">
+          <div class="card-body text-center pt-4">
+            <img src="{{profile.url}}" alt={{user}}  class="rounded-circle img-fluid" style="width: 150px;">
+            <p class="my-3 text-dark">Username : {{username}}</p>
+            <p class="text-dark mb-1">Role : {{user_type}}</p>
+            <p class="text-dark mb-4"></p>
+          </div>
+        </div>
+      </div>
+      <div class="col" >
+        <div class="card mb-4">
+          <p style="  font-weight: 400;  font-size: 17px;  padding: 10px;  background: #b9c0ed;  text-align: center;  margin: 0px;"><i class="fa fa-phone-square" aria-hidden="true"></i>
+            &nbsp; Personal Info</p>
+          <div class="card-body p-5">
+            <div class="row">
+              <div class="col-sm-3">
+                <p class="mb-0">First Name</p>
+              </div>
+              <div class="col-sm-9">
+                <p class="text-muted mb-0">{{firstname}}</p>
+              </div>
+            </div>
+            <hr>
+            <div class="row">
+              <div class="col-sm-3">
+                <p class="mb-0">Last Name</p>
+              </div>
+              <div class="col-sm-9">
+                <p class="text-muted mb-0">{{lastname}}</p>
+              </div>
+            </div>
+            <hr>
+            <div class="row">
+              <div class="col-sm-3">
+                <p class="mb-0">ID</p>
+              </div>
+              <div class="col-sm-9">
+                <p class="text-muted mb-0">{{id}}</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col"style="padding-left:150px" >
+      <div class="card mb-4">
+        {% if user_type == 'Lecturer' %}
+        <div class="card mb-4">
+          <p style="  font-weight: 400;  font-size: 17px;  padding: 10px;  background: #b9c0ed;  text-align: center;  margin: 0px;"><i class="fa fa-phone-square" aria-hidden="true"></i>
+            &nbsp; My Courses Info</p>
+          <div class="card-body p-5">
+            <div class="row">
+              <div class="col-sm-3">
+                <p class="mb-0">Courses</p>
+              </div>
+              <div class="col-sm-9">
+                <p class="text-muted mb-0"></p>
+              </div>
+            </div>
+            <hr>
+          </div>
+        </div>
+        {% endif %}
+      </div>
+    </div>
+    <div class="col"style="padding-left:150px" >
+      <div class="card mb-4">
+        <p style="  font-weight: 400;  font-size: 17px;  padding: 10px;  background: #b9c0ed;  text-align: center;  margin: 0px;">
+          <i class="fa fa-user" aria-hidden="true"></i>&nbsp;Contact Info</p>
+        <div class="card-body p-5">
+          <div class="row">
+            <div class="col-sm-3">
+              <p class="mb-0">Full Name</p>
+            </div>
+            <div class="col-sm-9">
+              <p class="text-muted mb-0">{{fullname}}</p>
+            </div>
+          </div>
+          <hr>
+          <div class="row">
+            <div class="col-sm-3">
+              <p class="mb-0">Email</p>
+            </div>
+            <div class="col-sm-9">
+              <p class="text-muted mb-0">{{email}}</p>
+            </div>
+          </div>
+          <hr>
+          <div class="row">
+            <div class="col-sm-3">
+              <p class="mb-0">Mobile</p>
+            </div>
+            <div class="col-sm-9">
+              <p class="text-muted mb-0">{{phone}}</p>
+            </div>
+          </div>
+          <hr>
+          <div class="row">
+            <div class="col-sm-3">
+              <p class="mb-0">Address</p>
+            </div>
+            <div class="col-sm-9">
+              <p class="text-muted mb-0">{{address}}</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col"style="padding-left:150px" >
+      <div class="card mb-4">
+        <p style="  font-weight: 400;  font-size: 17px;  padding: 10px;  background: #b9c0ed;  text-align: center;  margin: 0px;">
+          <i class="fa fa-user" aria-hidden="true"></i>&nbsp;Contact Info</p>
+        <div class="card-body p-5">
+          <div class="row">
+            <div class="col-sm-3">
+              <p class="mb-0">Full Name</p>
+            </div>
+            <div class="col-sm-9">
+              <p class="text-muted mb-0">{{fullname}}</p>
+            </div>
+          </div>
+          <hr>
+          <div class="row">
+            <div class="col-sm-3">
+              <p class="mb-0">Email</p>
+            </div>
+            <div class="col-sm-9">
+              <p class="text-muted mb-0">{{email}}</p>
+            </div>
+          </div>
+          <hr>
+          <div class="row">
+            <div class="col-sm-3">
+              <p class="mb-0">Mobile</p>
+            </div>
+            <div class="col-sm-9">
+              <p class="text-muted mb-0">{{phone}}</p>
+            </div>
+          </div>
+          <hr>
+          <div class="row">
+            <div class="col-sm-3">
+              <p class="mb-0">Address</p>
+            </div>
+            <div class="col-sm-9">
+              <p class="text-muted mb-0">{{address}}</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col"style="padding-left:150px" >
+      <div class="card mb-4">
+        <p style="  font-weight: 400;  font-size: 17px;  padding: 10px;  background: #b9c0ed;  text-align: center;  margin: 0px;">
+          <i class="fa fa-phone-square" aria-hidden="true"></i>
+          &nbsp; Importan Date</p>
+        <div class="card-body p-5 ">
+          <div class="row">
+            <div class="col-sm-3">
+              <p class="mb-0">Joining Date</p>
+            </div>
+            <div class="col-sm-9">
+              <p class="text-muted mb-0">{{date_joined|date}}</p>
+            </div>
+          </div>
+          <hr>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+{% endblock content %}

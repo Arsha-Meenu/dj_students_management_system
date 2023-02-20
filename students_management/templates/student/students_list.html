@@ -1,0 +1,70 @@
+{% extends 'common/base.html' %}
+{% load static %}
+
+{% block page_title %}{{page_title}}{% endblock page_title %}
+
+
+{% block content %}
+
+
+<section style="background: #eee;">
+  <div class="container pt-5 ">
+    <div class="row pt-5">
+      <div class="col-1"></div>
+      <div class="col-4">
+        <a class="edit-btn" href="{% url 'student-create' %}">
+         <i class="fa fa-plus" aria-hidden="true"></i>
+          <span class="mobile-hide">Add Student</span></a>
+      </div>
+    </div>
+    <div class="col" style="padding:120px;width:100%" >
+      <div class="card ">
+        <p style="font-weight: 400;  font-size: 17px;  padding: 10px;  background: #f3f2f2;  text-align: center;  margin: 0px;">
+          <i class="fa fa-book" aria-hidden="true"></i> &nbsp;&nbsp;Students List</p>
+        <div class="table-responsive table-shadow table-light table-striped m-5">
+          <table class="table">
+            <thead>
+            <tr>
+              <th> ID No. </th>
+              <th> UserName </th>
+              <th> Full Name </th>
+              <th> Email </th>
+              <th> Mob No. </th>
+              <th> Time Period </th>
+              <th> Course </th>
+              <th> Action </th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for student in object_list %}
+            <tr>
+              <td> {{ forloop.counter }}.</td>
+              <td> <a href="{% url 'student-profile' student.id %}">{{ student.user.username }} </a> </td>
+              <td>{{ student.user.get_full_name }}</td>
+              <td>{{ student.user.email }}</td>
+              <td>{{ student.user.mobile_number }}</td>
+              <td>{{ student.period }}</td>
+              <td>{{ student.course }}</td>
+              <td>
+                 <span class="widget-content">
+                     <button  type="button" value="{{student.id}}" style="border: none; background-color: transparent;"   id="edit" >
+                       <a href="{% url 'student-update' student.id %}"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></a>
+                     </button>
+                 </span>
+                <span class="widget-content">
+                      <button  type="button" value="{{student.id}}" style="border: none; background-color: transparent;" id="delete" >
+                        <a href="{% url 'student-delete' student.id %}"><i class="fa fa-trash" aria-hidden="true"></i></a>
+                      </button>
+                </span>
+              </td>
+            </tr>
+            {% endfor %}
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+{% endblock content %}

@@ -1,0 +1,70 @@
+{% extends 'common/base.html' %}
+{% load static %}
+
+{% block page_title %}{{page_title}}{% endblock page_title %}
+
+
+{% block content %}
+
+
+<section style="background: #eee;">
+  <div class="container pt-5 ">
+    <div class="row pt-5">
+      <div class="col-1"></div>
+      <div class="col-4">
+        <a class="edit-btn" href="{% url 'lecturer-create' %}">
+         <i class="fa fa-plus" aria-hidden="true"></i>
+          <span class="mobile-hide">Add Lecturer</span></a>
+      </div>
+    </div>
+    <div class="col"style="padding:120px;width:100%" >
+      <div class="card ">
+        <p style="  font-weight: 400;  font-size: 17px;  padding: 10px;  background: #f3f2f2;  text-align: center;  margin: 0px;">
+          <i class="fa fa-book" aria-hidden="true"></i> &nbsp;&nbsp;Lecturer List</p>
+        <div class="table-responsive table-shadow table-light table-striped m-5">
+          <table class="table">
+            <thead>
+            <tr>
+              <th> ID No. </th>
+              <th> UserName </th>
+              <th> Full Name </th>
+              <th> Email </th>
+              <th> Mob No. </th>
+              <th> Address/city </th>
+              <th> Last login </th>
+              <th> Action </th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for lecturer in object_list %}
+            <tr>
+              <td> {{ forloop.counter }}.</td>
+              <td> <a href="{% url 'lecturer-profile' lecturer.id %}">{{ lecturer.username }} </a> </td>
+              <td>{{ lecturer.get_full_name }}</td>
+              <td>{{ lecturer.email }}</td>
+              <td>{{ lecturer.mobile_number }}</td>
+              <td>{{ lecturer.address }}</td>
+              <td>{{ lecturer.last_login|date }}</td>
+              <td>
+                 <span class="widget-content">
+                     <button  type="button" value="{{lecturer.id}}" style="border: none; background-color: transparent;"   id="edit" >
+                       <a href="{% url 'lecturer-update' lecturer.id %}"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></a>
+                     </button>
+                 </span>
+                <span class="widget-content">
+                      <button  type="button" value="{{lecturer.id}}" style="border: none; background-color: transparent;" id="delete" >
+                        <a href="{% url 'lecturer-delete' lecturer.id %}"><i class="fa fa-trash" aria-hidden="true"></i></a>
+                      </button>
+                </span>
+              </td>
+            </tr>
+            {% endfor %}
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+{% endblock content %}
