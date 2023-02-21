@@ -1,0 +1,30 @@
+{% extends 'common/base.html' %}
+{% load static %}
+
+{% block page_title %}{{page_title}}{% endblock page_title %}
+
+{% block messages%}
+{% endblock %}
+{% block content %}
+
+<section style="background: #eee;">
+    <div class="container pt-5 ">
+        <div class="col" style="padding:120px;width:100%">
+            <form action="" method="post" class="form-horizontal">
+                {% csrf_token %}
+                <legend>Edit a user</legend>
+                {{form}}
+                <div class="form-actions">
+                    <input type="submit" class="btn btn-primary" value="Save">
+                    <a href="{% url 'student-list' %}" class="btn">Cancel</a>
+                </div>
+            </form>
+        </div>
+    </div>
+</section>
+
+
+
+
+
+{% endblock content %}

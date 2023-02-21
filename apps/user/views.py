@@ -144,26 +144,28 @@ class DeleteLecturerView(DeleteView):
 
 class StudentProfileView(View):
     def get(self,request, *args, **kwargs):
-        user = Student.objects.filter(user__id = kwargs['pk']).first()
+        student = Student.objects.filter(id = kwargs['pk']).first()
         if request.user.id == kwargs['pk']:
             return redirect('/profile/')
         else:
-            if user.profiles:
-                profile = user.profiles
+            if student.user.profiles:
+                profile = student.user.profiles
             else:
                 profile = request.path
             context = {
-                'id': user.id,
-                'username':user.username,
-                'firstname': user.first_name,
-                'lastname': user.last_name,
-                'fullname': user.get_full_name,
-                'email':user.email,
-                'phone':user.mobile_number,
-                'address':user.address,
+                'id': student.user.id,
+                'username':student.user.username,
+                'firstname': student.user.first_name,
+                'lastname': student.user.last_name,
+                'fullname': student.user.get_full_name,
+                'email':student.user.email,
+                'phone':student.user.mobile_number,
+                'address':student.user.address,
                 'profile':profile,
-                'date_joined':user.date_joined,
-                'user_type':user.get_user_type_display()
+                'date_joined':student.user.date_joined,
+                'user_type':student.user.get_user_type_display(),
+                'course':student.course,
+                'timeperiod':student.period
 
             }
             return render(request,'student/student_profile.html',context)
@@ -194,17 +196,11 @@ class CreateStudentView(CreateView):
         return render(request, 'student/create_student.html', {'user_form': user_form,'student_form':student_form})
 
 
-class UpdateStudentView(UpdateView):
-    model = Student
-    form_class = UserForm
-    form_class2 = StudentUserForm
-    template_name = 'administrator/update_profile.html'
-    success_url = "/student/list"
-
-
-#     https://stackoverflow.com/questions/61903021/django-class-based-updateview-with-form-for-multiple-uploaded-files
-# https://www.google.com/search?q=class+based+update+view+in+django&ei=pbbzY5qvKqnv4-EPyqS3-Aw&oq=cassbased+views+update+method+in+django&gs_lcp=Cgxnd3Mtd2l6LXNlcnAQAxgAMgUIABCiBDIFCAAQogQ6CggAEEcQ1gQQsAM6BwgAEA0QgAQ6CAgAEAgQBxAeOggIABAIEB4QDToFCAAQhgM6CgghEKABEMMEEApKBAhBGABQ6w9YxStgtjloAnABeACAAbABiAGtE5IBBDAuMTaYAQCgAQHIAQjAAQE&sclient=gws-wiz-serp
 class DeleteProfileView(DeleteView):
     model = Student
     template_name = 'student/delete_student.html'
     success_url = "/student/list"
+
+
+class UpdateStudentView(UpdateView):
+    pass
