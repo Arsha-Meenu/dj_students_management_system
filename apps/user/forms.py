@@ -15,26 +15,11 @@ class UserForm(forms.ModelForm):
             'address': forms.Textarea(attrs={'class': 'form-control','rows':4, 'cols':13}),
             'profiles': forms.FileInput()
         }
-
+        exclude = ['profiles']
 
 class StudentUserForm(forms.ModelForm):
     class Meta:
         model = Student
         fields = ['course','period','user']
-        # exclude = ['user']
+        exclude = ['user']
 
-
-#
-# class UserForm(forms.ModelForm):
-#     profiles = forms.FileField(widget=forms.ClearableFileInput(attrs={'multiple': True}), required=False)
-#
-#     class Meta:
-#         model = User
-#         fields = ['username','email','mobile_number','first_name','last_name','address','profiles']
-#
-# class StudentUserForm(UserForm):
-#     course= forms.ModelChoiceField(queryset=Course.objects.all(),widget=forms.ClearableFileInput(attrs={'multiple': True}), required=False)
-#     period = forms.ModelChoiceField(queryset=TimePeriod.objects.all(),widget=forms.ClearableFileInput(attrs={'multiple': True}), required=False)
-#
-#     class Meta(UserForm.Meta):
-#         fields = UserForm.Meta.fields + ['course','period']

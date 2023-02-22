@@ -10,13 +10,25 @@
 <section style="background: #eee;">
     <div class="container pt-5 ">
         <div class="col" style="padding:120px;width:100%">
-            <form action="" method="post" class="form-horizontal">
+            <form class="form-vertical" method="POST">
                 {% csrf_token %}
-                <legend>Edit a user</legend>
-                {{form}}
-                <div class="form-actions">
-                    <input type="submit" class="btn btn-primary" value="Save">
-                    <a href="{% url 'student-list' %}" class="btn">Cancel</a>
+                <div class="box box-primary">
+                    <div class="box-header with-border">
+                        <h3 class="box-title">Update Details</h3>
+                    </div>
+                    <div class="box-body">
+                        <div class="row justify-content-start">
+                            <fieldset class="col-md-3 form-group" >
+                                <label  class="control-label"></label>
+                                {{ form2.as_p }}
+                                <br>
+                                {{ form.as_p }}
+                            </fieldset>
+                        </div>
+                        <div class="box-footer">
+                            <button type="submit" value="Update" class="btn btn-primary">Submit</button>
+                        </div>
+                    </div>
                 </div>
             </form>
         </div>

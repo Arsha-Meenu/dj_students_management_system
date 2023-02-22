@@ -202,5 +202,53 @@ class DeleteProfileView(DeleteView):
     success_url = "/student/list"
 
 
+class UpdateStudentViews(UpdateView):
+    model = Student
+    form_class = StudentUserForm
+    form_class1 = UserForm
+    template_name = 'student/student_update.html'
+    success_url = "/student/list"
+
+    def get_object(self, queryset=None):
+        id = self.kwargs.get('pk')
+        return get_object_or_404(Student,pk = id)
+
+    def form_valid(self, form):
+        print('form',form.cleaned_data)
+        return super().form_valid(form)
+
+
 class UpdateStudentView(UpdateView):
-    pass
+    model = Student
+    second_model = User
+    form_class = StudentUserForm
+    second_form_class = UserForm
+    template_name = 'student/student_update.html'
+    success_url = "/student/list"
+
+    def get_context_data(self, **kwargs):
+        context = super(UpdateStudentView,self).get_context_data(**kwargs)
+        pk = self.kwargs.get('pk',0)
+        student = self.model.objects.get(id = pk)
+        user = self.second_model.objects.get(id = student.user.id)
+        if 'form' not in context:
+            context['form'] = self.form_class()
+        if 'form2' not in context:
+            context['form2'] = self.second_form_class(instance= user)
+        context['id'] = pk
+        return context
+
+    def post(self, request, *args, **kwargs):
+        self.object = self.get_object
+        student_id = kwargs['pk']
+        student = self.model.objects.get(id = student_id)
+        user = self.second_model.objects.get(id = student.user.id)
+        form = self.form_class(request.POST, instance=student)
+        form2 = self.second_form_class(request.POST, request.FILES, instance=user)
+
+        if form.is_valid() and form2.is_valid():
+            form.save()
+            form2.save()
+            return HttpResponseRedirect(self.get_success_url())
+        else:
+            return self.render_to_response(self.get_context_data(form =form,form2 =form2))

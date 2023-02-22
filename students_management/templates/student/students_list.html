@@ -32,6 +32,7 @@
               <th> Mob No. </th>
               <th> Time Period </th>
               <th> Course </th>
+              <th> Profile </th>
               <th> Action </th>
             </tr>
             </thead>
@@ -45,6 +46,8 @@
               <td>{{ student.user.mobile_number }}</td>
               <td>{{ student.period }}</td>
               <td>{{ student.course }}</td>
+              <td><img src="{{student.user.profiles.url}}" alt={{user}}  class="rounded-circle img-fluid" style="width: 150px;"></td>
+
               <td>
                  <span class="widget-content">
                      <button  type="button" value="{{student.id}}" style="border: none; background-color: transparent;"   id="edit" >
