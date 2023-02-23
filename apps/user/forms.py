@@ -23,3 +23,8 @@ class StudentUserForm(forms.ModelForm):
         fields = ['course','period','user']
         exclude = ['user']
 
+
+class CourseForm(forms.ModelForm):
+    class Meta:
+        model = Course
+        fields = ('course_name','description')

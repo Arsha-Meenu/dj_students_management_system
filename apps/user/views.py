@@ -4,7 +4,7 @@ from django.views.generic import TemplateView,UpdateView,ListView,CreateView,Del
 from django.contrib.auth.forms import AuthenticationForm,PasswordChangeForm
 from django.contrib import messages
 from .models import User,Student,TimePeriod,Course
-from .forms import UserForm,StudentUserForm
+from .forms import UserForm,StudentUserForm,CourseForm
 from django.shortcuts import get_object_or_404
 
 class UserLoginView(LoginView):
@@ -139,7 +139,7 @@ class LecturerCreateView(CreateView):
 class UpdateLecturerView(UpdateView):
     model = User
     form_class = UserForm
-    template_name = 'administrator/update_profile.html'  # template for updating
+    template_name = 'lecturer/create_lecturer.html'  # template for updating
     success_url = '/lecturer/list'
 
 
@@ -209,12 +209,6 @@ class CreateStudentView(CreateView):
         return render(request, 'student/create_student.html', {'user_form': user_form,'student_form':student_form})
 
 
-class DeleteProfileView(DeleteView):
-    model = Student
-    template_name = 'student/delete_student.html'
-    success_url = "/student/list"
-
-
 class UpdateStudentView(UpdateView):
     model = Student
     second_model = User
@@ -249,3 +243,43 @@ class UpdateStudentView(UpdateView):
             return HttpResponseRedirect(self.get_success_url())
         else:
             return self.render_to_response(self.get_context_data(form =form,form2 =form2))
+
+class DeleteStudentView(DeleteView):
+    model = Student
+    template_name = 'student/delete_student.html'
+    success_url = "/student/list"
+
+
+# Courses
+
+class CoursesListView(TemplateView):
+    template_name = 'course/courses_list.html'
+
+    def get(self, request):
+        courses = Course.objects.all()
+
+        context = {
+            'courses': courses
+        }
+        return render(request, 'course/courses_list.html', context=context)
+
+class CourseCreateView(CreateView):
+    template_name = 'course/create_course.html'
+    form_class = CourseForm
+    success_url = "/courses/list"
+
+    def form_valid(self, form):
+        model = form.save(commit = False)
+        return super().form_valid(form)
+
+class CourseUpdateView(UpdateView):
+    model = Course
+    form_class = CourseForm
+    template_name = 'course/create_course.html'
+    success_url = '/courses/list'
+
+
+class CourseDeleteView(DeleteView):
+    model = Course
+    template_name = 'course/delete_course.html'
+    success_url = "/courses/list"
