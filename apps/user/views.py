@@ -121,15 +121,24 @@ class LecturerListView(ListView):
 
 class LecturerCreateView(CreateView):
     template_name = 'lecturer/create_lecturer.html'
-    model = User
-    fields = ("user_type","username","email","mobile_number","first_name","last_name","address","profiles")
+    form_class = UserForm
     success_url = "/lecturer/list"
+
+    def form_valid(self, form):
+        model = form.save(commit = False)
+        model.user_type = 3
+        model.save()
+        return super().form_valid(form)
+
+    def get_initial(self):
+        intitial_data = super(LecturerCreateView,self).get_initial()
+        intitial_data['user_type'] = 3
+        return intitial_data
 
 
 class UpdateLecturerView(UpdateView):
     model = User
     form_class = UserForm
-    # fields = ['username','email','mobile_number','first_name','last_name','address','profiles']  # fields / if you want to select all fields, use "__all__"
     template_name = 'administrator/update_profile.html'  # template for updating
     success_url = '/lecturer/list'
 
@@ -174,9 +183,10 @@ class StudentProfileView(View):
 class StudentListView(ListView):
     template_name = 'student/students_list.html'
     model = Student
+
     def get_queryset(self):
         queryset = super().get_queryset()
-        return queryset
+        return queryset.filter(user__user_type='2')
 
 
 class CreateStudentView(CreateView):
@@ -184,13 +194,16 @@ class CreateStudentView(CreateView):
         context = {'user_form': UserForm(),'student_form':StudentUserForm()}
         return render(request, 'student/create_student.html', context)
 
+
     def post(self, request, *args, **kwargs):
         user_form = UserForm(request.POST, request.FILES)
         student_form = StudentUserForm(request.POST, request.FILES)
         if user_form.is_valid() and student_form.is_valid():
             user = user_form.save()
+            user.user_type = 2
             user.save()
-            student = student_form.save()
+            student = student_form.save(commit=False)
+            student.user_id= user.id
             student.save()
             return HttpResponseRedirect(reverse('student-list'))
         return render(request, 'student/create_student.html', {'user_form': user_form,'student_form':student_form})
@@ -200,22 +213,6 @@ class DeleteProfileView(DeleteView):
     model = Student
     template_name = 'student/delete_student.html'
     success_url = "/student/list"
-
-
-class UpdateStudentViews(UpdateView):
-    model = Student
-    form_class = StudentUserForm
-    form_class1 = UserForm
-    template_name = 'student/student_update.html'
-    success_url = "/student/list"
-
-    def get_object(self, queryset=None):
-        id = self.kwargs.get('pk')
-        return get_object_or_404(Student,pk = id)
-
-    def form_valid(self, form):
-        print('form',form.cleaned_data)
-        return super().form_valid(form)
 
 
 class UpdateStudentView(UpdateView):
