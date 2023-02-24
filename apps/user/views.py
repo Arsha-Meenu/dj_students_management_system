@@ -3,8 +3,8 @@ from django.contrib.auth.views import LoginView
 from django.views.generic import TemplateView,UpdateView,ListView,CreateView,DeleteView,View
 from django.contrib.auth.forms import AuthenticationForm,PasswordChangeForm
 from django.contrib import messages
-from .models import User,Student,TimePeriod,Course
-from .forms import UserForm,StudentUserForm,CourseForm
+from .models import User,Student,TimePeriod,Course,Program
+from .forms import UserForm,StudentUserForm,CourseForm,ProgramForm
 from django.shortcuts import get_object_or_404
 
 class UserLoginView(LoginView):
@@ -173,7 +173,7 @@ class StudentProfileView(View):
                 'profile':profile,
                 'date_joined':student.user.date_joined,
                 'user_type':student.user.get_user_type_display(),
-                'course':student.course,
+                'programs and course':student.course,
                 'timeperiod':student.period
 
             }
@@ -250,36 +250,72 @@ class DeleteStudentView(DeleteView):
     success_url = "/student/list"
 
 
-# Courses
-
-class CoursesListView(TemplateView):
-    template_name = 'course/courses_list.html'
+# programs
+class ProgramsListView(TemplateView):
+    template_name = 'programs and course/programs_list.html'
 
     def get(self, request):
-        courses = Course.objects.all()
+        programs = Program.objects.all()
 
         context = {
-            'courses': courses
+            'programs': programs
         }
-        return render(request, 'course/courses_list.html', context=context)
+        return render(request, 'programs and course/programs_list.html', context=context)
 
-class CourseCreateView(CreateView):
-    template_name = 'course/create_course.html'
-    form_class = CourseForm
-    success_url = "/courses/list"
+class ProgramCreateView(CreateView):
+    template_name = 'programs and course/create_program.html'
+    form_class = ProgramForm
+    success_url = "/programs/list"
 
     def form_valid(self, form):
         model = form.save(commit = False)
         return super().form_valid(form)
 
+class ProgramUpdateView(UpdateView):
+    model = Program
+    form_class = ProgramForm
+    template_name = 'programs and course/create_program.html'
+    success_url = '/programs/list'
+
+
+class ProgramDeleteView(DeleteView):
+    model = Program
+    template_name = 'programs and course/delete_program.html'
+    success_url = "/programs/list"
+
+# Courses
+
+class CoursesListView(TemplateView):
+    template_name = 'programs and course/courses_list.html'
+
+    def get(self, request,**kwargs):
+        courses = Course.objects.filter(program_id = self.kwargs['pk']).all()
+        context = {
+            'courses': courses
+        }
+        return render(request, 'programs and course/courses_list.html', context=context)
+
+class CourseCreateView(CreateView):
+    template_name = 'programs and course/create_course.html'
+    form_class = CourseForm
+
+    def form_valid(self, form):
+        model = form.save(commit = False)
+        return super().form_valid(form)
+
+    def get_success_url(self, **kwargs):
+        return reverse("courses-list", kwargs={'pk': self.object.program.id})
+
 class CourseUpdateView(UpdateView):
     model = Course
     form_class = CourseForm
-    template_name = 'course/create_course.html'
-    success_url = '/courses/list'
+    template_name = 'programs and course/create_course.html'
 
+    def get_success_url(self, **kwargs):
+        return reverse("courses-list", kwargs={'pk': self.object.program.id})
 
 class CourseDeleteView(DeleteView):
     model = Course
-    template_name = 'course/delete_course.html'
-    success_url = "/courses/list"
+    template_name = 'programs and course/delete_course.html'
+    def get_success_url(self, **kwargs):
+        return reverse("courses-list", kwargs={'pk': self.object.program.id})

@@ -12,21 +12,21 @@ class Migration(migrations.Migration):
 
     operations = [
         migrations.RemoveField(
-            model_name='course',
+            model_name='programs and course',
             name='course_name',
         ),
         migrations.AddField(
-            model_name='course',
+            model_name='programs and course',
             name='level',
             field=models.CharField(choices=[('Bachelor', 'Bachelor Degree'), ('Master', 'Master Degree')], max_length=25, null=True),
         ),
         migrations.AddField(
-            model_name='course',
+            model_name='programs and course',
             name='program',
             field=models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.CASCADE, to='user.program'),
         ),
         migrations.AddField(
-            model_name='course',
+            model_name='programs and course',
             name='title',
             field=models.CharField(max_length=255, null=True),
         ),

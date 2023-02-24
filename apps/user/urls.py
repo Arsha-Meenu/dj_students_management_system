@@ -23,8 +23,13 @@ urlpatterns = [
     path('student/edit/<int:pk>/', views.UpdateStudentView.as_view(), name='student-update'),
     path('student/delete/<int:pk>/', views.DeleteStudentView.as_view(), name='student-delete'),
     path('student/profile/<int:pk>/', views.StudentProfileView.as_view(), name='student-profile'),
-    # courses
-    path('courses/list',views.CoursesListView.as_view(),name = 'courses-list'),
+    # programs and courses
+    path('programs/list',views.ProgramsListView.as_view(),name = 'programs-list'),
+    path('program/create', views.ProgramCreateView.as_view(), name='program-create'),
+    path('program/edit/<int:pk>/', views.ProgramUpdateView.as_view(), name='program-update'),
+    path('program/delete/<int:pk>/', views.ProgramDeleteView.as_view(), name='program-delete'),
+
+    path('courses/list/<int:pk>/',views.CoursesListView.as_view(),name = 'courses-list'),
     path('course/create', views.CourseCreateView.as_view(), name='course-create'),
     path('course/edit/<int:pk>/', views.CourseUpdateView.as_view(), name='course-update'),
     path('course/delete/<int:pk>/', views.CourseDeleteView.as_view(), name='course-delete'),

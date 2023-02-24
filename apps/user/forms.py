@@ -1,5 +1,5 @@
 from django import forms
-from .models import User,Student,Course,TimePeriod
+from .models import User,Student,Course,TimePeriod,Program
 
 
 class UserForm(forms.ModelForm):
@@ -27,4 +27,9 @@ class StudentUserForm(forms.ModelForm):
 class CourseForm(forms.ModelForm):
     class Meta:
         model = Course
-        fields = ('title','description')
+        fields = ('level','program','title','description')
+
+class ProgramForm(forms.ModelForm):
+    class Meta:
+        model = Program
+        fields = "__all__"

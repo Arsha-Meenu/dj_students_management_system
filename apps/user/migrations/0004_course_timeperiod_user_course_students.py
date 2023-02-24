@@ -13,7 +13,7 @@ class Migration(migrations.Migration):
 
     operations = [
         migrations.CreateModel(
-            name='course',
+            name='programs and course',
             fields=[
                 ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
                 ('course_id', models.CharField(blank=True, max_length=200, unique=True, verbose_name='course_id')),
@@ -33,7 +33,7 @@ class Migration(migrations.Migration):
         ),
         migrations.AddField(
             model_name='user',
-            name='course',
+            name='programs and course',
             field=models.CharField(default=1, max_length=255),
             preserve_default=False,
         ),
@@ -45,7 +45,7 @@ class Migration(migrations.Migration):
                 ('gender', models.CharField(blank=True, choices=[('M', 'Male'), ('F', 'Female')], max_length=1, null=True)),
                 ('created_at', models.DateTimeField(auto_now_add=True, verbose_name='Created')),
                 ('updated_at', models.DateTimeField(auto_now=True, verbose_name='Updated')),
-                ('course', models.ForeignKey(default=1, on_delete=django.db.models.deletion.DO_NOTHING, to='user.course')),
+                ('programs and course', models.ForeignKey(default=1, on_delete=django.db.models.deletion.DO_NOTHING, to='user.programs and course')),
                 ('period', models.ForeignKey(on_delete=django.db.models.deletion.DO_NOTHING, to='user.timeperiod')),
                 ('user', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to=settings.AUTH_USER_MODEL)),
             ],

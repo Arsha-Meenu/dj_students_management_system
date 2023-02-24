@@ -11,19 +11,19 @@ class Migration(migrations.Migration):
 
     operations = [
         migrations.RemoveField(
-            model_name='course',
+            model_name='programs and course',
             name='level',
         ),
         migrations.RemoveField(
-            model_name='course',
+            model_name='programs and course',
             name='program',
         ),
         migrations.RemoveField(
-            model_name='course',
+            model_name='programs and course',
             name='title',
         ),
         migrations.AddField(
-            model_name='course',
+            model_name='programs and course',
             name='course_name',
             field=models.CharField(default=1, max_length=255),
             preserve_default=False,
