@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import User,Student,Course,TimePeriod
+from .models import User,Student,Course,TimePeriod,Program
 
 
 admin.site.register(User)
@@ -9,8 +9,9 @@ class StudentAdmin(admin.ModelAdmin):
 admin.site.register(Student,StudentAdmin)
 
 class CourseAdmin(admin.ModelAdmin):
-    list_display = ['course_id','course_name']
+    list_display = ['course_id','title']
 admin.site.register(Course,CourseAdmin)
 
 admin.site.register(TimePeriod)
+admin.site.register(Program)
 

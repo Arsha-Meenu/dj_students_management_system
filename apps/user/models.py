@@ -23,7 +23,7 @@ class User(AbstractBaseUser,PermissionsMixin):
     mobile_number = PhoneNumberField(null=True, blank=True, unique=True)
     first_name = models.CharField(_('First Name'), max_length=30, blank=True,null=True)
     last_name = models.CharField(_('last name'), max_length=30, blank=True,null=True)
-    address = models.TextField()
+    address = models.TextField(blank=True,null=True)
     profiles = models.FileField(upload_to='profiles', null=True, verbose_name='user profile',
                                    validators=[FileExtensionValidator(['svg', 'jpg', 'jpeg', 'png', 'webp'])])
     date_joined = models.DateTimeField(_('date joined'), auto_now_add=True, blank=True,null=True)
@@ -50,10 +50,28 @@ class User(AbstractBaseUser,PermissionsMixin):
     def __str__(self):
         return self.username
 
+
+class Program(models.Model):
+    title = models.CharField(max_length=150, unique=True)
+    description = models.TextField()
+
+    def __str__(self):
+        return self.title
+
+
 class Course(models.Model):
+    BACHELOR_DEGREE = "Bachelor"
+    MASTER_DEGREE = "Master"
+
+    LEVEL = (
+        (BACHELOR_DEGREE, "Bachelor Degree"),
+        (MASTER_DEGREE, "Master Degree"),
+    )
     course_id = models.CharField(_("course_id"), max_length=200, unique=True, blank=True)
-    course_name = models.CharField(max_length=255)
+    title = models.CharField(max_length=255, null=True)
     description  = models.TextField()
+    program = models.ForeignKey(Program, on_delete=models.CASCADE, null=True, blank=True)
+    level = models.CharField(max_length=25, choices=LEVEL, null=True)
     created_at = models.DateTimeField(_('Created'), auto_now_add=True)
     updated_at = models.DateTimeField(_('Updated'), auto_now=True)
 
@@ -64,7 +82,7 @@ class Course(models.Model):
         super(Course, self).save(*args, **kwargs)
 
     def __str__(self):
-        return self.course_name
+        return self.title
 
 class TimePeriod(models.Model):
     start_year = models.DateField()

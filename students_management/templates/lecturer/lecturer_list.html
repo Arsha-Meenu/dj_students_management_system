@@ -31,7 +31,6 @@
               <th> Email </th>
               <th> Mob No. </th>
               <th> Address/city </th>
-              <th> Last login </th>
               <th> Profile </th>
               <th> Action </th>
             </tr>
@@ -45,7 +44,6 @@
               <td>{{ lecturer.email }}</td>
               <td>{{ lecturer.mobile_number }}</td>
               <td>{{ lecturer.address }}</td>
-              <td>{{ lecturer.last_login|date }}</td>
                 <td><img src="{{lecturer.profiles.url}}" alt={{user}}  class="rounded-circle img-fluid" style="width: 150px;"></td>
               <td>
                  <span class="widget-content">

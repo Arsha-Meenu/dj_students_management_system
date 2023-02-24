@@ -27,4 +27,4 @@ class StudentUserForm(forms.ModelForm):
 class CourseForm(forms.ModelForm):
     class Meta:
         model = Course
-        fields = ('course_name','description')
+        fields = ('title','description')
