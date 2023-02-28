@@ -3,8 +3,8 @@ from django.contrib.auth.views import LoginView
 from django.views.generic import TemplateView,UpdateView,ListView,CreateView,DeleteView,View
 from django.contrib.auth.forms import AuthenticationForm,PasswordChangeForm
 from django.contrib import messages
-from .models import User,Student,TimePeriod,Course,Program
-from .forms import UserForm,StudentUserForm,CourseForm,ProgramForm
+from .models import User,Student,TimePeriod,Course,Program,CourseAllocation
+from .forms import UserForm,StudentUserForm,CourseForm,ProgramForm,CourseAllocationForm
 from django.shortcuts import get_object_or_404
 
 class UserLoginView(LoginView):
@@ -299,6 +299,7 @@ class CourseCreateView(CreateView):
     template_name = 'programs and course/create_course.html'
     form_class = CourseForm
 
+
     def form_valid(self, form):
         model = form.save(commit = False)
         return super().form_valid(form)
@@ -319,3 +320,38 @@ class CourseDeleteView(DeleteView):
     template_name = 'programs and course/delete_course.html'
     def get_success_url(self, **kwargs):
         return reverse("courses-list", kwargs={'pk': self.object.program.id})
+
+
+class AllocatedCoursesListView(ListView):
+    template_name = 'programs and course/allocated_courses_list.html'
+    model = CourseAllocation
+    def get_queryset(self):
+        queryset = super().get_queryset()
+        return queryset
+
+
+class CourseAllocationView(CreateView):
+    template_name = 'programs and course/course_allocation.html'
+    form_class = CourseAllocationForm
+
+    def form_valid(self, form):
+        model = form.save(commit=False)
+        return super().form_valid(form)
+
+    def get_success_url(self, **kwargs):
+        return reverse("allocated-courses-list")
+
+
+class AllocatedCoursesUpdateView(UpdateView):
+    model = CourseAllocation
+    form_class = CourseAllocationForm
+    template_name = 'programs and course/course_allocation.html'
+
+    def get_success_url(self, **kwargs):
+        return reverse("allocated-courses-list")
+
+class AllocatedCoursesDeleteView(DeleteView):
+    model = CourseAllocation
+    template_name = 'programs and course/allocated_course_delete.html'
+    def get_success_url(self, **kwargs):
+        return reverse("allocated-courses-list")

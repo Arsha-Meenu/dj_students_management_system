@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import User,Student,Course,TimePeriod,Program
+from .models import User,Student,Course,TimePeriod,Program,CourseAllocation
 
 
 admin.site.register(User)
@@ -14,4 +14,5 @@ admin.site.register(Course,CourseAdmin)
 
 admin.site.register(TimePeriod)
 admin.site.register(Program)
+admin.site.register(CourseAllocation)
 

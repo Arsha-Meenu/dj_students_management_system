@@ -1,5 +1,5 @@
 from django import forms
-from .models import User,Student,Course,TimePeriod,Program
+from .models import User,Student,Course,TimePeriod,Program,CourseAllocation
 
 
 class UserForm(forms.ModelForm):
@@ -33,3 +33,21 @@ class ProgramForm(forms.ModelForm):
     class Meta:
         model = Program
         fields = "__all__"
+
+
+
+class CourseAllocationForm(forms.ModelForm):
+    courses = forms.ModelMultipleChoiceField(
+        queryset=Course.objects.all(),
+        widget=forms.CheckboxSelectMultiple(attrs={'class': 'browser-default checkbox'}),
+        required=True
+    )
+    lecturer = forms.ModelChoiceField(
+        queryset=User.objects.all(),
+        widget=forms.Select(attrs={'class': 'browser-default custom-select'}),
+        label="lecturer",
+    )
+
+    class Meta:
+        model = CourseAllocation
+        fields = ['lecturer', 'courses']

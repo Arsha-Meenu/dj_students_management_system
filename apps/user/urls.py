@@ -33,5 +33,12 @@ urlpatterns = [
     path('course/create', views.CourseCreateView.as_view(), name='course-create'),
     path('course/edit/<int:pk>/', views.CourseUpdateView.as_view(), name='course-update'),
     path('course/delete/<int:pk>/', views.CourseDeleteView.as_view(), name='course-delete'),
+    # course allocated to lecturers
+    path('allocated-courses/list/', views.AllocatedCoursesListView.as_view(), name='allocated-courses-list'),
+    path('course/allocation', views.CourseAllocationView.as_view(), name='course-allocation'),
+    path('allocated-course/edit/<int:pk>/', views.AllocatedCoursesUpdateView.as_view(), name='allocated-course-update'),
+    path('allocated-course/delete/<int:pk>/', views.AllocatedCoursesDeleteView.as_view(), name='allocated-course-delete'),
+
+
 
 ]

@@ -70,7 +70,7 @@ class Course(models.Model):
     course_id = models.CharField(_("course_id"), max_length=200, unique=True, blank=True)
     title = models.CharField(max_length=255, null=True)
     description  = models.TextField()
-    program = models.ForeignKey(Program, on_delete=models.CASCADE, null=True, blank=True)
+    program = models.ForeignKey(Program, on_delete=models.SET_NULL, null=True, blank=True)
     level = models.CharField(max_length=25, choices=LEVEL, null=True)
     created_at = models.DateTimeField(_('Created'), auto_now_add=True)
     updated_at = models.DateTimeField(_('Updated'), auto_now=True)
@@ -83,6 +83,14 @@ class Course(models.Model):
 
     def __str__(self):
         return self.title
+
+
+class CourseAllocation(models.Model):
+    lecturer = models.ForeignKey(User,on_delete=models.CASCADE,related_name='allocated_lecturer')
+    courses = models.ManyToManyField(Course,related_name='allocated_course')
+
+    def __str__(self):
+        return self.lecturer.get_full_name
 
 class TimePeriod(models.Model):
     start_year = models.DateField()
