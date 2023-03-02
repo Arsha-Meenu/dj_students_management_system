@@ -5,6 +5,7 @@ from django.contrib.auth.views import LogoutView,PasswordChangeView,PasswordChan
 urlpatterns = [
     path('',views.UserLoginView.as_view(),name = 'login'),
     path('dashboard/', views.DashboardView.as_view(), name='dashboard'),
+    path('student/dashboard/', views.StudentDashboardView.as_view(), name='student-dashboard'),
     path('logout/',LogoutView.as_view(next_page = 'login'), name='logout'),
     path('profile/',views.ProfileView.as_view(), name='profile'),
     path('profile/edit/<int:pk>/', views.UpdateProfileView.as_view(), name='profile-edit'),
@@ -23,6 +24,8 @@ urlpatterns = [
     path('student/edit/<int:pk>/', views.UpdateStudentView.as_view(), name='student-update'),
     path('student/delete/<int:pk>/', views.DeleteStudentView.as_view(), name='student-delete'),
     path('student/profile/<int:pk>/', views.StudentProfileView.as_view(), name='student-profile'),
+    path('student/course/list/', views.StudentCourseListView.as_view(), name='student-course-list'),
+
     # programs and courses
     path('programs/list',views.ProgramsListView.as_view(),name = 'programs-list'),
     path('program/create', views.ProgramCreateView.as_view(), name='program-create'),

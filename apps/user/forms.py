@@ -20,14 +20,14 @@ class UserForm(forms.ModelForm):
 class StudentUserForm(forms.ModelForm):
     class Meta:
         model = Student
-        fields = ['course','period','user']
+        fields = ['department','period']
         exclude = ['user']
 
 
 class CourseForm(forms.ModelForm):
     class Meta:
         model = Course
-        fields = ('level','program','title','description')
+        fields = ('level','department','title','description')
 
 class ProgramForm(forms.ModelForm):
     class Meta:

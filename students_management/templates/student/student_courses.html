@@ -1,0 +1,84 @@
+{% extends 'common/base.html' %}
+{% load static %}
+
+{% block page_title %}{{page_title}}{% endblock page_title %}
+
+
+{% block content %}
+
+
+<section style="background: #eee;">
+  <div class="container  ">
+    <div class="row "style="padding-top:6em">
+    <span class="mobile-hide text-center"> {% for dept in object_list %}{% ifchanged dept.department %}
+      <h3>{{ dept.department }}</h3>
+      <br>
+      {{ dept.department.description }}
+      {% endifchanged %}{% endfor %}
+</span>
+    </div>
+    <div class="col" style="padding:120px;width:100%" >
+      <div class="card ">
+        <p style="font-weight: 400;  font-size: 17px;  padding: 10px;  background: #f3f2f2;  text-align: center;  margin: 0px;">
+          <i class="fa fa-book" aria-hidden="true"></i> &nbsp;&nbsp;All Courses</p>
+        <div class="table-responsive table-shadow table-light table-striped m-5">
+          <table class="table">
+            <thead>
+            <tr>
+              <th> ID No. </th>
+              <th> Couse Id </th>
+              <th> CourseTitle </th>
+              <th> Description </th>
+              <th> Level </th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for student in object_list %}
+            <tr>
+              <td> {{ forloop.counter }}.</td>
+              <td> {{ student.course_id }}  </td>
+              <td>{{ student.title }}</td>
+              <td>{{ student.description }}</td>
+              <td>{{ student.level }}</td>
+            </tr>
+            {% endfor %}
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+  <div class="col" style="padding:120px;width:100%" >
+      <div class="card ">
+        <p style="font-weight: 400;  font-size: 17px;  padding: 10px;  background: #f3f2f2;  text-align: center;  margin: 0px;">
+          <i class="fa fa-book" aria-hidden="true"></i> &nbsp;&nbsp;Taken Courses</p>
+        <div class="table-responsive table-shadow table-light table-striped m-5">
+          <table class="table">
+            <thead>
+            <tr>
+              <th> ID No. </th>
+              <th> Couse Id </th>
+              <th> CourseTitle </th>
+              <th> Description </th>
+              <th> Level </th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for student in object_list %}
+            <tr>
+              <td> {{ forloop.counter }}.</td>
+              <td> {{ student.course_id }}  </td>
+              <td>{{ student.title }}</td>
+              <td>{{ student.description }}</td>
+              <td>{{ student.level }}</td>
+            </tr>
+            {% endfor %}
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+{% endblock content %}

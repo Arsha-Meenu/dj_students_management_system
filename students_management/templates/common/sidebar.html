@@ -17,34 +17,51 @@
                 <span>Profile</span>
             </a>
         </li>
+        <li class="nav-item">
+            <a class="nav-link " href="{% url 'programs-list' %}">
+                <i class="fa fa-graduation-cap" aria-hidden="true"></i>
+                <span>Departments </span>
+            </a>
+        </li>
+         {% if request.user.user_type == 2  %}
+        <li class="nav-item">
+            <a class="nav-link " href="{% url 'student-course-list' %}">
+                <i class="fa fa-pie-chart" aria-hidden="true"></i>
+                <span>My Courses</span>
+            </a>
+        </li>
+         <li class="nav-item">
+            <a class="nav-link " href="{% url 'programs-list' %}">
+                <i class="fa fa-plus-circle" aria-hidden="true"></i>
+                <span>Add and Drop Course</span>
+            </a>
+        </li>
+        {% endif %}
 
+        {% if request.user.user_type == 1  %}
         <li class="nav-item">
             <a class="nav-link " href="{% url 'student-list' %}">
                 <i class="fa fa-street-view" aria-hidden="true"></i>
                 <span>Student</span>
             </a>
         </li>
-
         <li class="nav-item">
             <a class="nav-link " href="{% url 'lecturer-list' %}">
                 <i class="fa fa-book" aria-hidden="true"></i>
                 <span>Lecturer</span>
             </a>
         </li>
-
-        <li class="nav-item">
-            <a class="nav-link " href="{% url 'programs-list' %}">
-                <i class="fa fa-graduation-cap" aria-hidden="true"></i>
-                <span>All Programs </span>
-            </a>
-        </li>
-
          <li class="nav-item">
             <a class="nav-link " href="{% url 'allocated-courses-list' %}">
                 <i class="fa fa-cogs" aria-hidden="true"></i>
                 <span>Course Allocation</span>
             </a>
         </li>
+        {% endif %}
+
+
+
+
 
     </ul>
 

@@ -5,11 +5,11 @@ from .models import User,Student,Course,TimePeriod,Program,CourseAllocation
 admin.site.register(User)
 
 class StudentAdmin(admin.ModelAdmin):
-    list_display = ['student_id','user','course_id']
+    list_display = ['student_id','user']
 admin.site.register(Student,StudentAdmin)
 
 class CourseAdmin(admin.ModelAdmin):
-    list_display = ['course_id','title']
+    list_display = ['course_id','department','title']
 admin.site.register(Course,CourseAdmin)
 
 admin.site.register(TimePeriod)

@@ -22,7 +22,7 @@ class UserLoginView(LoginView):
             return redirect('dashboard')
         elif self.request.user.user_type == 2:
             messages.success(self.request, f"{self.request.user.username} logged in successfully. ")
-            return super(UserLoginView, self).form_valid(form)
+            return redirect('student-dashboard')
         else:
             messages.success(self.request, f"{self.request.user.username} logged in successfully. ")
             return super(UserLoginView, self).form_valid(form)
@@ -44,16 +44,24 @@ class DashboardView(TemplateView):
         return render(request,'administrator/admin_dashboard.html',context = context)
 
 
+class StudentDashboardView(TemplateView):
+    template_name = 'student/student_dashboard.html'
+
+    def get(self,request):
+        department = Student.objects.filter(user = request.user).values('department_id','department__title').first()
+        courses = Course.objects.filter(department_id=department['department_id']).count()
+        context = {
+            'courses':courses,
+            'department':department.get('department__title')
+        }
+        return render(request, 'student/student_dashboard.html', context=context)
+
+
 class ProfileView(TemplateView):
     template_name = 'administrator/admin_profile.html'
 
     def get(self,request, *args, **kwargs):
         user = User.objects.filter(id = self.request.user.id).first()
-        # image = request.FILES['profiles'] for save an image
-        # if image:
-        #     filename = FileSystemStorage().save('profile_pics/' + image.name, image)
-        #     user.profile_pic = filename
-        # user.save()
         if user.profiles:
             profile = user.profiles
         else:
@@ -173,12 +181,21 @@ class StudentProfileView(View):
                 'profile':profile,
                 'date_joined':student.user.date_joined,
                 'user_type':student.user.get_user_type_display(),
-                'programs and course':student.course,
+                'departments and course':student.course,
                 'timeperiod':student.period
 
             }
             return render(request,'student/student_profile.html',context)
 
+
+class StudentCourseListView(ListView):
+    template_name = 'student/student_courses.html'
+    model = Course
+
+    def get_queryset(self):
+        department = Student.objects.filter(user=self.request.user).values('department_id', 'department__title').first()
+        courses = Course.objects.filter(department_id=department['department_id'])
+        return courses
 
 class StudentListView(ListView):
     template_name = 'student/students_list.html'
@@ -252,7 +269,7 @@ class DeleteStudentView(DeleteView):
 
 # programs
 class ProgramsListView(TemplateView):
-    template_name = 'programs and course/programs_list.html'
+    template_name = 'departments and course/programs_list.html'
 
     def get(self, request):
         programs = Program.objects.all()
@@ -260,10 +277,10 @@ class ProgramsListView(TemplateView):
         context = {
             'programs': programs
         }
-        return render(request, 'programs and course/programs_list.html', context=context)
+        return render(request, 'departments and course/programs_list.html', context=context)
 
 class ProgramCreateView(CreateView):
-    template_name = 'programs and course/create_program.html'
+    template_name = 'departments and course/create_program.html'
     form_class = ProgramForm
     success_url = "/programs/list"
 
@@ -274,29 +291,29 @@ class ProgramCreateView(CreateView):
 class ProgramUpdateView(UpdateView):
     model = Program
     form_class = ProgramForm
-    template_name = 'programs and course/create_program.html'
+    template_name = 'departments and course/create_program.html'
     success_url = '/programs/list'
 
 
 class ProgramDeleteView(DeleteView):
     model = Program
-    template_name = 'programs and course/delete_program.html'
+    template_name = 'departments and course/delete_program.html'
     success_url = "/programs/list"
 
 # Courses
 
 class CoursesListView(TemplateView):
-    template_name = 'programs and course/courses_list.html'
+    template_name = 'departments and course/courses_list.html'
 
     def get(self, request,**kwargs):
-        courses = Course.objects.filter(program_id = self.kwargs['pk']).all()
+        courses = Course.objects.filter(department_id = self.kwargs['pk']).all()
         context = {
             'courses': courses
         }
-        return render(request, 'programs and course/courses_list.html', context=context)
+        return render(request, 'departments and course/courses_list.html', context=context)
 
 class CourseCreateView(CreateView):
-    template_name = 'programs and course/create_course.html'
+    template_name = 'departments and course/create_course.html'
     form_class = CourseForm
 
 
@@ -305,25 +322,25 @@ class CourseCreateView(CreateView):
         return super().form_valid(form)
 
     def get_success_url(self, **kwargs):
-        return reverse("courses-list", kwargs={'pk': self.object.program.id})
+        return reverse("courses-list", kwargs={'pk': self.object.department.id})
 
 class CourseUpdateView(UpdateView):
     model = Course
     form_class = CourseForm
-    template_name = 'programs and course/create_course.html'
+    template_name = 'departments and course/create_course.html'
 
     def get_success_url(self, **kwargs):
-        return reverse("courses-list", kwargs={'pk': self.object.program.id})
+        return reverse("courses-list", kwargs={'pk': self.object.department.id})
 
 class CourseDeleteView(DeleteView):
     model = Course
-    template_name = 'programs and course/delete_course.html'
+    template_name = 'departments and course/delete_course.html'
     def get_success_url(self, **kwargs):
-        return reverse("courses-list", kwargs={'pk': self.object.program.id})
+        return reverse("courses-list", kwargs={'pk': self.object.department.id})
 
 
 class AllocatedCoursesListView(ListView):
-    template_name = 'programs and course/allocated_courses_list.html'
+    template_name = 'departments and course/allocated_courses_list.html'
     model = CourseAllocation
     def get_queryset(self):
         queryset = super().get_queryset()
@@ -331,7 +348,7 @@ class AllocatedCoursesListView(ListView):
 
 
 class CourseAllocationView(CreateView):
-    template_name = 'programs and course/course_allocation.html'
+    template_name = 'departments and course/course_allocation.html'
     form_class = CourseAllocationForm
 
     def form_valid(self, form):
@@ -345,13 +362,13 @@ class CourseAllocationView(CreateView):
 class AllocatedCoursesUpdateView(UpdateView):
     model = CourseAllocation
     form_class = CourseAllocationForm
-    template_name = 'programs and course/course_allocation.html'
+    template_name = 'departments and course/course_allocation.html'
 
     def get_success_url(self, **kwargs):
         return reverse("allocated-courses-list")
 
 class AllocatedCoursesDeleteView(DeleteView):
     model = CourseAllocation
-    template_name = 'programs and course/allocated_course_delete.html'
+    template_name = 'departments and course/allocated_course_delete.html'
     def get_success_url(self, **kwargs):
         return reverse("allocated-courses-list")
