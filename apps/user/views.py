@@ -3,7 +3,7 @@ from django.contrib.auth.views import LoginView
 from django.views.generic import TemplateView,UpdateView,ListView,CreateView,DeleteView,View
 from django.contrib.auth.forms import AuthenticationForm,PasswordChangeForm
 from django.contrib import messages
-from .models import User,Student,TimePeriod,Course,Program,CourseAllocation
+from .models import User,Student,TimePeriod,Course,Program,CourseAllocation,TakenCourse
 from .forms import UserForm,StudentUserForm,CourseForm,ProgramForm,CourseAllocationForm
 from django.shortcuts import get_object_or_404
 
@@ -192,10 +192,24 @@ class StudentCourseListView(ListView):
     template_name = 'student/student_courses.html'
     model = Course
 
-    def get_queryset(self):
+    def get_context_data(self):
         department = Student.objects.filter(user=self.request.user).values('department_id', 'department__title').first()
         courses = Course.objects.filter(department_id=department['department_id'])
-        return courses
+        taken_courses = TakenCourse.objects.filter(student__user=self.request.user)
+        context = {
+            'courses':courses,
+            'taken_courses':taken_courses
+        }
+        return context
+
+class CreateStudentCoursesView(CreateView):
+    pass
+
+
+
+
+
+
 
 class StudentListView(ListView):
     template_name = 'student/students_list.html'

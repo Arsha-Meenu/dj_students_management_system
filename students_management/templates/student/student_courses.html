@@ -33,13 +33,13 @@
             </tr>
             </thead>
             <tbody>
-            {% for student in object_list %}
+            {% for course in courses %}
             <tr>
               <td> {{ forloop.counter }}.</td>
-              <td> {{ student.course_id }}  </td>
-              <td>{{ student.title }}</td>
-              <td>{{ student.description }}</td>
-              <td>{{ student.level }}</td>
+              <td> {{ course.course_id }}  </td>
+              <td>{{ course.title }}</td>
+              <td>{{ course.description }}</td>
+              <td>{{ course.level }}</td>
             </tr>
             {% endfor %}
             </tbody>
@@ -58,19 +58,18 @@
             <tr>
               <th> ID No. </th>
               <th> Couse Id </th>
-              <th> CourseTitle </th>
-              <th> Description </th>
+              <th> Course Title </th>
               <th> Level </th>
             </tr>
             </thead>
             <tbody>
-            {% for student in object_list %}
+            {% for taken_course in taken_courses %}
             <tr>
               <td> {{ forloop.counter }}.</td>
-              <td> {{ student.course_id }}  </td>
-              <td>{{ student.title }}</td>
-              <td>{{ student.description }}</td>
-              <td>{{ student.level }}</td>
+              <td> {{ taken_course.course_id }}  </td>
+              <td>{{ taken_course.course.title }}</td>
+              <td>{{ taken_course.course.level }}</td>
+
             </tr>
             {% endfor %}
             </tbody>

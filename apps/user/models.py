@@ -121,3 +121,11 @@ class Student(models.Model):
 
     def __str__(self):
         return self.user.username
+
+
+class TakenCourse(models.Model):
+    student = models.ForeignKey(Student, on_delete=models.CASCADE)
+    course = models.ForeignKey(Course, on_delete=models.CASCADE, related_name='taken_courses')
+
+    def __str__(self):
+        return "{0} ({1})".format(self.course.title, self.course.course_id)
