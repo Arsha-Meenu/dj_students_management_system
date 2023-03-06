@@ -4,12 +4,22 @@
 
 <aside id="sidebar" class="sidebar" style="width:260px">
     <ul class="sidebar-nav" id="sidebar-nav">
+         {% if request.user.user_type == 1  %}
         <li class="nav-item">
             <a class="nav-link " href="{% url 'dashboard' %}">
                 <i class="fa fa-th-large" aria-hidden="true"></i>
                 <span>Dashboard</span>
             </a>
         </li>
+        {% endif %}
+        {% if request.user.user_type == 2  %}
+                <li class="nav-item">
+            <a class="nav-link " href="{% url 'student-dashboard' %}">
+                <i class="fa fa-th-large" aria-hidden="true"></i>
+                <span>Dashboard</span>
+            </a>
+        </li>
+        {% endif %}
 
         <li class="nav-item">
             <a class="nav-link " href="{% url 'profile' %}">
@@ -31,7 +41,7 @@
             </a>
         </li>
          <li class="nav-item">
-            <a class="nav-link " href="{% url 'programs-list' %}">
+            <a class="nav-link " href="{% url 'add-drop-course-page' %}">
                 <i class="fa fa-plus-circle" aria-hidden="true"></i>
                 <span>Add and Drop Course</span>
             </a>

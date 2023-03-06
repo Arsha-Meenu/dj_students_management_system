@@ -7,6 +7,39 @@ from django.utils.translation import gettext_lazy as _
 from django.db.models import Max
 from django.core.validators import FileExtensionValidator
 
+
+A='A'
+B='B'
+C='C'
+D='D'
+E='E'
+F='F'
+
+PASS ='PASS'
+FAIL = 'FAIL'
+
+
+GRADE = (
+    (A, 'A'),
+    (B, 'B'),
+    (C, 'C'),
+    (D, 'D'),
+    (E, 'E'),
+    (F, 'F'),
+)
+REMARK = (
+    (PASS, 'PASS'),
+    (FAIL, 'FAIL')
+)
+
+YEARS = (
+        (1, '1'),
+        (2, '2'),
+        (3, '3'),
+        (4, '4')
+    )
+
+
 class User(AbstractBaseUser,PermissionsMixin):
     """Database model for users in the system"""
     ADMIN = 1
@@ -24,8 +57,8 @@ class User(AbstractBaseUser,PermissionsMixin):
     first_name = models.CharField(_('First Name'), max_length=30, blank=True,null=True)
     last_name = models.CharField(_('last name'), max_length=30, blank=True,null=True)
     address = models.TextField(blank=True,null=True)
-    profiles = models.FileField(upload_to='profiles', null=True, verbose_name='user profile',
-                                   validators=[FileExtensionValidator(['svg', 'jpg', 'jpeg', 'png', 'webp'])])
+    profile_image = models.FileField(upload_to='profile_image', null=True, verbose_name='user profile image',
+                                   validators=[FileExtensionValidator(['svg', 'jpg', 'jpeg', 'png', 'webp','pdf', 'docx', 'doc', 'xls', 'xlsx', 'ppt', 'pptx', 'zip', 'rar', '7zip'])])
     date_joined = models.DateTimeField(_('date joined'), auto_now_add=True, blank=True,null=True)
     is_active = models.BooleanField(_('active'), default=True)
     is_staff = models.BooleanField(_('is_staff'), default=False)
@@ -51,12 +84,59 @@ class User(AbstractBaseUser,PermissionsMixin):
         return self.username
 
 
-class Program(models.Model):
+
+class Classes(models.Model): # for class
+    class_name = models.CharField(max_length=150)
+    class_code = models.CharField(max_length=150)
+    class_status = models.BooleanField(default=False)
+    created_at = models.DateTimeField(_('Created'), auto_now_add=True)
+    updated_at = models.DateTimeField(_('Updated'), auto_now=True)
+
+    def __str__(self):
+        return self.class_name
+
+class Department(models.Model): # for department
+    department_code = models.CharField(max_length=150)
     title = models.CharField(max_length=150, unique=True)
     description = models.TextField()
+    status = models.BooleanField(default=False)
+    created_at = models.DateTimeField(_('Created'), auto_now_add=True)
+    updated_at = models.DateTimeField(_('Updated'), auto_now=True)
 
     def __str__(self):
         return self.title
+
+class Faculties(models.Model): # for faculty
+    faculty_code = models.CharField(max_length=150, unique=True)
+    faculty_name = models.CharField(max_length=150)
+    faculty_status = models.BooleanField(default=False)
+    created_at = models.DateTimeField(_('Created'), auto_now_add=True)
+    updated_at = models.DateTimeField(_('Updated'), auto_now=True)
+
+    def __str__(self):
+        return self.faculty_name
+
+
+class Session(models.Model):
+    session = models.CharField( max_length=200, unique=True, blank=True)
+    is_current_session = models.BooleanField(default=False)
+    created_at = models.DateTimeField(_('Created'), auto_now_add=True)
+    updated_at = models.DateTimeField(_('Updated'), auto_now=True)
+
+    def __str__(self):
+        return self.session
+
+class Semester(models.Model):
+    semester_code = models.CharField(_("semester_code"), max_length=200, unique=True, blank=True)
+    semester_name = models.CharField(max_length=150)
+    semester_duration = models.CharField(max_length=100)
+    session = models.ForeignKey(Session, on_delete=models.CASCADE, null=True, blank=True)
+    next_semester_begins = models.DateTimeField(auto_now=False,auto_now_add=False, null=True, blank=True)
+    created_at = models.DateTimeField(_('Created'), auto_now_add=True)
+    updated_at = models.DateTimeField(_('Updated'), auto_now=True)
+
+    def __str__(self):
+        return self.semester_name
 
 
 class Course(models.Model):
@@ -67,11 +147,16 @@ class Course(models.Model):
         (BACHELOR_DEGREE, "Bachelor Degree"),
         (MASTER_DEGREE, "Master Degree"),
     )
+
     course_id = models.CharField(_("course_id"), max_length=200, unique=True, blank=True)
     title = models.CharField(max_length=255, null=True)
-    description  = models.TextField()
-    department = models.ForeignKey(Program, on_delete=models.SET_NULL, null=True, blank=True)
+    faculty  = models.ForeignKey(Faculties,on_delete=models.CASCADE, null=True, blank=True)
+    department = models.ForeignKey(Department, on_delete=models.DO_NOTHING, null=True, blank=True)
     level = models.CharField(max_length=25, choices=LEVEL, null=True)
+    is_elective = models.BooleanField(default=False, blank=True, null=True)
+    credit = models.IntegerField(null=True, default=0)
+    year = models.IntegerField(choices=YEARS, default=0)
+    semester = models.ForeignKey(Semester,on_delete=models.SET_NULL, blank=True, null=True)
     created_at = models.DateTimeField(_('Created'), auto_now_add=True)
     updated_at = models.DateTimeField(_('Updated'), auto_now=True)
 
@@ -92,12 +177,17 @@ class CourseAllocation(models.Model):
     def __str__(self):
         return self.lecturer.get_full_name
 
-class TimePeriod(models.Model):
-    start_year = models.DateField()
-    end_year = models.DateField()
+class Academics(models.Model):
+    academic_year = models.DateField()
+    academic_status = models.BooleanField(default=False, blank=True, null=True)
+    created_at = models.DateTimeField(_('Created'), auto_now_add=True)
+    updated_at = models.DateTimeField(_('Updated'), auto_now=True)
 
     def __str__(self):
-        return str(self.start_year)  + " --- " + str(self.end_year)
+        return str(self.academic_year)
+
+    # def __str__(self):
+    #     return str(self.start_year)  + " --- " + str(self.end_year)
 
 
 class Student(models.Model):
@@ -107,9 +197,9 @@ class Student(models.Model):
     )
     student_id = models.CharField(_("student_id"), max_length=200, unique=True, blank=True)
     user  = models.ForeignKey(User,on_delete=models.CASCADE)
-    period = models.ForeignKey(TimePeriod,on_delete=models.DO_NOTHING)
+    academic_year = models.ForeignKey(Academics,on_delete=models.DO_NOTHING)
     gender = models.CharField(max_length=1, choices=GENDER_CHOICES, blank=True, null=True)
-    department = models.ForeignKey(Program, on_delete=models.CASCADE, null=True)
+    department = models.ForeignKey(Department, on_delete=models.CASCADE, null=True)
     created_at = models.DateTimeField(_('Created'), auto_now_add=True)
     updated_at = models.DateTimeField(_('Updated'), auto_now=True)
 
@@ -123,9 +213,85 @@ class Student(models.Model):
         return self.user.username
 
 
+class Teacher(models.Model):#for teacher
+    teacher_code = models.CharField(_("teacher_code"), max_length=200, unique=True, blank=True)
+    user  = models.ForeignKey(User,on_delete=models.CASCADE, null=True, blank=True)
+    department = models.ForeignKey(Department, on_delete=models.CASCADE, null=True, blank=True)
+    faculty = models.ForeignKey(Faculties,on_delete=models.CASCADE, null=True, blank=True)
+    created_at = models.DateTimeField(_('Created'), auto_now_add=True)
+    updated_at = models.DateTimeField(_('Updated'), auto_now=True)
+
+    def save(self, *args, **kwargs):
+        if not self.teacher_code:
+            max_id = Teacher.objects.aggregate(id_max=Max('id'))['id_max']
+            self.teacher_code = "{}{:03d}".format('T', (max_id + 1) if max_id is not None else 1)
+        super(Teacher, self).save(*args, **kwargs)
+
+    def __str__(self):
+        return self.user.username
+
+
 class TakenCourse(models.Model):
     student = models.ForeignKey(Student, on_delete=models.CASCADE)
     course = models.ForeignKey(Course, on_delete=models.CASCADE, related_name='taken_courses')
 
     def __str__(self):
         return "{0} ({1})".format(self.course.title, self.course.course_id)
+
+
+class Subjects(models.Model):
+    subject_code = models.CharField(_("subject_code"), max_length=200, unique=True, blank=True)
+    subject_name = models.CharField(max_length=150)
+    course = models.ForeignKey(Course, on_delete=models.CASCADE, null=True, blank=True)
+    department = models.ForeignKey(Department, on_delete=models.CASCADE, null=True, blank=True)
+    faculty = models.ForeignKey(Faculties, on_delete=models.CASCADE, null=True, blank=True)
+    created_at = models.DateTimeField(_('Created'), auto_now_add=True)
+    updated_at = models.DateTimeField(_('Updated'), auto_now=True)
+
+    def __str__(self):
+        return self.subject_name
+
+
+
+
+
+
+#
+# class Levels(models.Model):
+#     level = models.CharField(max_length=200, unique=True, blank=True)
+#     level_description = models.TextField()
+#     level_status = models.BooleanField(default=False)
+#     course = models.ForeignKey(Course, on_delete=models.CASCADE, null=True, blank=True)
+#     department = models.ForeignKey(Department, on_delete=models.CASCADE, null=True, blank=True)
+#     faculty = models.ForeignKey(Faculties, on_delete=models.CASCADE, null=True, blank=True)
+#     semester = models.ForeignKey(Semester, on_delete=models.CASCADE, null=True, blank=True)
+#     created_at = models.DateTimeField(_('Created'), auto_now_add=True)
+#     updated_at = models.DateTimeField(_('Updated'), auto_now=True)
+#
+#     def __str__(self):
+#         return self.level
+
+
+class Roll(models.Model):
+    student = models.ForeignKey(Student,on_delete=models.CASCADE)
+    roll_no = models.CharField(max_length=150)
+    created_at = models.DateTimeField(_('Created'), auto_now_add=True)
+    updated_at = models.DateTimeField(_('Updated'), auto_now=True)
+
+
+    def __str__(self):
+        return self.roll_no
+
+
+# class TakenSubjects(models.Model):
+#     student = models.ForeignKey(Student,on_delete=models.CASCADE)
+#     subjects = models.ForeignKey(Subjects,on_delete=models.CASCADE)
+#     exam = models.PositiveIntegerField(default=0)
+#     total = models.PositiveIntegerField(default=0)
+#     grade = models.CharField(choices=GRADE,max_length=5)
+#     remarks = models.CharField(choices=REMARK,max_length=5)
+#     created_at = models.DateTimeField(_('Created'), auto_now_add=True)
+#     updated_at = models.DateTimeField(_('Updated'), auto_now=True)
+#
+#     def __str__(self):
+#         return self.roll_no

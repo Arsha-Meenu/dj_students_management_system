@@ -3,7 +3,7 @@ from django.contrib.auth.views import LoginView
 from django.views.generic import TemplateView,UpdateView,ListView,CreateView,DeleteView,View
 from django.contrib.auth.forms import AuthenticationForm,PasswordChangeForm
 from django.contrib import messages
-from .models import User,Student,TimePeriod,Course,Program,CourseAllocation,TakenCourse
+from .models import User,Student,Academics,Course,Department,CourseAllocation,TakenCourse
 from .forms import UserForm,StudentUserForm,CourseForm,ProgramForm,CourseAllocationForm
 from django.shortcuts import get_object_or_404
 
@@ -62,8 +62,8 @@ class ProfileView(TemplateView):
 
     def get(self,request, *args, **kwargs):
         user = User.objects.filter(id = self.request.user.id).first()
-        if user.profiles:
-            profile = user.profiles
+        if user.profile_image:
+            profile = user.profile_image
         else:
             profile = request.path
         context = {
@@ -86,7 +86,7 @@ class ProfileView(TemplateView):
 class UpdateProfileView(UpdateView):
     model = User
     form_class = UserForm
-    # fields = ['username','email','mobile_number','first_name','last_name','address','profiles']  # fields / if you want to select all fields, use "__all__"
+    # fields = ['username','email','mobile_number','first_name','last_name','address','profile_image']  # fields / if you want to select all fields, use "__all__"
     template_name = 'administrator/update_profile.html'  # templete for updating
     success_url = '/profile/'
 
@@ -98,8 +98,8 @@ class LecturerProfileView(View):
         if request.user.id == kwargs['pk']:
             return redirect('/profile/')
         else:
-            if user.profiles:
-                profile = user.profiles
+            if user.profile_image:
+                profile = user.profile_image
             else:
                 profile = request.path
             context = {
@@ -165,8 +165,8 @@ class StudentProfileView(View):
         if request.user.id == kwargs['pk']:
             return redirect('/profile/')
         else:
-            if student.user.profiles:
-                profile = student.user.profiles
+            if student.user.profile_image:
+                profile = student.user.profile_image
             else:
                 profile = request.path
             context = {
@@ -202,14 +202,9 @@ class StudentCourseListView(ListView):
         }
         return context
 
-class CreateStudentCoursesView(CreateView):
-    pass
-
-
-
-
-
-
+class CourseAddDropPageView(ListView):
+    template_name = 'student/student_add_course.html'
+    queryset = Course.objects.all()
 
 class StudentListView(ListView):
     template_name = 'student/students_list.html'
@@ -286,7 +281,7 @@ class ProgramsListView(TemplateView):
     template_name = 'departments and course/programs_list.html'
 
     def get(self, request):
-        programs = Program.objects.all()
+        programs = Department.objects.all()
 
         context = {
             'programs': programs
@@ -303,14 +298,14 @@ class ProgramCreateView(CreateView):
         return super().form_valid(form)
 
 class ProgramUpdateView(UpdateView):
-    model = Program
+    model = Department
     form_class = ProgramForm
     template_name = 'departments and course/create_program.html'
     success_url = '/programs/list'
 
 
 class ProgramDeleteView(DeleteView):
-    model = Program
+    model = Department
     template_name = 'departments and course/delete_program.html'
     success_url = "/programs/list"
 
