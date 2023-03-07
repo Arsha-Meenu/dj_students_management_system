@@ -58,6 +58,22 @@
             <button type="submit" title="Search"><i class="bi bi-search"></i></button>
         </form>
     </div>
+
+    <div class="search-bar">
+        <div class="dropdown">
+            <button class="btn btn-light dropdown-toggle " type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                <img class="profile-pic" src="{{ request.user.profile_image.url }}" alt={{user}}  style="width:50px">{{ request.user.username|truncatechars:15 }}
+            </button>
+            <ul class="dropdown-menu"style="background-color:#c9c9c9">
+                <li><a class="dropdown-item" href="{% url 'profile' %}"><i class="fa fa-user fa-2xs"  aria-hidden="true"></i>&nbsp;Profile</a></li>
+                <li><a class="dropdown-item" href="{% url 'profile-edit' request.user.id %}">
+                    <i class="fa fa-cogs fa-2xs" aria-hidden="true"></i>&nbsp;Setting</a></li>
+                <hr>
+                <li><a class="btn btn-light" href="{% url 'logout' %}">
+             <i class="fa fa-sign-out " aria-hidden="true"></i> &nbsp;Logout</a></li>
+            </ul>
+        </div>
+    </div>
 </header>
 
 
