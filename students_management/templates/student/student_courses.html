@@ -8,74 +8,134 @@
 
 
 <section style="background: #eee;">
-  <div class="container  ">
-    <div class="row "style="padding-top:6em">
-    <span class="mobile-hide text-center"> {% for dept in object_list %}{% ifchanged dept.department %}
-      <h3>{{ dept.department }}</h3>
-      <br>
-      {{ dept.department.description }}
-      {% endifchanged %}{% endfor %}
-</span>
-    </div>
+  <div class="container ">
+
+
     <div class="col" style="padding:120px;width:100%" >
-      <div class="card ">
-        <p style="font-weight: 400;  font-size: 17px;  padding: 10px;  background: #f3f2f2;  text-align: center;  margin: 0px;">
-          <i class="fa fa-book" aria-hidden="true"></i> &nbsp;&nbsp;All Courses</p>
-        <div class="table-responsive table-shadow table-light table-striped m-5">
-          <table class="table">
-            <thead>
-            <tr>
-              <th> ID No. </th>
-              <th> Couse Id </th>
-              <th> CourseTitle </th>
-              <th> Description </th>
-              <th> Level </th>
-            </tr>
-            </thead>
-            <tbody>
-            {% for course in courses %}
-            <tr>
-              <td> {{ forloop.counter }}.</td>
-              <td> {{ course.course_id }}  </td>
-              <td>{{ course.title }}</td>
-              <td>{{ course.description }}</td>
-              <td>{{ course.level }}</td>
-            </tr>
-            {% endfor %}
-            </tbody>
-          </table>
+      <form action="{% url 'student-add-course' %}" method="POST">
+        {% csrf_token %}
+        <div class="card ">
+          <p style="font-weight: 400;  font-size: 17px;  padding: 10px;  background: #f3f2f2;  text-align: center;  margin: 0px;">
+            <i class="fa fa-book" aria-hidden="true"></i> &nbsp;&nbsp;All Courses</p>
+          <br>
+          <div class="d-flex justify-content-between mb-3 " style="padding:5px">
+            <button title="Save Score" type="submit" class="btn btn-warning"><i class="fa fa-plus-circle" aria-hidden="true"></i> &nbsp;&nbsp;
+              Add Selected</button>
+          </div>
+          <div class="table-responsive p-0 px-2 mt-2">
+            <div class="table-shadow">
+              <table class="table">
+                <thead>
+                <tr>
+                  <th>Select</th>
+                  <th>Course Id</th>
+                  <th>Course Title</th>
+                  <th>Cr.Hr(s)</th>
+                  <th>Year</th>
+                  <th>Classification</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for course in courses %}
+                {% if course.semester %}
+                <tr>
+                  <th scope="row">
+                    <input name="course" value="{{ course.course_id }}" type="checkbox">
+                  </th>
+                  <td>{{ course.course_id }}</td>
+                  <td>{{ course.title }}</td>
+                  <td>{{ course.credit }}</td>
+                  <td>{{ course.year }}</td>
+                  {% if course.is_elective %}
+                  <td>Elective</td>
+                  {% else %}
+                  <td>Core</td>
+                  {% endif %}
+                </tr>
+                {% endif %}
+                {% empty %}
+                <tr>
+                  <td></td>
+                  <td></td>
+                  <td></td>
+                  <td>
+                   <span class="text-danger">
+                      <i class="far fa-frown"></i>No Course.
+                   </span>
+                  </td>
+                  <td></td>
+                  <td></td>
+                  <td></td>
+                </tr>
+                {% endfor %}
+                </tbody>
+              </table>
+            </div>
+          </div>
+
         </div>
-      </div>
+      </form>
     </div>
 
-  <div class="col" style="padding:120px;width:100%" >
-      <div class="card ">
-        <p style="font-weight: 400;  font-size: 17px;  padding: 10px;  background: #f3f2f2;  text-align: center;  margin: 0px;">
-          <i class="fa fa-book" aria-hidden="true"></i> &nbsp;&nbsp;Taken Courses</p>
-        <div class="table-responsive table-shadow table-light table-striped m-5">
-          <table class="table">
-            <thead>
-            <tr>
-              <th> ID No. </th>
-              <th> Couse Id </th>
-              <th> Course Title </th>
-              <th> Level </th>
-            </tr>
-            </thead>
-            <tbody>
-            {% for taken_course in taken_courses %}
-            <tr>
-              <td> {{ forloop.counter }}.</td>
-              <td> {{ taken_course.course_id }}  </td>
-              <td>{{ taken_course.course.title }}</td>
-              <td>{{ taken_course.course.level }}</td>
-
-            </tr>
-            {% endfor %}
-            </tbody>
-          </table>
+    <div class="col" style="padding:120px;width:100%" >
+      <form action="{% url 'student-drop-course' %}" method="POST">
+        {% csrf_token %}
+        <div class="card ">
+          <p style="font-weight: 400;  font-size: 17px;  padding: 10px;  background: #f3f2f2;  text-align: center;  margin: 0px;">
+            <i class="fa fa-book" aria-hidden="true"></i> &nbsp;&nbsp;Taken Courses</p>
+          <br>
+          <div class="d-flex justify-content-between mb-3 " style="padding:5px">
+            <button title="Save Score" type="submit" class="btn btn-danger"><i class="fa fa-times-circle" aria-hidden="true"></i>
+              &nbsp;&nbsp; Drop Selected</button>
+          </div>
+          <div class="table-responsive p-0 px-2 mt-2">
+            <div class="table-shadow">
+              <table class="table">
+                <thead>
+                <tr>
+                  <th>Select</th>
+                  <th>Course Id</th>
+                  <th>Course Title</th>
+                  <th>Cr.Hr(s)</th>
+                  <th>Year</th>
+                  <th>Classification</th>
+                </tr>
+                </thead>
+                <tbody>{% if taken_courses %}
+                {% for taken_course in taken_courses %}
+                <tr>
+                  <th scope="row">
+                    <input name="taken_course" value="{{ taken_course.course.course_id }}" type="checkbox">
+                  </th>
+                  <td> {{ taken_course.course_id }}  </td>
+                  <td>{{ taken_course.course.title }}</td>
+                  <td>{{ taken_course.course.credit }}</td>
+                  <td>{{ taken_course.course.year }}</td>
+                  {% if taken_course.course.is_elective %}
+                  <td>Elective</td>
+                  {% else %}
+                  <td>Core</td>
+                  {% endif %}
+                </tr>
+                {% endfor %}
+                {% else %}
+                <tr>
+                  <td></td>
+                  <td></td>
+                  <td>
+                    <span class="text-danger">
+                      <i class="far fa-frown"></i>No Course
+                    </span>
+                  </td>
+                  <td></td>
+                </tr>
+                {% endif %}
+                </tbody>
+              </table>
+            </div>
+          </div>
         </div>
-      </div>
+      </form>
     </div>
   </div>
 </section>

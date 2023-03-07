@@ -48,11 +48,17 @@ class StudentDashboardView(TemplateView):
     template_name = 'student/student_dashboard.html'
 
     def get(self,request):
-        department = Student.objects.filter(user = request.user).values('department_id','department__title').first()
-        courses = Course.objects.filter(department_id=department['department_id']).count()
+        department = Student.objects.filter(user = request.user)
+        if department:
+            department = department.values('department_id', 'department__title').first()
+            courses = Course.objects.filter(department_id=department['department_id']).count()
+            department = department.get('department__title')
+        else:
+            department = 0
+            courses = 0
         context = {
             'courses':courses,
-            'department':department.get('department__title')
+            'department':department
         }
         return render(request, 'student/student_dashboard.html', context=context)
 
@@ -193,18 +199,56 @@ class StudentCourseListView(ListView):
     model = Course
 
     def get_context_data(self):
-        department = Student.objects.filter(user=self.request.user).values('department_id', 'department__title').first()
-        courses = Course.objects.filter(department_id=department['department_id'])
-        taken_courses = TakenCourse.objects.filter(student__user=self.request.user)
+        department = Student.objects.filter(user=self.request.user)
+        if department:
+            department = department.values('department_id', 'department__title').first()
+            courses = Course.objects.filter(department_id=department['department_id'])
+            taken_courses = TakenCourse.objects.filter(student__user=self.request.user)
+            t = ()
+            for i in taken_courses:
+                t += (i.course.pk,)
+            courses = courses.exclude(id__in=t)
+        else:
+            courses = 0
+            taken_courses = 0
+
         context = {
             'courses':courses,
             'taken_courses':taken_courses
         }
         return context
 
-class CourseAddDropPageView(ListView):
-    template_name = 'student/student_add_course.html'
+
+class StudentAddCourseView(CreateView):
+    template_name = 'student/student_courses.html'
     queryset = Course.objects.all()
+
+    def post(self,request):
+        ids = ()
+        data = self.request.POST.getlist('course')
+        for key in data:
+            ids = ids + (str(key),)
+        for s in range(0, len(ids)):
+            student = Student.objects.get(user = request.user.id)
+            course = Course.objects.get(course_id=ids[s])
+            obj = TakenCourse.objects.create(student=student, course=course)
+            obj.save()
+        return redirect('student-course-list')
+
+
+class StudentDropCourseView(View):
+
+    def post(self,request):
+        ids=()
+        data = self.request.POST.getlist('taken_course')
+        for key in data:
+            ids = ids+(str(key),)
+        for s in range(0,len(ids)):
+            student = Student.objects.get(user=request.user.id)
+            course = Course.objects.get(course_id=ids[s])
+            obj = TakenCourse.objects.get(student=student, course=course)
+            obj.delete()
+        return redirect('student-course-list')
 
 class StudentListView(ListView):
     template_name = 'student/students_list.html'

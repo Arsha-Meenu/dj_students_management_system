@@ -40,12 +40,6 @@
                 <span>My Courses</span>
             </a>
         </li>
-         <li class="nav-item">
-            <a class="nav-link " href="{% url 'add-drop-course-page' %}">
-                <i class="fa fa-plus-circle" aria-hidden="true"></i>
-                <span>Add and Drop Course</span>
-            </a>
-        </li>
         {% endif %}
 
         {% if request.user.user_type == 1  %}
