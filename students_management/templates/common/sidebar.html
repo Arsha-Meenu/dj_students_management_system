@@ -2,7 +2,7 @@
 {% load static %}
 
 
-<aside id="sidebar" class="sidebar" style="width:260px">
+<aside id="sidebar" class="sidebar" style="width:210px">
     <ul class="sidebar-nav" id="sidebar-nav">
          {% if request.user.user_type == 1  %}
         <li class="nav-item">
@@ -43,6 +43,13 @@
         {% endif %}
 
         {% if request.user.user_type == 1  %}
+
+        <li class="nav-item">
+            <a class="nav-link " href="{% url 'institute-info' %}">
+                <i class="fa fa-university" aria-hidden="true"></i>
+                <span>Institute Info</span>
+            </a>
+        </li>
         <li class="nav-item">
             <a class="nav-link " href="{% url 'student-list' %}">
                 <i class="fa fa-street-view" aria-hidden="true"></i>

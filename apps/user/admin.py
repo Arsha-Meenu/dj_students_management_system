@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import User,Student,Course,Academics,Department,CourseAllocation,TakenCourse,Faculties,Subjects,Session,Semester,Teacher,Roll
+from .models import User,Student,Course,Academics,Department,CourseAllocation,TakenCourse,Faculties,Subjects,Session,Semester,Teacher,Roll,Institute
 
 
 admin.site.register(User)
@@ -22,4 +22,4 @@ admin.site.register(Teacher)
 admin.site.register(Semester)
 admin.site.register(Roll)
 admin.site.register(Faculties)
-# admin.site.register(Levels)
+admin.site.register(Institute)

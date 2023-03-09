@@ -3,7 +3,7 @@ from django.contrib.auth.views import LoginView
 from django.views.generic import TemplateView,UpdateView,ListView,CreateView,DeleteView,View
 from django.contrib.auth.forms import AuthenticationForm,PasswordChangeForm
 from django.contrib import messages
-from .models import User,Student,Academics,Course,Department,CourseAllocation,TakenCourse
+from .models import User,Student,Academics,Course,Department,CourseAllocation,TakenCourse,Institute
 from .forms import UserForm,StudentUserForm,CourseForm,ProgramForm,CourseAllocationForm
 from django.shortcuts import get_object_or_404
 
@@ -61,6 +61,17 @@ class StudentDashboardView(TemplateView):
             'department':department
         }
         return render(request, 'student/student_dashboard.html', context=context)
+
+
+class InstituteInfoView(TemplateView):
+    template_name = 'administrator/institute_info.html'
+
+    def get_context_data(self, **kwargs):
+        context = super(InstituteInfoView, self).get_context_data(**kwargs)
+        context['institute_details'] = Institute.objects.filter(user__user_type = 1).all()
+        print('cont',context)
+        return context
+
 
 
 class ProfileView(TemplateView):

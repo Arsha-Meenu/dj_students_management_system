@@ -84,6 +84,25 @@ class User(AbstractBaseUser,PermissionsMixin):
         return self.username
 
 
+def get_user_type():
+    return User.objects.get(user_type =1)
+class Institute(models.Model):
+    name = models.CharField(_('Institute Name'),max_length=150, blank=True,null=True)
+    user = models.ForeignKey(User,default= get_user_type,on_delete=models.SET_NULL, blank=True,null=True)
+    establish =  models.DateTimeField(_('establish'), auto_now_add=True, blank=True,null=True)
+    email = models.EmailField(max_length=250, blank=True,null=True)
+    website = models.CharField(max_length=250, blank=True,null=True)
+    mobile_number = PhoneNumberField(_('Mobile Number'),null=True, blank=True, unique=True)
+    telephone = PhoneNumberField(null=True, blank=True, unique=True)
+    address = models.TextField(blank=True,null=True)
+    logo = models.FileField(upload_to='institute_logo', blank=True,null=True, verbose_name='Institute Logo',
+                                   validators=[FileExtensionValidator(['svg', 'jpg', 'jpeg', 'png','avif' ,'webp','pdf', 'docx', 'doc', 'xls', 'xlsx', 'ppt', 'pptx', 'zip', 'rar', '7zip'])])
+    created_at = models.DateTimeField(_('Created'), auto_now_add=True)
+    updated_at = models.DateTimeField(_('Updated'), auto_now=True)
+
+    def __str__(self):
+        return self.name
+
 
 class Classes(models.Model): # for class
     class_name = models.CharField(max_length=150)
