@@ -3,8 +3,8 @@ from django.contrib.auth.views import LoginView
 from django.views.generic import TemplateView,UpdateView,ListView,CreateView,DeleteView,View
 from django.contrib.auth.forms import AuthenticationForm,PasswordChangeForm
 from django.contrib import messages
-from .models import User,Student,Academics,Course,Department,CourseAllocation,TakenCourse,Institute
-from .forms import UserForm,StudentUserForm,CourseForm,ProgramForm,CourseAllocationForm
+from .models import User,Student,Academics,Course,Department,CourseAllocation,TakenCourse,Institute,Semester
+from .forms import UserForm,StudentUserForm,CourseForm,ProgramForm,CourseAllocationForm,SemesterForm
 from django.shortcuts import get_object_or_404
 
 class UserLoginView(LoginView):
@@ -69,7 +69,6 @@ class InstituteInfoView(TemplateView):
     def get_context_data(self, **kwargs):
         context = super(InstituteInfoView, self).get_context_data(**kwargs)
         context['institute_details'] = Institute.objects.filter(user__user_type = 1).all()
-        print('cont',context)
         return context
 
 
@@ -436,3 +435,34 @@ class AllocatedCoursesDeleteView(DeleteView):
     template_name = 'departments and course/allocated_course_delete.html'
     def get_success_url(self, **kwargs):
         return reverse("allocated-courses-list")
+
+
+class SemesterListView(ListView):
+    template_name = 'semester/semester_list.html'
+    queryset = Semester.objects.all()
+
+class SemesterCreateView(CreateView):
+    template_name = 'semester/semester_create.html'
+    form_class = SemesterForm
+
+    def form_valid(self, form):
+        model = form.save(commit=False)
+        return super().form_valid(form)
+
+    def get_success_url(self, **kwargs):
+        return reverse("semester-list")
+
+
+class SemesterUpdateView(UpdateView):
+    model = Semester
+    form_class = SemesterForm
+    template_name = 'semester/semester_update.html'
+
+    def get_success_url(self, **kwargs):
+        return reverse("semester-list")
+#
+class SemesterDeleteView(DeleteView):
+    model = Semester
+    template_name = 'semester/semester_delete.html'
+    def get_success_url(self, **kwargs):
+        return reverse("semester-list")

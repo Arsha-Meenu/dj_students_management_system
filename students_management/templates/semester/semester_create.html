@@ -1,0 +1,26 @@
+{% extends 'common/base.html' %}
+{% load static %}
+
+{% block page_title %}{{page_title}}{% endblock page_title %}
+
+{% block messages%}
+{% endblock %}
+{% block content %}
+
+<section style="background: #eee;">
+    <div class="container pt-5 ">
+        <div class="col" style="padding:120px;width:100%">
+            <div class="card ">
+                <p style="  font-weight: 400;  font-size: 17px;  padding: 10px;  background: #f3f2f2;  text-align: center;  margin: 0px;">
+                    <i class="fa fa-book" aria-hidden="true"></i> &nbsp;&nbsp;Add New Semester </p>
+                <form  method="POST" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    {{ form.as_p }}
+                    <input class="btn btn-outline-primary" type="submit" value="Submit">
+                </form>
+            </div>
+        </div>
+    </div>
+</section>
+
+{% endblock content %}

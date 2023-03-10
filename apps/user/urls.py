@@ -46,6 +46,12 @@ urlpatterns = [
     path('allocated-course/edit/<int:pk>/', views.AllocatedCoursesUpdateView.as_view(), name='allocated-course-update'),
     path('allocated-course/delete/<int:pk>/', views.AllocatedCoursesDeleteView.as_view(), name='allocated-course-delete'),
 
+    #semester setting
+    path('semester/list',views.SemesterListView.as_view(),name = 'semester-list'),
+    path('semester/create',views.SemesterCreateView.as_view(),name = 'semester-create'),
+    path('semester/edit/<int:pk>/', views.SemesterUpdateView.as_view(), name='semester-update'),
+    path('semester/delete/<int:pk>/', views.SemesterDeleteView.as_view(), name='semester-delete'),
+
 
 
 ]

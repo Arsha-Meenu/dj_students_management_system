@@ -1,0 +1,40 @@
+{% extends 'common/base.html' %}
+{% load static %}
+
+{% block page_title %}{{page_title}}{% endblock page_title %}
+
+{% block messages%}
+{% endblock %}
+{% block content %}
+
+<section style="background: #eee;">
+    <div class="container pt-5 ">
+        <div class="col" style="padding:120px;width:100%">
+            <form class="form-vertical" method="POST">
+                {% csrf_token %}
+                <div class="box box-primary">
+                    <div class="box-header with-border">
+                        <h3 class="box-title">Update Semester Details</h3>
+                    </div>
+                    <div class="box-body">
+                        <div class="row justify-content-start">
+                            <fieldset class="col-md-3 form-group" >
+                                <label  class="control-label"></label>
+                                {{ form.as_p }}
+                            </fieldset>
+                        </div>
+                        <div class="box-footer">
+                            <button type="submit" value="Update" class="btn btn-primary">Submit</button>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</section>
+
+
+
+
+
+{% endblock content %}

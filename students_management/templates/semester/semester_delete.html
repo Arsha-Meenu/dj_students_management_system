@@ -1,0 +1,25 @@
+{% extends 'common/base.html' %}
+{% load static %}
+
+{% block page_title %}{{page_title}}{% endblock page_title %}
+
+
+{% block content %}
+
+<section style="background: #eee;">
+    <div class="container pt-5 ">
+        <div class="row pt-5">
+            <div class="col-6"></div>
+            <div class="col-6">
+                <form action="" method="post">
+                    {% csrf_token %}
+                    <p style="color:red">Are you sure you want to delete " {{ object.semester_code }} "?</p>
+                    <input type="submit" value="Confirm" />
+                    <a href="{% url 'semester-list' %}" class="btn">Cancel</a>
+                </form>
+            </div>
+        </div>
+    </div>
+</section>
+
+{% endblock content %}

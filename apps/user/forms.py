@@ -1,5 +1,5 @@
 from django import forms
-from .models import User,Student,Course,Academics,Department,CourseAllocation
+from .models import User,Student,Course,Academics,Department,CourseAllocation,Semester
 
 
 class UserForm(forms.ModelForm):
@@ -51,3 +51,10 @@ class CourseAllocationForm(forms.ModelForm):
     class Meta:
         model = CourseAllocation
         fields = ['lecturer', 'courses']
+
+
+class SemesterForm(forms.ModelForm):
+    class Meta:
+        model = Semester
+        fields = ('semester_code','semester_name','semester_duration','is_current_semester','description')
+

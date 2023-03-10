@@ -146,11 +146,12 @@ class Session(models.Model):
         return self.session
 
 class Semester(models.Model):
-    semester_code = models.CharField(_("semester_code"), max_length=200, unique=True, blank=True)
+    semester_code = models.CharField(_("semester_code"), max_length=200, unique=True)
     semester_name = models.CharField(max_length=150)
     semester_duration = models.CharField(max_length=100)
-    session = models.ForeignKey(Session, on_delete=models.CASCADE, null=True, blank=True)
-    next_semester_begins = models.DateTimeField(auto_now=False,auto_now_add=False, null=True, blank=True)
+    # session = models.ForeignKey(Session, on_delete=models.CASCADE, null=True, blank=True)
+    is_current_semester = models.BooleanField(default=False)
+    description = models.TextField(null=True, blank=True)
     created_at = models.DateTimeField(_('Created'), auto_now_add=True)
     updated_at = models.DateTimeField(_('Updated'), auto_now=True)
 

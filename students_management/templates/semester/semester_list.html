@@ -1,0 +1,64 @@
+{% extends 'common/base.html' %}
+{% load static %}
+
+{% block page_title %}{{page_title}}{% endblock page_title %}
+
+
+{% block content %}
+
+
+<section style="background: #eee;">
+  <div class="container pt-5 ">
+    <div class="row pt-5">
+      <div class="col-1"></div>
+      <div class="col-4">
+        <a class="edit-btn" href="{% url 'semester-create' %}">
+         <i class="fa fa-plus" aria-hidden="true"></i>
+          <span class="mobile-hide">Add New Semester</span></a>
+      </div>
+    </div>
+    <div class="col" style="padding:120px;width:100%" >
+      <div class="card ">
+        <p style="font-weight: 400;  font-size: 17px;  padding: 10px;  background: #f3f2f2;  text-align: center;  margin: 0px;">
+          <i class="fa fa-book" aria-hidden="true"></i> &nbsp;&nbsp;Semester Table</p>
+        <div class="table-responsive table-shadow table-light table-striped m-5">
+
+            <table class="table">
+                        <thead>
+                            <tr>
+                                <th>#</th>
+                                <th>Semester</th>
+                                 <th>Code</th>
+                                <th>Active</th>
+                                <th>Duration</th>
+                                <th>Description</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                          {% for semester in object_list %}
+                            <tr>
+                                <td>{{ forloop.counter }}.</td>
+                                <td>{{semester.semester_name}}</td>
+                                 <td>{{semester.semester_code}}</td>
+                                <td>{{semester.is_current_semester}}</td>
+                                <td>{{semester.semester_duration}}</td>
+                                <td>{{semester.description}}</td>
+                                 <td>
+                                    <ul  style=" list-style: none;">
+                                        <li><a href="{% url 'semester-update' semester.id %}" data-tip="edit"><i class="fa fa-edit"></i></a></li>
+                                        <li><a href="{% url 'semester-delete' semester.id %}" data-tip="delete"><i class="fa fa-trash"></i></a></li>
+                                    </ul>
+                                </td>
+                            </tr>
+
+                            {% endfor %}
+                        </tbody>
+                    </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+{% endblock content %}
