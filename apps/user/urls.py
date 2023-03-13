@@ -31,11 +31,11 @@ urlpatterns = [
     path('student/drop/course/', views.StudentDropCourseView.as_view(), name='student-drop-course'),
 
     # programs and courses
-    path('programs/list',views.ProgramsListView.as_view(),name = 'programs-list'),
-    path('program/create', views.ProgramCreateView.as_view(), name='program-create'),
-    path('program/edit/<int:pk>/', views.ProgramUpdateView.as_view(), name='program-update'),
-    path('program/delete/<int:pk>/', views.ProgramDeleteView.as_view(), name='program-delete'),
-    path('courses/list/<int:pk>/',views.CoursesListView.as_view(),name = 'courses-list'),
+    path('department/list/<int:pk>/',views.DepartmentListView.as_view(),name = 'department-list'),
+    path('department/create', views.DepartmentCreateView.as_view(), name='department-create'),
+    path('department/edit/<int:pk>/', views.DepartmentUpdateView.as_view(), name='department-update'),
+    path('department/delete/<int:pk>/', views.DepartmentDeleteView.as_view(), name='department-delete'),
+    path('courses/list',views.CoursesListView.as_view(),name = 'courses-list'),
     path('course/create', views.CourseCreateView.as_view(), name='course-create'),
     path('course/edit/<int:pk>/', views.CourseUpdateView.as_view(), name='course-update'),
     path('course/delete/<int:pk>/', views.CourseDeleteView.as_view(), name='course-delete'),
@@ -52,6 +52,17 @@ urlpatterns = [
     path('semester/edit/<int:pk>/', views.SemesterUpdateView.as_view(), name='semester-update'),
     path('semester/delete/<int:pk>/', views.SemesterDeleteView.as_view(), name='semester-delete'),
 
+    #academic year
 
+    path('academic/list', views.AcademicsListView.as_view(), name='academic-list'),
+    path('academic/create', views.AcademicsCreateView.as_view(), name='academic-create'),
+    path('academic/edit/<int:pk>/', views.AcademicsUpdateView.as_view(), name='academic-update'),
+    path('academic/delete/<int:pk>/', views.AcademicsDeleteView.as_view(), name='academic-delete'),
+
+    # classes
+    path('class/list', views.ClassesListView.as_view(), name='classes-list'),
+    path('class/create', views.ClassesCreateView.as_view(), name='class-create'),
+    path('class/edit/<int:pk>/', views.ClassesUpdateView.as_view(), name='class-update'),
+    path('class/delete/<int:pk>/', views.ClassesDeleteView.as_view(), name='class-delete'),
 
 ]

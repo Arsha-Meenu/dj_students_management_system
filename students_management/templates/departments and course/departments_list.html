@@ -12,7 +12,7 @@
     <div class="row pt-5">
       <div class="col-1"></div>
       <div class="col-4">
-        <a class="edit-btn" href="{% url 'program-create' %}">
+        <a class="edit-btn" href="{% url 'department-create' %}">
          <i class="fa fa-plus" aria-hidden="true"></i>
           <span class="mobile-hide">Add Department</span></a>
       </div>
@@ -20,32 +20,35 @@
     <div class="col" style="padding:120px;width:100%" >
       <div class="card ">
         <p style="font-weight: 400;  font-size: 17px;  padding: 10px;  background: #f3f2f2;  text-align: center;  margin: 0px;">
-          <i class="fa fa-book" aria-hidden="true"></i> &nbsp;&nbsp;Department List</p>
+          <i class="fa fa-book" aria-hidden="true"></i> &nbsp;&nbsp;Departments List</p>
         <div class="table-responsive table-shadow table-light table-striped m-5">
           <table class="table">
             <thead>
             <tr>
               <th> No. </th>
-              <th> Department Name </th>
-              <th> Department Description </th>
+              <th> ID </th>
+              <th> Name </th>
+              <th> Course </th>
               <th> Action </th>
             </tr>
             </thead>
             <tbody>
-            {% for program in programs %}
+            {% for department in departments %}
             <tr>
               <td> {{ forloop.counter }}.</td>
-              <td><a href="{% url 'courses-list' program.id %}"> {{ program.title }}</a></td>
-              <td>{{ program.description }}</td>
+              <td>{{ department.department_id }} </a> </td>
+              <td>{{ department.title }}</td>
+              <td>{{ department.course }}</td>
+
               <td>
                  <span class="widget-content">
-                     <button  type="button" value="{{program.id}}" style="border: none; background-color: transparent;"   id="edit" >
-                       <a href="{% url 'program-update' program.id %}"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></a>
+                     <button  type="button" value="{{department.id}}" style="border: none; background-color: transparent;"   id="edit" >
+                       <a href="{% url 'department-update' department.id %}"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></a>
                      </button>
                  </span>
                 <span class="widget-content">
-                      <button  type="button" value="{{program.id}}" style="border: none; background-color: transparent;" id="delete" >
-                        <a href="{% url 'program-delete' program.id %}"><i class="fa fa-trash" aria-hidden="true"></i></a>
+                      <button  type="button" value="{{department.id}}" style="border: none; background-color: transparent;" id="delete" >
+                        <a href="{% url 'department-delete' department.id %}"><i class="fa fa-trash" aria-hidden="true"></i></a>
                       </button>
                 </span>
               </td>

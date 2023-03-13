@@ -114,16 +114,31 @@ class Classes(models.Model): # for class
     def __str__(self):
         return self.class_name
 
-class Department(models.Model): # for department
-    department_code = models.CharField(max_length=150)
-    title = models.CharField(max_length=150, unique=True)
+class Course(models.Model): # for department
+    BACHELOR_DEGREE = "Bachelor"
+    MASTER_DEGREE = "Master"
+
+    LEVEL = (
+        (BACHELOR_DEGREE, "Bachelor Degree"),
+        (MASTER_DEGREE, "Master Degree"),
+    )
+
+    course_code = models.CharField(_("course_code"), max_length=200, unique=True, blank=True)
+    course_title = models.CharField(max_length=150, unique=True)
     description = models.TextField()
+    level = models.CharField(max_length=25, choices=LEVEL, null=True)
     status = models.BooleanField(default=False)
     created_at = models.DateTimeField(_('Created'), auto_now_add=True)
     updated_at = models.DateTimeField(_('Updated'), auto_now=True)
 
+    def save(self, *args, **kwargs):
+        if not self.course_code:
+            max_id = Course.objects.aggregate(id_max=Max('id'))['id_max']
+            self.course_code = "{}{:03d}".format('C', (max_id + 1) if max_id is not None else 1)
+        super(Course, self).save(*args, **kwargs)
+
     def __str__(self):
-        return self.title
+        return self.course_title
 
 class Faculties(models.Model): # for faculty
     faculty_code = models.CharField(max_length=150, unique=True)
@@ -159,46 +174,33 @@ class Semester(models.Model):
         return self.semester_name
 
 
-class Course(models.Model):
-    BACHELOR_DEGREE = "Bachelor"
-    MASTER_DEGREE = "Master"
-
-    LEVEL = (
-        (BACHELOR_DEGREE, "Bachelor Degree"),
-        (MASTER_DEGREE, "Master Degree"),
-    )
-
-    course_id = models.CharField(_("course_id"), max_length=200, unique=True, blank=True)
+class Department(models.Model):
+    department_id = models.CharField(_("department_id"), max_length=200, unique=True, blank=True)
     title = models.CharField(max_length=255, null=True)
     faculty  = models.ForeignKey(Faculties,on_delete=models.CASCADE, null=True, blank=True)
-    department = models.ForeignKey(Department, on_delete=models.DO_NOTHING, null=True, blank=True)
-    level = models.CharField(max_length=25, choices=LEVEL, null=True)
-    is_elective = models.BooleanField(default=False, blank=True, null=True)
-    credit = models.IntegerField(null=True, default=0)
-    year = models.IntegerField(choices=YEARS, default=0)
-    semester = models.ForeignKey(Semester,on_delete=models.SET_NULL, blank=True, null=True)
+    course = models.ForeignKey(Course, on_delete=models.DO_NOTHING, null=True, blank=True)
     created_at = models.DateTimeField(_('Created'), auto_now_add=True)
     updated_at = models.DateTimeField(_('Updated'), auto_now=True)
 
     def save(self, *args, **kwargs):
-        if not self.course_id:
-            max_id = Course.objects.aggregate(id_max=Max('id'))['id_max']
-            self.course_id = "{}{:03d}".format('C', (max_id + 1) if max_id is not None else 1)
-        super(Course, self).save(*args, **kwargs)
+        if not self.department_id:
+            max_id = Department.objects.aggregate(id_max=Max('id'))['id_max']
+            self.department_id = "{}{:03d}".format('D', (max_id + 1) if max_id is not None else 1)
+        super(Department, self).save(*args, **kwargs)
 
     def __str__(self):
         return self.title
 
 
-class CourseAllocation(models.Model):
+class DepartmentAllocation(models.Model):
     lecturer = models.ForeignKey(User,on_delete=models.CASCADE,related_name='allocated_lecturer')
-    courses = models.ManyToManyField(Course,related_name='allocated_course')
+    department = models.ManyToManyField(Department,related_name='allocated_course')
 
     def __str__(self):
         return self.lecturer.get_full_name
 
 class Academics(models.Model):
-    academic_year = models.DateField()
+    academic_year = models.CharField(max_length=50)
     academic_status = models.BooleanField(default=False, blank=True, null=True)
     created_at = models.DateTimeField(_('Created'), auto_now_add=True)
     updated_at = models.DateTimeField(_('Updated'), auto_now=True)
@@ -259,19 +261,30 @@ class TakenCourse(models.Model):
         return "{0} ({1})".format(self.course.title, self.course.course_id)
 
 
-class Subjects(models.Model):
+class Subject(models.Model):
     subject_code = models.CharField(_("subject_code"), max_length=200, unique=True, blank=True)
     subject_name = models.CharField(max_length=150)
-    course = models.ForeignKey(Course, on_delete=models.CASCADE, null=True, blank=True)
+    # course = models.ForeignKey(Course, on_delete=models.CASCADE, null=True, blank=True)
+    is_elective = models.BooleanField(default=False, blank=True, null=True)
+    credit = models.IntegerField(null=True, default=0)
+    year = models.ForeignKey(Academics, on_delete=models.SET_NULL, blank=True, null=True)
+    semester = models.ForeignKey(Semester, on_delete=models.SET_NULL, blank=True, null=True)
     department = models.ForeignKey(Department, on_delete=models.CASCADE, null=True, blank=True)
-    faculty = models.ForeignKey(Faculties, on_delete=models.CASCADE, null=True, blank=True)
+    teacher = models.ForeignKey(Teacher, on_delete=models.DO_NOTHING, null=True, blank=True)
     created_at = models.DateTimeField(_('Created'), auto_now_add=True)
     updated_at = models.DateTimeField(_('Updated'), auto_now=True)
 
+
+    def save(self, *args, **kwargs):
+        if not self.subject_code:
+            max_id = Subject.objects.aggregate(id_max=Max('id'))['id_max']
+            self.subject_code = "{}{:03d}".format('Sub', (max_id + 1) if max_id is not None else 1)
+        super(Subject, self).save(*args, **kwargs)
+
+
+
     def __str__(self):
         return self.subject_name
-
-
 
 
 

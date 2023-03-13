@@ -3,8 +3,8 @@ from django.contrib.auth.views import LoginView
 from django.views.generic import TemplateView,UpdateView,ListView,CreateView,DeleteView,View
 from django.contrib.auth.forms import AuthenticationForm,PasswordChangeForm
 from django.contrib import messages
-from .models import User,Student,Academics,Course,Department,CourseAllocation,TakenCourse,Institute,Semester
-from .forms import UserForm,StudentUserForm,CourseForm,ProgramForm,CourseAllocationForm,SemesterForm
+from .models import User,Student,Academics,Course,Department,DepartmentAllocation,TakenCourse,Institute,Semester,Classes
+from .forms import UserForm,StudentUserForm,CourseForm,DepartmentForm,DepartmentAllocationForm,SemesterForm,AcademicsForm,ClassesForm
 from django.shortcuts import get_object_or_404
 
 class UserLoginView(LoginView):
@@ -294,7 +294,7 @@ class UpdateStudentView(UpdateView):
     second_model = User
     form_class = StudentUserForm
     second_form_class = UserForm
-    template_name = 'student/student_update.html'
+    template_name = 'student/academics_update.html'
     success_url = "/student/list"
 
     def get_context_data(self, **kwargs):
@@ -326,58 +326,58 @@ class UpdateStudentView(UpdateView):
 
 class DeleteStudentView(DeleteView):
     model = Student
-    template_name = 'student/delete_student.html'
+    template_name = 'student/delete_academics.html'
     success_url = "/student/list"
 
 
-# programs
-class ProgramsListView(TemplateView):
-    template_name = 'departments and course/programs_list.html'
-
-    def get(self, request):
-        programs = Department.objects.all()
-
-        context = {
-            'programs': programs
-        }
-        return render(request, 'departments and course/programs_list.html', context=context)
-
-class ProgramCreateView(CreateView):
-    template_name = 'departments and course/create_program.html'
-    form_class = ProgramForm
-    success_url = "/programs/list"
-
-    def form_valid(self, form):
-        model = form.save(commit = False)
-        return super().form_valid(form)
-
-class ProgramUpdateView(UpdateView):
-    model = Department
-    form_class = ProgramForm
-    template_name = 'departments and course/create_program.html'
-    success_url = '/programs/list'
-
-
-class ProgramDeleteView(DeleteView):
-    model = Department
-    template_name = 'departments and course/delete_program.html'
-    success_url = "/programs/list"
-
-# Courses
-
+# department
 class CoursesListView(TemplateView):
     template_name = 'departments and course/courses_list.html'
 
-    def get(self, request,**kwargs):
-        courses = Course.objects.filter(department_id = self.kwargs['pk']).all()
+    def get(self, request):
+        course = Course.objects.all()
+
         context = {
-            'courses': courses
+            'courses': course
         }
         return render(request, 'departments and course/courses_list.html', context=context)
 
 class CourseCreateView(CreateView):
     template_name = 'departments and course/create_course.html'
     form_class = CourseForm
+    success_url = "/courses/list"
+
+    def form_valid(self, form):
+        model = form.save(commit = False)
+        return super().form_valid(form)
+
+class CourseUpdateView(UpdateView):
+    model = Course
+    form_class = CourseForm
+    template_name = 'departments and course/create_course.html'
+    success_url = '/courses/list'
+
+
+class CourseDeleteView(DeleteView):
+    model = Course
+    template_name = 'departments and course/delete_course.html'
+    success_url = "/courses/list"
+
+# Courses
+
+class DepartmentListView(TemplateView):
+    template_name = 'departments and course/departments_list.html'
+
+    def get(self, request,**kwargs):
+        department = Department.objects.filter(course_id = self.kwargs['pk']).all()
+        context = {
+            'departments': department
+        }
+        return render(request, 'departments and course/departments_list.html', context=context)
+
+class DepartmentCreateView(CreateView):
+    template_name = 'departments and course/create_department.html'
+    form_class = DepartmentForm
 
 
     def form_valid(self, form):
@@ -385,26 +385,26 @@ class CourseCreateView(CreateView):
         return super().form_valid(form)
 
     def get_success_url(self, **kwargs):
-        return reverse("courses-list", kwargs={'pk': self.object.department.id})
+        return reverse("department-list", kwargs={'pk': self.object.course.id})
 
-class CourseUpdateView(UpdateView):
-    model = Course
-    form_class = CourseForm
-    template_name = 'departments and course/create_course.html'
+class DepartmentUpdateView(UpdateView):
+    model = Department
+    form_class = DepartmentForm
+    template_name = 'departments and course/create_department.html'
 
     def get_success_url(self, **kwargs):
-        return reverse("courses-list", kwargs={'pk': self.object.department.id})
+        return reverse("department-list", kwargs={'pk':  self.object.course.id})
 
-class CourseDeleteView(DeleteView):
-    model = Course
-    template_name = 'departments and course/delete_course.html'
+class DepartmentDeleteView(DeleteView):
+    model = Department
+    template_name = 'departments and course/delete_department.html'
     def get_success_url(self, **kwargs):
-        return reverse("courses-list", kwargs={'pk': self.object.department.id})
+        return reverse("department-list", kwargs={'pk':  self.object.course.id})
 
 
 class AllocatedCoursesListView(ListView):
     template_name = 'departments and course/allocated_courses_list.html'
-    model = CourseAllocation
+    model = DepartmentAllocation
     def get_queryset(self):
         queryset = super().get_queryset()
         return queryset
@@ -412,7 +412,7 @@ class AllocatedCoursesListView(ListView):
 
 class CourseAllocationView(CreateView):
     template_name = 'departments and course/course_allocation.html'
-    form_class = CourseAllocationForm
+    form_class = DepartmentAllocationForm
 
     def form_valid(self, form):
         model = form.save(commit=False)
@@ -423,20 +423,20 @@ class CourseAllocationView(CreateView):
 
 
 class AllocatedCoursesUpdateView(UpdateView):
-    model = CourseAllocation
-    form_class = CourseAllocationForm
+    model = DepartmentAllocation
+    form_class = DepartmentAllocationForm
     template_name = 'departments and course/course_allocation.html'
 
     def get_success_url(self, **kwargs):
         return reverse("allocated-courses-list")
 
 class AllocatedCoursesDeleteView(DeleteView):
-    model = CourseAllocation
+    model = DepartmentAllocation
     template_name = 'departments and course/allocated_course_delete.html'
     def get_success_url(self, **kwargs):
         return reverse("allocated-courses-list")
 
-
+#semester
 class SemesterListView(ListView):
     template_name = 'semester/semester_list.html'
     queryset = Semester.objects.all()
@@ -466,3 +466,69 @@ class SemesterDeleteView(DeleteView):
     template_name = 'semester/semester_delete.html'
     def get_success_url(self, **kwargs):
         return reverse("semester-list")
+
+# academic year
+class AcademicsListView(ListView):
+    template_name = 'academic_year/academics_list.html'
+    queryset = Academics.objects.all()
+
+
+class AcademicsCreateView(CreateView):
+    template_name = 'academic_year/create_academics.html'
+    form_class = AcademicsForm
+
+    def form_valid(self, form):
+        model = form.save(commit=False)
+        return super().form_valid(form)
+
+    def get_success_url(self, **kwargs):
+        return reverse("academic-list")
+
+
+class AcademicsUpdateView(UpdateView):
+    model = Academics
+    form_class = AcademicsForm
+    template_name = 'academic_year/academics_update.html'
+
+    def get_success_url(self, **kwargs):
+        return reverse("academic-list")
+#
+class AcademicsDeleteView(DeleteView):
+    model = Academics
+    template_name = 'academic_year/delete_academics.html'
+    def get_success_url(self, **kwargs):
+        return reverse("academic-list")
+
+
+# classes
+
+class ClassesListView(ListView):
+    template_name = 'classes/classes_list.html'
+    queryset = Classes.objects.all()
+
+
+class ClassesCreateView(CreateView):
+    template_name = 'classes/classes_create.html'
+    form_class = ClassesForm
+
+    def form_valid(self, form):
+        model = form.save(commit=False)
+        return super().form_valid(form)
+
+    def get_success_url(self, **kwargs):
+        return reverse("classes-list")
+
+
+class ClassesUpdateView(UpdateView):
+    model = Classes
+    form_class = ClassesForm
+    template_name = 'classes/classes_update.html'
+
+    def get_success_url(self, **kwargs):
+        return reverse("classes-list")
+#
+class ClassesDeleteView(DeleteView):
+    model = Classes
+    template_name = 'classes/delete_classes.html'
+    def get_success_url(self, **kwargs):
+        return reverse("classes-list")

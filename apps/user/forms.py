@@ -1,5 +1,5 @@
 from django import forms
-from .models import User,Student,Course,Academics,Department,CourseAllocation,Semester
+from .models import User,Student,Course,Academics,Department,DepartmentAllocation,Semester,Classes
 
 
 class UserForm(forms.ModelForm):
@@ -27,18 +27,18 @@ class StudentUserForm(forms.ModelForm):
 class CourseForm(forms.ModelForm):
     class Meta:
         model = Course
-        fields = ('level','department','title')
-
-class ProgramForm(forms.ModelForm):
-    class Meta:
-        model = Department
         fields = "__all__"
 
+class DepartmentForm(forms.ModelForm):
+    class Meta:
+        model = Department
+        fields = ('department_id','title','course')
 
 
-class CourseAllocationForm(forms.ModelForm):
-    courses = forms.ModelMultipleChoiceField(
-        queryset=Course.objects.all(),
+
+class DepartmentAllocationForm(forms.ModelForm):
+    department = forms.ModelMultipleChoiceField(
+        queryset=Department.objects.all(),
         widget=forms.CheckboxSelectMultiple(attrs={'class': 'browser-default checkbox'}),
         required=True
     )
@@ -49,8 +49,8 @@ class CourseAllocationForm(forms.ModelForm):
     )
 
     class Meta:
-        model = CourseAllocation
-        fields = ['lecturer', 'courses']
+        model = DepartmentAllocation
+        fields = ['lecturer', 'department']
 
 
 class SemesterForm(forms.ModelForm):
@@ -58,3 +58,13 @@ class SemesterForm(forms.ModelForm):
         model = Semester
         fields = ('semester_code','semester_name','semester_duration','is_current_semester','description')
 
+
+class AcademicsForm(forms.ModelForm):
+    class Meta:
+        model = Academics
+        fields = "__all__"
+
+class ClassesForm(forms.ModelForm):
+    class Meta:
+        model = Classes
+        fields = "__all__"

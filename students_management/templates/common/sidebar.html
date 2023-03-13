@@ -45,14 +45,25 @@
             </a>
         </li>
 
+
         <li class="nav-item">
-            <a class="nav-link " href="{% url 'semester-list' %}">
-               <i class="fa fa-wrench" aria-hidden="true"></i>
-                <span>Semester Settings</span>
+            <a class="nav-link " href="{% url 'courses-list' %}">
+               <i class="fa fa-superpowers" aria-hidden="true"></i>
+                <span>Courses</span>
             </a>
         </li>
-
-
+        <li class="nav-item">
+            <a class="nav-link " href="{% url 'academic-list' %}">
+               <i class="fa fa-jpy" aria-hidden="true"></i>
+                <span>Academic Year</span>
+            </a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link " href="{% url 'classes-list' %}">
+                <i class="fa fa-creative-commons" aria-hidden="true"></i>
+                <span>Classes</span>
+            </a>
+        </li>
         <li class="nav-item">
             <a class="nav-link " href="{% url 'student-list' %}">
                 <i class="fa fa-street-view" aria-hidden="true"></i>
@@ -69,6 +80,12 @@
             <a class="nav-link " href="{% url 'allocated-courses-list' %}">
                 <i class="fa fa-cogs" aria-hidden="true"></i>
                 <span>Course Allocation</span>
+            </a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link " href="{% url 'semester-list' %}">
+               <i class="fa fa-wrench" aria-hidden="true"></i>
+                <span>Semester Settings</span>
             </a>
         </li>
         {% endif %}
