@@ -2,35 +2,35 @@
 {% load static %}
 
 
-<aside id="sidebar" class="sidebar" style="width:210px">
-    <ul class="sidebar-nav" id="sidebar-nav">
+<aside id="sidebar" class="sidebar" style="width:220px;">
+    <ul class="sidebar-nav" id="sidebar-nav" >
          {% if request.user.user_type == 1  %}
-            <li class="nav-item">
-                <a class="nav-link " href="{% url 'dashboard' %}">
-                    <i class="fa fa-th-large" aria-hidden="true"></i>
+            <li class="nav-item " >
+                <a class="nav-link text-dark" href="{% url 'dashboard' %}">
+                    <i class="fa fa-th-large text-dark" aria-hidden="true"></i>
                     <span>Dashboard</span>
                 </a>
             </li>
         {% endif %}
         {% if request.user.user_type == 2  %}
              <li class="nav-item">
-                <a class="nav-link " href="{% url 'student-dashboard' %}">
-                    <i class="fa fa-th-large" aria-hidden="true"></i>
+                <a class="nav-link  text-dark" href="{% url 'student-dashboard' %}">
+                    <i class="fa fa-th-large text-dark" aria-hidden="true"></i>
                     <span>Dashboard</span>
                 </a>
             </li>
         {% endif %}
 
         <li class="nav-item">
-            <a class="nav-link " href="{% url 'profile' %}">
-                <i class="fa fa-user-secret" aria-hidden="true"></i>
+            <a class="nav-link text-dark " href="{% url 'profile' %}">
+                <i class="fa fa-user-secret text-dark" aria-hidden="true"></i>
                 <span>Profile</span>
             </a>
         </li>
          {% if request.user.user_type == 2  %}
         <li class="nav-item">
-            <a class="nav-link " href="{% url 'student-course-list' %}">
-                <i class="fa fa-pie-chart" aria-hidden="true"></i>
+            <a class="nav-link text-dark " href="{% url 'student-course-list' %}">
+                <i class="fa fa-pie-chart text-dark" aria-hidden="true"></i>
                 <span>My Courses</span>
             </a>
         </li>
@@ -39,52 +39,59 @@
         {% if request.user.user_type == 1  %}
 
         <li class="nav-item">
-            <a class="nav-link " href="{% url 'institute-info' %}">
-                <i class="fa fa-university" aria-hidden="true"></i>
+            <a class="nav-link text-dark " href="{% url 'institute-info' %}">
+                <i class="fa fa-university text-dark" aria-hidden="true"></i>
                 <span>Institute Info</span>
             </a>
         </li>
 
 
         <li class="nav-item">
-            <a class="nav-link " href="{% url 'courses-list' %}">
-               <i class="fa fa-superpowers" aria-hidden="true"></i>
-                <span>Courses</span>
+            <a class="nav-link text-dark " href="{% url 'courses-list' %}">
+               <i class="fa fa-superpowers text-dark" aria-hidden="true"></i>
+                <span>Courses with Departments</span>
+            </a>
+        </li>
+
+        <li class="nav-item">
+            <a class="nav-link text-dark " href="{% url 'subjects-list' %}">
+               <i class="fa fa-sun-o text-dark" aria-hidden="true"></i>
+                 <span>Subjects</span>
             </a>
         </li>
         <li class="nav-item">
-            <a class="nav-link " href="{% url 'academic-list' %}">
-               <i class="fa fa-jpy" aria-hidden="true"></i>
+            <a class="nav-link text-dark " href="{% url 'academic-list' %}">
+               <i class="fa fa-jpy text-dark" aria-hidden="true"></i>
                 <span>Academic Year</span>
             </a>
         </li>
+<!--        <li class="nav-item">-->
+<!--            <a class="nav-link " href="{% url 'classes-list' %}">-->
+<!--                <i class="fa fa-creative-commons" aria-hidden="true"></i>-->
+<!--                <span>Classes</span>-->
+<!--            </a>-->
+<!--        </li>-->
         <li class="nav-item">
-            <a class="nav-link " href="{% url 'classes-list' %}">
-                <i class="fa fa-creative-commons" aria-hidden="true"></i>
-                <span>Classes</span>
-            </a>
-        </li>
-        <li class="nav-item">
-            <a class="nav-link " href="{% url 'student-list' %}">
-                <i class="fa fa-street-view" aria-hidden="true"></i>
+            <a class="nav-link text-dark " href="{% url 'student-list' %}">
+                <i class="fa fa-street-view text-dark" aria-hidden="true"></i>
                 <span>Student</span>
             </a>
         </li>
         <li class="nav-item">
-            <a class="nav-link " href="{% url 'lecturer-list' %}">
-                <i class="fa fa-book" aria-hidden="true"></i>
+            <a class="nav-link text-dark " href="{% url 'lecturer-list' %}">
+                <i class="fa fa-book text-dark" aria-hidden="true"></i>
                 <span>Lecturer</span>
             </a>
         </li>
          <li class="nav-item">
-            <a class="nav-link " href="{% url 'allocated-courses-list' %}">
-                <i class="fa fa-cogs" aria-hidden="true"></i>
-                <span>Course Allocation</span>
+            <a class="nav-link text-dark " href="{% url 'allocated-subjects-list' %}">
+                <i class="fa fa-cogs text-dark" aria-hidden="true"></i>
+                <span>Subject Allocation</span>
             </a>
         </li>
         <li class="nav-item">
-            <a class="nav-link " href="{% url 'semester-list' %}">
-               <i class="fa fa-wrench" aria-hidden="true"></i>
+            <a class="nav-link text-dark " href="{% url 'semester-list' %}">
+               <i class="fa fa-wrench text-dark" aria-hidden="true"></i>
                 <span>Semester Settings</span>
             </a>
         </li>

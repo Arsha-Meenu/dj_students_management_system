@@ -3,8 +3,8 @@ from django.contrib.auth.views import LoginView
 from django.views.generic import TemplateView,UpdateView,ListView,CreateView,DeleteView,View
 from django.contrib.auth.forms import AuthenticationForm,PasswordChangeForm
 from django.contrib import messages
-from .models import User,Student,Academics,Course,Department,DepartmentAllocation,TakenCourse,Institute,Semester,Classes
-from .forms import UserForm,StudentUserForm,CourseForm,DepartmentForm,DepartmentAllocationForm,SemesterForm,AcademicsForm,ClassesForm
+from .models import User,Student,Academics,Course,Department,SubjectAllocation,TakenCourse,Institute,Semester,Classes,Subject
+from .forms import UserForm,StudentUserForm,CourseForm,DepartmentForm,SubjectAllocationForm,SemesterForm,AcademicsForm,ClassesForm,SubjectsForm
 from django.shortcuts import get_object_or_404
 
 class UserLoginView(LoginView):
@@ -402,39 +402,39 @@ class DepartmentDeleteView(DeleteView):
         return reverse("department-list", kwargs={'pk':  self.object.course.id})
 
 
-class AllocatedCoursesListView(ListView):
-    template_name = 'departments and course/allocated_courses_list.html'
-    model = DepartmentAllocation
+class AllocatedSubjectListView(ListView):
+    template_name = 'departments and course/allocated_subject_list.html'
+    model = SubjectAllocation
     def get_queryset(self):
         queryset = super().get_queryset()
         return queryset
 
 
-class CourseAllocationView(CreateView):
-    template_name = 'departments and course/course_allocation.html'
-    form_class = DepartmentAllocationForm
+class SubjectAllocationCreateView(CreateView):
+    template_name = 'departments and course/subject_allocation_teacher.html'
+    form_class = SubjectAllocationForm
 
     def form_valid(self, form):
         model = form.save(commit=False)
         return super().form_valid(form)
 
     def get_success_url(self, **kwargs):
-        return reverse("allocated-courses-list")
+        return reverse("allocated-subjects-list")
 
 
-class AllocatedCoursesUpdateView(UpdateView):
-    model = DepartmentAllocation
-    form_class = DepartmentAllocationForm
-    template_name = 'departments and course/course_allocation.html'
+class AllocatedSubjectUpdateView(UpdateView):
+    model = SubjectAllocation
+    form_class = SubjectAllocationForm
+    template_name = 'departments and course/subject_allocation_teacher.html'
 
     def get_success_url(self, **kwargs):
-        return reverse("allocated-courses-list")
+        return reverse("allocated-subjects-list")
 
-class AllocatedCoursesDeleteView(DeleteView):
-    model = DepartmentAllocation
-    template_name = 'departments and course/allocated_course_delete.html'
+class AllocatedSubjectDeleteView(DeleteView):
+    model = SubjectAllocation
+    template_name = 'departments and course/allocated_subject_delete.html'
     def get_success_url(self, **kwargs):
-        return reverse("allocated-courses-list")
+        return reverse("allocated-subjects-list")
 
 #semester
 class SemesterListView(ListView):
@@ -532,3 +532,37 @@ class ClassesDeleteView(DeleteView):
     template_name = 'classes/delete_classes.html'
     def get_success_url(self, **kwargs):
         return reverse("classes-list")
+
+
+# subjects
+
+class SubjectsListView(ListView):
+    template_name = 'subjects/subject_list.html'
+    queryset = Subject.objects.all()
+
+
+class SubjectCreateView(CreateView):
+    template_name = 'subjects/subject_create.html'
+    form_class = SubjectsForm
+
+    def form_valid(self, form):
+        model = form.save(commit=False)
+        return super().form_valid(form)
+
+    def get_success_url(self, **kwargs):
+        return reverse("subjects-list")
+
+
+class SubjectUpdateView(UpdateView):
+    model = Subject
+    form_class = SubjectsForm
+    template_name = 'subjects/subject_update.html'
+
+    def get_success_url(self, **kwargs):
+        return reverse("subjects-list")
+#
+class SubjectDeleteView(DeleteView):
+    model = Subject
+    template_name = 'subjects/delete_subject.html'
+    def get_success_url(self, **kwargs):
+        return reverse("subjects-list")

@@ -1,5 +1,5 @@
 from django import forms
-from .models import User,Student,Course,Academics,Department,DepartmentAllocation,Semester,Classes
+from .models import User,Student,Course,Academics,Department,SubjectAllocation,Semester,Classes,Subject
 
 
 class UserForm(forms.ModelForm):
@@ -36,9 +36,9 @@ class DepartmentForm(forms.ModelForm):
 
 
 
-class DepartmentAllocationForm(forms.ModelForm):
-    department = forms.ModelMultipleChoiceField(
-        queryset=Department.objects.all(),
+class SubjectAllocationForm(forms.ModelForm):
+    subject = forms.ModelMultipleChoiceField(
+        queryset=Subject.objects.all(),
         widget=forms.CheckboxSelectMultiple(attrs={'class': 'browser-default checkbox'}),
         required=True
     )
@@ -49,8 +49,8 @@ class DepartmentAllocationForm(forms.ModelForm):
     )
 
     class Meta:
-        model = DepartmentAllocation
-        fields = ['lecturer', 'department']
+        model = SubjectAllocation
+        fields = ['lecturer', 'subject']
 
 
 class SemesterForm(forms.ModelForm):
@@ -67,4 +67,9 @@ class AcademicsForm(forms.ModelForm):
 class ClassesForm(forms.ModelForm):
     class Meta:
         model = Classes
+        fields = "__all__"
+
+class SubjectsForm(forms.ModelForm):
+    class Meta:
+        model = Subject
         fields = "__all__"

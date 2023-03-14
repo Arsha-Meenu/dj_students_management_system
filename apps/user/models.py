@@ -192,12 +192,6 @@ class Department(models.Model):
         return self.title
 
 
-class DepartmentAllocation(models.Model):
-    lecturer = models.ForeignKey(User,on_delete=models.CASCADE,related_name='allocated_lecturer')
-    department = models.ManyToManyField(Department,related_name='allocated_course')
-
-    def __str__(self):
-        return self.lecturer.get_full_name
 
 class Academics(models.Model):
     academic_year = models.CharField(max_length=50)
@@ -278,7 +272,7 @@ class Subject(models.Model):
     def save(self, *args, **kwargs):
         if not self.subject_code:
             max_id = Subject.objects.aggregate(id_max=Max('id'))['id_max']
-            self.subject_code = "{}{:03d}".format('Sub', (max_id + 1) if max_id is not None else 1)
+            self.subject_code = "{}{:03d}".format('S', (max_id + 1) if max_id is not None else 1)
         super(Subject, self).save(*args, **kwargs)
 
 
@@ -287,6 +281,12 @@ class Subject(models.Model):
         return self.subject_name
 
 
+class SubjectAllocation(models.Model):
+    lecturer = models.ForeignKey(User,on_delete=models.CASCADE,related_name='allocated_lecturer')
+    # department = models.ManyToManyField(Department,related_name='allocated_course')
+    subject = models.ManyToManyField(Subject, related_name='allocated_subjects')
+    def __str__(self):
+        return self.lecturer.get_full_name
 
 
 #

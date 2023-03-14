@@ -41,10 +41,10 @@ urlpatterns = [
     path('course/delete/<int:pk>/', views.CourseDeleteView.as_view(), name='course-delete'),
 
     # course allocated to lecturers
-    path('allocated-courses/list/', views.AllocatedCoursesListView.as_view(), name='allocated-courses-list'),
-    path('course/allocation', views.CourseAllocationView.as_view(), name='course-allocation'),
-    path('allocated-course/edit/<int:pk>/', views.AllocatedCoursesUpdateView.as_view(), name='allocated-course-update'),
-    path('allocated-course/delete/<int:pk>/', views.AllocatedCoursesDeleteView.as_view(), name='allocated-course-delete'),
+    path('allocated-subjects/list/', views.AllocatedSubjectListView.as_view(), name='allocated-subjects-list'),
+    path('subjects/allocation', views.SubjectAllocationCreateView.as_view(), name='subjects-allocation'),
+    path('allocated-subject/edit/<int:pk>/', views.AllocatedSubjectUpdateView.as_view(), name='allocated-subject-update'),
+    path('allocated-subject/delete/<int:pk>/', views.AllocatedSubjectDeleteView.as_view(), name='allocated-subject-delete'),
 
     #semester setting
     path('semester/list',views.SemesterListView.as_view(),name = 'semester-list'),
@@ -65,4 +65,9 @@ urlpatterns = [
     path('class/edit/<int:pk>/', views.ClassesUpdateView.as_view(), name='class-update'),
     path('class/delete/<int:pk>/', views.ClassesDeleteView.as_view(), name='class-delete'),
 
+    # subjects
+    path('subjects/list', views.SubjectsListView.as_view(), name='subjects-list'),
+    path('subject/create', views.SubjectCreateView.as_view(), name='subject-create'),
+    path('subject/edit/<int:pk>/', views.SubjectUpdateView.as_view(), name='subject-update'),
+    path('subject/delete/<int:pk>/', views.SubjectDeleteView.as_view(), name='subject-delete'),
 ]

@@ -12,7 +12,7 @@
     <div class="row pt-5">
       <div class="col-1"></div>
       <div class="col-4">
-        <a class="edit-btn" href="{% url 'course-allocation' %}">
+        <a class="edit-btn" href="{% url 'subjects-allocation' %}">
          <i class="fa fa-plus" aria-hidden="true"></i>
           <span class="mobile-hide">Allocate Now</span></a>
       </div>
@@ -20,35 +20,39 @@
     <div class="col" style="padding:120px;width:100%" >
       <div class="card ">
         <p style="font-weight: 400;  font-size: 17px;  padding: 10px;  background: #f3f2f2;  text-align: center;  margin: 0px;">
-          <i class="fa fa-book" aria-hidden="true"></i> &nbsp;&nbsp;Courses Allocation List</p>
+          <i class="fa fa-book" aria-hidden="true"></i> &nbsp;&nbsp;Subject Allocation List</p>
         <div class="table-responsive table-shadow table-light table-striped m-5">
           <table class="table">
             <thead>
             <tr>
               <th> No. </th>
               <th> Lecturer </th>
-              <th> Courses</th>
+                <th> Subject</th>
               <th> Action </th>
             </tr>
             </thead>
             <tbody>
-            {% for course in object_list %}
+            {% for subject in object_list %}
             <tr>
               <td> {{ forloop.counter}}</td>
-              <td>{{ course.lecturer.get_full_name }}</td>
-              <td><div class="flex">
-                {% for i in course.courses.all %}
-                        <div class="flex">{{ i }}</div>
-                {% endfor %}</div></td>
-              <td>
+
+              <td>{{ subject.lecturer.get_full_name }}</td>
+
+                <td><div class="flex">
+                  {% for i in subject.subject.all %}
+                          <div class="flex">{{ i }}</div>
+                  {% endfor %}
+                 </div>
+               </td>
+                <td>
                  <span class="widget-content">
-                     <button  type="button" value="{{course.id}}" style="border: none; background-color: transparent;"   id="edit" >
-                       <a href="{% url 'allocated-course-update' course.id %}"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></a>
+                     <button  type="button" value="{{subject.id}}" style="border: none; background-color: transparent;"   id="edit" >
+                       <a href="{% url 'allocated-subject-update' subject.id %}"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></a>
                      </button>
                  </span>
                 <span class="widget-content">
-                      <button  type="button" value="{{course.id}}" style="border: none; background-color: transparent;" id="delete" >
-                        <a href="{% url 'allocated-course-delete' course.id %}"><i class="fa fa-trash" aria-hidden="true"></i></a>
+                      <button  type="button" value="{{subject.id}}" style="border: none; background-color: transparent;" id="delete" >
+                        <a href="{% url 'allocated-subject-delete' subject.id %}"><i class="fa fa-trash" aria-hidden="true"></i></a>
                       </button>
                 </span>
               </td>

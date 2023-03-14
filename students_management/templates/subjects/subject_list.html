@@ -1,0 +1,72 @@
+{% extends 'common/base.html' %}
+{% load static %}
+
+{% block page_title %}{{page_title}}{% endblock page_title %}
+
+
+{% block content %}
+
+
+<section style="background: #eee;">
+  <div class="container pt-5 ">
+    <div class="row pt-5">
+      <div class="col-1"></div>
+      <div class="col-4">
+        <a class="edit-btn" href="{% url 'subject-create' %}">
+         <i class="fa fa-plus" aria-hidden="true"></i>
+          <span class="mobile-hide">Add New Subject</span></a>
+      </div>
+    </div>
+    <div class="col" style="padding:120px;width:100%" >
+      <div class="card ">
+        <p style="font-weight: 400;  font-size: 17px;  padding: 10px;  background: #f3f2f2;  text-align: center;  margin: 0px;">
+          <i class="fa fa-book" aria-hidden="true"></i> &nbsp;&nbsp;Subjects List</p>
+        <div class="table-responsive table-shadow table-light table-striped m-5">
+          <table class="table">
+            <thead>
+            <tr>
+              <th> ID No. </th>
+              <th> Code</th>
+              <th> Name </th>
+              <th> Semester  </th>
+              <th> Credit (hrs) </th>
+              <th> Elective </th>
+              <th> Department  </th>
+              <th> Teacher  </th>
+              <th> Action </th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for subject in object_list %}
+            <tr>
+              <td> {{ forloop.counter }}.</td>
+              <td>{{ subject.subject_code }}</td>
+              <td>{{ subject.subject_name }}</td>
+              <td>{{ subject.semester }}</td>
+              <td>{{ subject.credit }}</td>
+              <td>{{ subject.is_elective }}</td>
+              <td>{{ subject.department }}</td>
+              <td>{{ subject.teacher }}</td>
+              <td>
+                 <span class="widget-content">
+                     <button  type="button" value="{{subject.id}}" style="border: none; background-color: transparent;"   id="edit" >
+                       <a href="{% url 'subject-update' subject.id %}"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></a>
+                     </button>
+                 </span>
+                <span class="widget-content">
+                      <button  type="button" value="{{subject.id}}" style="border: none; background-color: transparent;" id="delete" >
+                        <a href="{% url 'subject-delete' subject.id %}"><i class="fa fa-trash" aria-hidden="true"></i></a>
+                      </button>
+                </span>
+              </td>
+            </tr>
+            {% endfor %}
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+{% endblock content %}
