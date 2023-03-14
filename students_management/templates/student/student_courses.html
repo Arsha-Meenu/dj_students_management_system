@@ -12,11 +12,11 @@
 
 
     <div class="col" style="padding:120px;width:100%" >
-      <form action="{% url 'student-add-course' %}" method="POST">
+      <form action="{% url 'student-add-subject' %}" method="POST">
         {% csrf_token %}
         <div class="card ">
           <p style="font-weight: 400;  font-size: 17px;  padding: 10px;  background: #f3f2f2;  text-align: center;  margin: 0px;">
-            <i class="fa fa-book" aria-hidden="true"></i> &nbsp;&nbsp;All Courses</p>
+            <i class="fa fa-book" aria-hidden="true"></i> &nbsp;&nbsp;All Subjects</p>
           <br>
           <div class="d-flex justify-content-between mb-3 " style="padding:5px">
             <button title="Save Score" type="submit" class="btn btn-warning"><i class="fa fa-plus-circle" aria-hidden="true"></i> &nbsp;&nbsp;
@@ -28,25 +28,25 @@
                 <thead>
                 <tr>
                   <th>Select</th>
-                  <th>Course Id</th>
-                  <th>Course Title</th>
-                  <th>Cr.Hr(s)</th>
+                  <th>Subject Id</th>
+                  <th>Subject Title</th>
+                  <th>Credit.Hr(s)</th>
                   <th>Year</th>
                   <th>Classification</th>
                 </tr>
                 </thead>
                 <tbody>
-                {% for course in courses %}
-                {% if course.semester %}
+                {% for subject in subjects %}
+                {% if subject.semester %}
                 <tr>
                   <th scope="row">
-                    <input name="course" value="{{ course.course_id }}" type="checkbox">
+                    <input name="subject" value="{{ subject.subject_code }}" type="checkbox">
                   </th>
-                  <td>{{ course.course_id }}</td>
-                  <td>{{ course.title }}</td>
-                  <td>{{ course.credit }}</td>
-                  <td>{{ course.year }}</td>
-                  {% if course.is_elective %}
+                  <td>{{ subject.subject_code }}</td>
+                  <td>{{ subject.subject_name }}</td>
+                  <td>{{ subject.credit }}</td>
+                  <td>{{ subject.year }}</td>
+                  {% if subject.is_elective %}
                   <td>Elective</td>
                   {% else %}
                   <td>Core</td>
@@ -78,11 +78,11 @@
     </div>
 
     <div class="col" style="padding:120px;width:100%" >
-      <form action="{% url 'student-drop-course' %}" method="POST">
+      <form action="{% url 'student-drop-subject' %}" method="POST">
         {% csrf_token %}
         <div class="card ">
           <p style="font-weight: 400;  font-size: 17px;  padding: 10px;  background: #f3f2f2;  text-align: center;  margin: 0px;">
-            <i class="fa fa-book" aria-hidden="true"></i> &nbsp;&nbsp;Taken Courses</p>
+            <i class="fa fa-book" aria-hidden="true"></i> &nbsp;&nbsp;Taken Subjects</p>
           <br>
           <div class="d-flex justify-content-between mb-3 " style="padding:5px">
             <button title="Save Score" type="submit" class="btn btn-danger"><i class="fa fa-times-circle" aria-hidden="true"></i>
@@ -94,24 +94,24 @@
                 <thead>
                 <tr>
                   <th>Select</th>
-                  <th>Course Id</th>
-                  <th>Course Title</th>
-                  <th>Cr.Hr(s)</th>
+                  <th>Subject Id</th>
+                  <th>Subject Title</th>
+                  <th>Credit.Hr(s)</th>
                   <th>Year</th>
                   <th>Classification</th>
                 </tr>
                 </thead>
-                <tbody>{% if taken_courses %}
-                {% for taken_course in taken_courses %}
+                <tbody>{% if taken_subjects %}
+                {% for taken_subject in taken_subjects %}
                 <tr>
                   <th scope="row">
-                    <input name="taken_course" value="{{ taken_course.course.course_id }}" type="checkbox">
+                    <input name="taken_subject" value="{{ taken_subject.subject.subject_code }}" type="checkbox">
                   </th>
-                  <td> {{ taken_course.course_id }}  </td>
-                  <td>{{ taken_course.course.title }}</td>
-                  <td>{{ taken_course.course.credit }}</td>
-                  <td>{{ taken_course.course.year }}</td>
-                  {% if taken_course.course.is_elective %}
+                  <td> {{ taken_subject.subject.subject_code }}  </td>
+                  <td>{{ taken_subject.subject.subject_name }}</td>
+                  <td>{{ taken_subject.subject.credit }}</td>
+                  <td>{{ taken_subject.subject.year }}</td>
+                  {% if taken_subject.subject.is_elective %}
                   <td>Elective</td>
                   {% else %}
                   <td>Core</td>

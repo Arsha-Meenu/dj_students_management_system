@@ -5,7 +5,6 @@ from django.contrib.auth.views import LogoutView,PasswordChangeView,PasswordChan
 urlpatterns = [
     path('',views.UserLoginView.as_view(),name = 'login'),
     path('dashboard/', views.DashboardView.as_view(), name='dashboard'),
-    path('student/dashboard/', views.StudentDashboardView.as_view(), name='student-dashboard'),
     path('logout/',LogoutView.as_view(next_page = 'login'), name='logout'),
     path('profile/',views.ProfileView.as_view(), name='profile'),
     path('profile/edit/<int:pk>/', views.UpdateProfileView.as_view(), name='profile-edit'),
@@ -21,14 +20,16 @@ urlpatterns = [
     path('lecturer/profile/<int:pk>/', views.LecturerProfileView.as_view(), name='lecturer-profile'),
 
     # students
+
+    path('student/dashboard/', views.StudentDashboardView.as_view(), name='student-dashboard'),
     path('student/list', views.StudentListView.as_view(), name='student-list'),
     path('student/create', views.CreateStudentView.as_view(), name='student-create'),
     path('student/edit/<int:pk>/', views.UpdateStudentView.as_view(), name='student-update'),
     path('student/delete/<int:pk>/', views.DeleteStudentView.as_view(), name='student-delete'),
     path('student/profile/<int:pk>/', views.StudentProfileView.as_view(), name='student-profile'),
-    path('student/course/list/', views.StudentCourseListView.as_view(), name='student-course-list'),
-    path('student/add/course/', views.StudentAddCourseView.as_view(), name='student-add-course'),
-    path('student/drop/course/', views.StudentDropCourseView.as_view(), name='student-drop-course'),
+    path('student/subject/list/', views.StudentSubjectListView.as_view(), name='student-subject-list'),
+    path('student/add/subject/', views.StudentAddSubjectView.as_view(), name='student-add-subject'),
+    path('student/drop/subject/', views.StudentDropSubjectView.as_view(), name='student-drop-subject'),
 
     # programs and courses
     path('department/list/<int:pk>/',views.DepartmentListView.as_view(),name = 'department-list'),

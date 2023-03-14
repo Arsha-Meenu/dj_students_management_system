@@ -247,13 +247,6 @@ class Teacher(models.Model):#for teacher
         return self.user.username
 
 
-class TakenCourse(models.Model):
-    student = models.ForeignKey(Student, on_delete=models.CASCADE)
-    course = models.ForeignKey(Course, on_delete=models.CASCADE, related_name='taken_courses')
-
-    def __str__(self):
-        return "{0} ({1})".format(self.course.title, self.course.course_id)
-
 
 class Subject(models.Model):
     subject_code = models.CharField(_("subject_code"), max_length=200, unique=True, blank=True)
@@ -279,6 +272,15 @@ class Subject(models.Model):
 
     def __str__(self):
         return self.subject_name
+
+
+class TakenSubject(models.Model):
+    student = models.ForeignKey(Student, on_delete=models.CASCADE)
+    subject  = models.ForeignKey(Subject, on_delete=models.CASCADE, related_name='taken_subjects')
+    def __str__(self):
+        return "{0} ({1})".format(self.subject.subject_name, self.subject.subject_code)
+
+
 
 
 class SubjectAllocation(models.Model):

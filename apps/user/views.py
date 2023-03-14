@@ -3,7 +3,7 @@ from django.contrib.auth.views import LoginView
 from django.views.generic import TemplateView,UpdateView,ListView,CreateView,DeleteView,View
 from django.contrib.auth.forms import AuthenticationForm,PasswordChangeForm
 from django.contrib import messages
-from .models import User,Student,Academics,Course,Department,SubjectAllocation,TakenCourse,Institute,Semester,Classes,Subject
+from .models import User,Student,Academics,Course,Department,SubjectAllocation,TakenSubject,Institute,Semester,Classes,Subject
 from .forms import UserForm,StudentUserForm,CourseForm,DepartmentForm,SubjectAllocationForm,SemesterForm,AcademicsForm,ClassesForm,SubjectsForm
 from django.shortcuts import get_object_or_404
 
@@ -48,17 +48,17 @@ class StudentDashboardView(TemplateView):
     template_name = 'student/student_dashboard.html'
 
     def get(self,request):
-        department = Student.objects.filter(user = request.user)
-        if department:
-            department = department.values('department_id', 'department__title').first()
-            courses = Course.objects.filter(department_id=department['department_id']).count()
-            department = department.get('department__title')
+        student = Student.objects.filter(user = request.user)
+        if student:
+            department = student.values('department_id', 'department__title').first()
+            subjects = Subject.objects.filter(department_id=department['department_id']).count()
+            department_name = department.get('department__title')
         else:
-            department = 0
-            courses = 0
+            department_name = 0
+            subjects = 0
         context = {
-            'courses':courses,
-            'department':department
+            'subjects':subjects,
+            'department':department_name
         }
         return render(request, 'student/student_dashboard.html', context=context)
 
@@ -204,61 +204,61 @@ class StudentProfileView(View):
             return render(request,'student/student_profile.html',context)
 
 
-class StudentCourseListView(ListView):
+class StudentSubjectListView(ListView):
     template_name = 'student/student_courses.html'
     model = Course
 
     def get_context_data(self):
-        department = Student.objects.filter(user=self.request.user)
-        if department:
-            department = department.values('department_id', 'department__title').first()
-            courses = Course.objects.filter(department_id=department['department_id'])
-            taken_courses = TakenCourse.objects.filter(student__user=self.request.user)
+        student = Student.objects.filter(user=self.request.user)
+        if student:
+            student = student.values('department_id', 'department__title').first()
+            subjects = Subject.objects.filter(department_id=student['department_id'])
+            taken_subjects = TakenSubject.objects.filter(student__user=self.request.user).filter(subject__department_id=student['department_id'])
             t = ()
-            for i in taken_courses:
-                t += (i.course.pk,)
-            courses = courses.exclude(id__in=t)
+            for i in taken_subjects:
+                t += (i.subject.pk,)
+            subjects = subjects.exclude(id__in=t)
         else:
-            courses = 0
-            taken_courses = 0
-
+            subjects = 0
+            taken_subjects = 0
         context = {
-            'courses':courses,
-            'taken_courses':taken_courses
+            'subjects':subjects,
+            'taken_subjects':taken_subjects
         }
         return context
 
 
-class StudentAddCourseView(CreateView):
+class StudentAddSubjectView(CreateView):
     template_name = 'student/student_courses.html'
-    queryset = Course.objects.all()
+    queryset = Subject.objects.all()
 
     def post(self,request):
         ids = ()
-        data = self.request.POST.getlist('course')
+        data = self.request.POST.getlist('subject')
         for key in data:
             ids = ids + (str(key),)
+            print('s', ids)
         for s in range(0, len(ids)):
             student = Student.objects.get(user = request.user.id)
-            course = Course.objects.get(course_id=ids[s])
-            obj = TakenCourse.objects.create(student=student, course=course)
+            subject = Subject.objects.get(subject_code=ids[s])
+            obj = TakenSubject.objects.create(student=student, subject=subject)
             obj.save()
-        return redirect('student-course-list')
+        return redirect('student-subject-list')
 
 
-class StudentDropCourseView(View):
-
+class StudentDropSubjectView(View):
     def post(self,request):
         ids=()
-        data = self.request.POST.getlist('taken_course')
+        data = self.request.POST.getlist('taken_subject')
         for key in data:
             ids = ids+(str(key),)
+            print('ids',ids)
         for s in range(0,len(ids)):
             student = Student.objects.get(user=request.user.id)
-            course = Course.objects.get(course_id=ids[s])
-            obj = TakenCourse.objects.get(student=student, course=course)
+            subject = Subject.objects.get(subject_code=ids[s])
+            obj = TakenSubject.objects.get(student=student, subject=subject)
             obj.delete()
-        return redirect('student-course-list')
+        return redirect('student-subject-list')
 
 class StudentListView(ListView):
     template_name = 'student/students_list.html'
