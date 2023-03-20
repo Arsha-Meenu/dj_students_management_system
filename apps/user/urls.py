@@ -13,11 +13,17 @@ urlpatterns = [
     path('institute/info',views.InstituteInfoView.as_view(),name = 'institute-info'),
 
     # lecturer
+    path('lecturer/dashboard/', views.LecturerDashboardView.as_view(), name='lecturer-dashboard'),
     path('lecturer/list', views.LecturerListView.as_view(), name='lecturer-list'),
     path('lecturer/create', views.LecturerCreateView.as_view(), name='lecturer-create'),
     path('lecturer/edit/<int:pk>/', views.UpdateLecturerView.as_view(), name='lecturer-update'),
     path('lecturer/delete/<int:pk>/', views.DeleteLecturerView.as_view(), name='lecturer-delete'),
     path('lecturer/profile/<int:pk>/', views.LecturerProfileView.as_view(), name='lecturer-profile'),
+    path('lecturer/subject/list/', views.LecturerSubjectListView.as_view(), name='lecturer-subject-list'),
+    path('lecturer/single/subject/<int:pk>/', views.LecturerSingleSubjectView.as_view(), name='lecturer-single-subject'),
+    path('subject/file/upload/<int:pk>/', views.FileUploadView.as_view(), name='file-upload-view'),
+    path('subject/<slug:subject_code>/file/update/<int:file_id>/', views.UpdateFileView.as_view(), name='file-update-view'),
+    path('subject/file/delete/<int:pk>/', views.DeleteFileView.as_view(),name='file-delete-view'),
 
     # students
 
@@ -41,7 +47,7 @@ urlpatterns = [
     path('course/edit/<int:pk>/', views.CourseUpdateView.as_view(), name='course-update'),
     path('course/delete/<int:pk>/', views.CourseDeleteView.as_view(), name='course-delete'),
 
-    # course allocated to lecturers
+    # subject allocated to lecturers
     path('allocated-subjects/list/', views.AllocatedSubjectListView.as_view(), name='allocated-subjects-list'),
     path('subjects/allocation', views.SubjectAllocationCreateView.as_view(), name='subjects-allocation'),
     path('allocated-subject/edit/<int:pk>/', views.AllocatedSubjectUpdateView.as_view(), name='allocated-subject-update'),

@@ -20,6 +20,14 @@
                 </a>
             </li>
         {% endif %}
+        {% if request.user.user_type == 3  %}
+             <li class="nav-item">
+                <a class="nav-link  text-dark" href="{% url 'lecturer-dashboard' %}">
+                    <i class="fa fa-th-large text-dark" aria-hidden="true"></i>
+                    <span>Dashboard</span>
+                </a>
+            </li>
+        {% endif %}
 
         <li class="nav-item">
             <a class="nav-link text-dark " href="{% url 'profile' %}">
@@ -28,12 +36,27 @@
             </a>
         </li>
          {% if request.user.user_type == 2  %}
+            <li class="nav-item">
+                <a class="nav-link text-dark " href="{% url 'student-subject-list' %}">
+                    <i class="fa fa-pie-chart text-dark" aria-hidden="true"></i>
+                    <span>My Subjects</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link text-dark " href="{% url 'courses-list' %}">
+                    <i class="fa fa-pie-chart text-dark" aria-hidden="true"></i>
+                    <span>Courses with Departments</span>
+                </a>
+            </li>
+         {% endif %}
+
+        {% if request.user.user_type == 3  %}
         <li class="nav-item">
-            <a class="nav-link text-dark " href="{% url 'student-subject-list' %}">
-                <i class="fa fa-pie-chart text-dark" aria-hidden="true"></i>
-                <span>My Subjects</span>
-            </a>
-        </li>
+                <a class="nav-link text-dark " href="{% url 'lecturer-subject-list' %}">
+                    <i class="fa fa-pie-chart text-dark" aria-hidden="true"></i>
+                    <span>My Subjects</span>
+                </a>
+            </li>
         {% endif %}
 
         {% if request.user.user_type == 1  %}
@@ -65,12 +88,7 @@
                 <span>Academic Year</span>
             </a>
         </li>
-<!--        <li class="nav-item">-->
-<!--            <a class="nav-link " href="{% url 'classes-list' %}">-->
-<!--                <i class="fa fa-creative-commons" aria-hidden="true"></i>-->
-<!--                <span>Classes</span>-->
-<!--            </a>-->
-<!--        </li>-->
+
         <li class="nav-item">
             <a class="nav-link text-dark " href="{% url 'student-list' %}">
                 <i class="fa fa-street-view text-dark" aria-hidden="true"></i>
@@ -96,6 +114,7 @@
             </a>
         </li>
         {% endif %}
+
 
 
 

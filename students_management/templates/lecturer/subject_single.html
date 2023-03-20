@@ -1,0 +1,110 @@
+{% extends 'common/base.html' %}
+{% load static %}
+
+{% block page_title %}{{page_title}}{% endblock page_title %}
+
+
+{% block content %}
+
+
+<section style="background: #eee;">
+    <div class="container ">
+        <div class="col" style="padding:70px;width:100%" >
+
+        </div>
+
+        <div class="col" style="padding:120px;width:100%" >
+
+
+            <div class="container">
+
+                <div class="manage-wrap">
+                    <div class="row">
+                        <div class="col ml-auto">
+                            <a class="add-button" href="{% url 'file-upload-view'  subject.id %}"><i class="fa fa-plus" aria-hidden="true"></i>
+                                Upload new file
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="title-1">{{ course }}</div>
+                <p class="program-description">{{ course.summary }}</p>
+
+
+                <div class="row">
+                    <div class="col-md-12 p-0">
+                        <p style="font-weight: 400;  font-size: 17px;  padding: 10px;  background: #f3f2f2;  text-align: center;  margin: 0px;">
+                            <i class="fa fa-file" aria-hidden="true"></i>
+                            &nbsp;&nbsp;Documentations</p>
+                        <br>
+                        <div class="table-responsive">
+                            <table class="table table-shadow table-light table-striped m-0">
+                                <thead>
+                                <tr>
+                                    <th>#</th>
+                                    <th>File name</th>
+                                    <th>Uploaded Date</th>
+                                    <th>Updated Date</th>
+                                    <th>Downloads</th>
+                                    <th>Actions</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                {% for file in files %}
+                                <tr>
+                                    <td>{{ file.id}}</td>
+                                    <td><a href="{{ file.file.url }}" title="{{ file }}">
+                                        <i style="font-size: 20px; padding-right: 10px;"
+                                           class="fas fa-file-{{ file.get_extension_short }}"></i>
+                                        {{ file.title|title }}
+                                    </a>
+                                    </td>
+                                    <td>{{ file.created_at|date }}</td>
+                                    <td>{{ file.updated_at|date }}</td>
+                                    <th>
+                                        <div>
+                                            <a class="btn btn-primary" href="{{ file.file.url }}" title="Download to your device">
+                                              <i class="fa fa-download" aria-hidden="true"></i> &nbsp; Download</a>
+                                        </div>
+                                    </th>
+                                    <td>
+                                         <span class="widget-content">
+                                             <button  type="button" value="{{file.id}}" style="border: none; background-color: transparent;"   id="edit" >
+                                               <a href="{% url 'file-update-view' subject_code=subject.subject_code file_id=file.id %}"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></a>
+                                             </button>
+                                         </span>
+                                             <span class="widget-content">
+                                              <button  type="button" value="{{file.id}}" style="border: none; background-color: transparent;" id="delete" >
+                                                <a href="{% url 'file-delete-view'  file.id %}"><i class="fa fa-trash" aria-hidden="true"></i></a>
+                                              </button>
+                                            </span>
+                                    </td>
+
+                                    {% empty %}
+                                <tr>
+                                    <td></td>
+                                    <td></td>
+                                    <td>
+                                <span class="text-danger">
+                                  <i class="fa fa-frown-o" aria-hidden="true"></i>&nbsp; No File Uploaded.
+                                </span>
+                                    </td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                </tr>
+                                {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+    </div>
+</section>
+
+{% endblock content %}

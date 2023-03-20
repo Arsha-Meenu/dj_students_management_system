@@ -1,0 +1,53 @@
+{% extends 'common/base.html' %}
+{% load static %}
+
+{% block page_title %}{{page_title}}{% endblock page_title %}
+
+
+{% block content %}
+
+
+<section style="background: #eee;">
+    <div class="container pt-5 ">
+        <div class="row pt-5">
+            <div class="col-1"></div>
+
+        </div>
+        <div class="col"style="padding:120px;width:100%" >
+            <div class="card ">
+                <div class="row">
+                    <div class="col-md-8 p-0 mx-auto">
+                        <div class="card">
+                            <p class="form-title">File Upload Form</p><br>
+                            <form action="" method="POST" enctype="multipart/form-data">
+                                {% csrf_token %}
+                                <div class="container">
+
+                                    <div class="form-group">
+                                        <b>File Name</b>{{ form.title }}
+                                    </div>
+                                    <div class="form-group">
+                                        <b>File</b><br>{{ form.file }}
+                                    </div>
+                                    <p class="text-orange"><b>Valid Files: </b>pdf, docx, doc, xls, xlsx, ppt, pptx, zip, rar, 7zip</p>
+                                    <div class="form-group">
+                                        <select hidden name="subject" required="" id="">
+                                            <option value="{{subject.id }}" selected>{{ subject }}</option>
+                                        </select>
+                                    </div>
+                                    <div class="form-group">
+                                        <button class="btn btn-primary" type="submit">Upload</button>
+                                        <a class="btn btn-danger" href="" style="float: right;">Cancel</a>
+                                    </div>
+
+                                </div>
+                                <br>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+</section>
+
+{% endblock content %}

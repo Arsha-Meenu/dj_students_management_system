@@ -35,13 +35,13 @@
             {% for subject in object_list %}
             <tr>
               <td> {{ forloop.counter}}</td>
-
-              <td>{{ subject.lecturer.get_full_name }}</td>
-
+              <td>{{ subject }}</td>
                 <td><div class="flex">
-                  {% for i in subject.subject.all %}
-                          <div class="flex">{{ i }}</div>
-                  {% endfor %}
+                    {{subject.subject}}
+<!--                  {% for i in subject.subject.all %}-->
+<!--                    {{i}}-->
+<!--                          <div class="flex">{{ i }}</div>-->
+<!--                  {% endfor %}-->
                  </div>
                </td>
                 <td>

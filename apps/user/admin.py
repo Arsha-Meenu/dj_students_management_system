@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import User,Student,Course,Academics,Department,SubjectAllocation,TakenSubject,Faculties,Subject,Session,Semester,Teacher,Roll,Institute
+from .models import User,Student,Course,Academics,Department,SubjectAllocation,TakenSubject,Faculties,Subject,Session,Semester,Teacher,Roll,Institute,UploadFiles
 
 
 admin.site.register(User)
@@ -14,13 +14,16 @@ admin.site.register(Course,CourseAdmin)
 
 
 class SubjectAdmin(admin.ModelAdmin):
-    list_display = ['subject_code','subject_name','department']
+    list_display = ['subject_code','subject_name','department','teacher']
 admin.site.register(Subject,SubjectAdmin)
 
 
+class SubjectAllocationAdmin(admin.ModelAdmin):
+    list_display = ['lecturer','subject']
+admin.site.register(SubjectAllocation,SubjectAllocationAdmin)
+
 admin.site.register(Academics)
 admin.site.register(Department)
-admin.site.register(SubjectAllocation)
 admin.site.register(TakenSubject)
 admin.site.register(Session)
 admin.site.register(Teacher)
@@ -28,3 +31,4 @@ admin.site.register(Semester)
 admin.site.register(Roll)
 admin.site.register(Faculties)
 admin.site.register(Institute)
+admin.site.register(UploadFiles)

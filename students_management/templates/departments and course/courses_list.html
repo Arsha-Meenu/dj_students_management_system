@@ -11,11 +11,13 @@
   <div class="container pt-5 ">
     <div class="row pt-5">
       <div class="col-1"></div>
+      {% if request.user.user_type == 1 %}
       <div class="col-4">
         <a class="edit-btn" href="{% url 'course-create' %}">
          <i class="fa fa-plus" aria-hidden="true"></i>
           <span class="mobile-hide">Add New Course</span></a>
       </div>
+      {% endif %}
     </div>
     <div class="col" style="padding:120px;width:100%" >
       <div class="card ">
@@ -30,7 +32,9 @@
               <th>  Description </th>
                <th>  Level </th>
               <th>  Status </th>
+              {% if request.user.user_type == 1 %}
               <th> Action </th>
+              {% endif %}
             </tr>
             </thead>
             <tbody>
@@ -41,7 +45,7 @@
               <td>{{ course.description }}</td>
               <td>{{ course.level }}</td>
               <td>{{ course.status }}</td>
-
+              {% if request.user.user_type == 1 %}
               <td>
                  <span class="widget-content">
                      <button  type="button" value="{{course.id}}" style="border: none; background-color: transparent;"   id="edit" >
@@ -54,6 +58,7 @@
                       </button>
                 </span>
               </td>
+              {% endif %}
             </tr>
             {% endfor %}
             </tbody>

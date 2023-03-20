@@ -1,10 +1,12 @@
-from django.shortcuts import render,reverse,redirect,HttpResponseRedirect
+from django.shortcuts import render,reverse,redirect,HttpResponseRedirect,HttpResponse
 from django.contrib.auth.views import LoginView
-from django.views.generic import TemplateView,UpdateView,ListView,CreateView,DeleteView,View
+from django.views.generic import TemplateView,UpdateView,ListView,CreateView,DeleteView,View,FormView
 from django.contrib.auth.forms import AuthenticationForm,PasswordChangeForm
 from django.contrib import messages
-from .models import User,Student,Academics,Course,Department,SubjectAllocation,TakenSubject,Institute,Semester,Classes,Subject
-from .forms import UserForm,StudentUserForm,CourseForm,DepartmentForm,SubjectAllocationForm,SemesterForm,AcademicsForm,ClassesForm,SubjectsForm
+from .models import (User,Student,Academics,Course,Department,SubjectAllocation,TakenSubject,
+                    Institute,Semester,Classes,Subject,Teacher,UploadFiles)
+from .forms import (UserForm,StudentUserForm,CourseForm,DepartmentForm,SubjectAllocationForm,
+                    SemesterForm,AcademicsForm,ClassesForm,SubjectsForm,UploadFilesForm)
 from django.shortcuts import get_object_or_404
 
 class UserLoginView(LoginView):
@@ -25,7 +27,7 @@ class UserLoginView(LoginView):
             return redirect('student-dashboard')
         else:
             messages.success(self.request, f"{self.request.user.username} logged in successfully. ")
-            return super(UserLoginView, self).form_valid(form)
+            return redirect('lecturer-dashboard')
 
 
 class DashboardView(TemplateView):
@@ -50,18 +52,39 @@ class StudentDashboardView(TemplateView):
     def get(self,request):
         student = Student.objects.filter(user = request.user)
         if student:
-            department = student.values('department_id', 'department__title').first()
+            department = student.values('department_id', 'department__title','department__course__course_title').first()
             subjects = Subject.objects.filter(department_id=department['department_id']).count()
             department_name = department.get('department__title')
+            course_name = department.get('department__course__course_title')
         else:
             department_name = 0
             subjects = 0
+            course_name = 0
         context = {
             'subjects':subjects,
-            'department':department_name
+            'department':department_name,
+            'course_name':course_name
         }
         return render(request, 'student/student_dashboard.html', context=context)
 
+class LecturerDashboardView(View):
+    def get(self,request):
+        teacher = Teacher.objects.filter(user = request.user)
+        if teacher:
+            department = teacher.values('department_id', 'department__title','department__course__course_title').first()
+            subjects = Subject.objects.filter(teacher_id__in = teacher,department_id=department['department_id']).count()
+            department_name = department.get('department__title')
+            course_name = department.get('department__course__course_title')
+        else:
+            department_name = 0
+            subjects = 0
+            course_name = 0
+        context = {
+            'subjects':subjects,
+            'department':department_name,
+            'course_name':course_name
+        }
+        return render(request, 'lecturer/lecturer_dashboard.html', context=context)
 
 class InstituteInfoView(TemplateView):
     template_name = 'administrator/institute_info.html'
@@ -171,6 +194,90 @@ class DeleteLecturerView(DeleteView):
     model = User
     template_name = 'lecturer/delete_lecturer.html'
     success_url = "/lecturer/list"
+
+
+class LecturerSubjectListView(ListView):
+    template_name = 'lecturer/lecturer_courses.html'
+    model = Subject
+
+    def get_context_data(self):
+        teacher = Teacher.objects.filter(user=self.request.user)
+        if teacher:
+            teacher = teacher.values('id','department_id', 'department__title').first()
+            taken_subjects = SubjectAllocation.objects.filter(lecturer=teacher['id']).filter(subject__department_id=teacher['department_id'])
+            t = ()
+            for i in taken_subjects:
+                t += (i.subject.pk,)
+        else:
+            taken_subjects = 0
+        context = {
+            'taken_subjects':taken_subjects
+        }
+        return context
+
+
+
+class LecturerSingleSubjectView(TemplateView):
+    template_name = 'lecturer/subject_single.html'
+
+    def get_context_data(self, **kwargs):
+        files = UploadFiles.objects.filter(subject = kwargs['pk'])
+        subject = Subject.objects.filter(id = kwargs['pk'] ).first()
+        context = {
+            'files':files,
+            'subject':subject
+        }
+        return context
+
+class FileUploadView(View):
+    def get(self,request, *args, **kwargs):
+        form = UploadFilesForm()
+        subject = Subject.objects.filter(id = kwargs['pk']).first()
+        context = {
+            'subject': subject,
+            'form':form
+        }
+        return render(request, 'lecturer/upload_file_form.html', context)
+
+    def post(self,request, *args, **kwargs):
+        subject = Subject.objects.filter(id=kwargs['pk']).first()
+        form = UploadFilesForm(request.POST, request.FILES)
+        if form.is_valid():
+            form.save()
+            messages.success(request, (request.POST.get('title') + ' has been uploaded.'))
+            return redirect('lecturer-single-subject',pk = subject.id )
+
+class UpdateFileView(View):
+    def get(self,request, *args, **kwargs):
+        subject = Subject.objects.filter(subject_code = kwargs['subject_code']).first()
+        instance = UploadFiles.objects.filter(id=kwargs['file_id']).first()
+        form = UploadFilesForm(instance=instance)
+        context = {
+            'subject': subject,
+            'form':form
+        }
+        return render(request, 'lecturer/upload_file_form.html', context)
+
+    def post(self,request, *args, **kwargs):
+        subject = Subject.objects.filter(subject_code = kwargs['subject_code']).first()
+        instance = UploadFiles.objects.filter(id = kwargs['file_id']).first()
+        form = UploadFilesForm(request.POST, request.FILES, instance=instance)
+        if form.is_valid():
+            form.save()
+            messages.success(self.request, (self.request.POST.get('title') + ' has been updated.'))
+            return redirect('lecturer-single-subject',pk = subject.id )
+
+class DeleteFileView(DeleteView):
+    model = UploadFiles
+    template_name = 'lecturer/file_delete.html'
+
+    def get_success_url(self, **kwargs):
+        return reverse('lecturer-single-subject', args=(self.object.subject.id,))
+
+
+
+
+
 
 
 # students view
@@ -413,12 +520,15 @@ class AllocatedSubjectListView(ListView):
 class SubjectAllocationCreateView(CreateView):
     template_name = 'departments and course/subject_allocation_teacher.html'
     form_class = SubjectAllocationForm
+    model = SubjectAllocation
 
     def form_valid(self, form):
+        print('valid')
         model = form.save(commit=False)
         return super().form_valid(form)
 
     def get_success_url(self, **kwargs):
+        print('success')
         return reverse("allocated-subjects-list")
 
 
@@ -566,3 +676,5 @@ class SubjectDeleteView(DeleteView):
     template_name = 'subjects/delete_subject.html'
     def get_success_url(self, **kwargs):
         return reverse("subjects-list")
+
+

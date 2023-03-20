@@ -1,5 +1,5 @@
 from django import forms
-from .models import User,Student,Course,Academics,Department,SubjectAllocation,Semester,Classes,Subject
+from .models import User,Student,Course,Academics,Department,SubjectAllocation,Semester,Classes,Subject,UploadFiles,Teacher
 
 
 class UserForm(forms.ModelForm):
@@ -37,16 +37,16 @@ class DepartmentForm(forms.ModelForm):
 
 
 class SubjectAllocationForm(forms.ModelForm):
-    subject = forms.ModelMultipleChoiceField(
-        queryset=Subject.objects.all(),
-        widget=forms.CheckboxSelectMultiple(attrs={'class': 'browser-default checkbox'}),
-        required=True
-    )
-    lecturer = forms.ModelChoiceField(
-        queryset=User.objects.all(),
-        widget=forms.Select(attrs={'class': 'browser-default custom-select'}),
-        label="lecturer",
-    )
+    # subject = forms.ModelMultipleChoiceField(
+    #     queryset=Subject.objects.all(),
+    #     widget=forms.CheckboxSelectMultiple(attrs={'class': 'browser-default checkbox'}),
+    #     required=True
+    # )
+    # lecturer = forms.ModelChoiceField(
+    #     queryset=Teacher.objects.all(),
+    #     widget=forms.Select(attrs={'class': 'browser-default custom-select'}),
+    #     label="lecturer",
+    # )
 
     class Meta:
         model = SubjectAllocation
@@ -73,3 +73,15 @@ class SubjectsForm(forms.ModelForm):
     class Meta:
         model = Subject
         fields = "__all__"
+
+
+class UploadFilesForm(forms.ModelForm):
+    class Meta:
+        model = UploadFiles
+        fields = ('title', 'file', 'subject')
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields['title'].widget.attrs.update({'class': 'form-control'})
+        self.fields['file'].widget.attrs.update({'class': 'form-control'})
+        self.fields['subject'].widget.attrs.update({'class': 'form-control'})

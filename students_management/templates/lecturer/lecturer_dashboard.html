@@ -31,7 +31,7 @@
         <nav>
             <ol class="breadcrumb">
                 <li class="breadcrumb-item"><a href="index.html">Home</a></li>
-                <li class="breadcrumb-item active">Dashboard</li>
+                <li class="breadcrumb-item active">Dashboard {{ page_title }}</li>
             </ol>
         </nav>
     </div>
@@ -39,57 +39,40 @@
         <div class="row">
             <div class="col-lg-12">
                 <div class="row">
-                    <!--   Total Students Card-->
+                    <!-- department name Card-->
                     <div class=" col-md-4">
                         <div class="card info-card sales-card">
                             <div class="card-body">
-                                <h5 class="card-title">Active Students </h5>
+                                <h5 class="card-title">Department </h5>
                                 <div class="d-flex align-items-center">
                                     <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
-                                        <i class="fa fa-user" aria-hidden="true"></i>
+                                      <i class="fa fa-graduation-cap" aria-hidden="true"></i>
                                     </div>
                                     <div class="ps-3">
-                                        <h6>{{students}}</h6>
+                                      {{course_name}} - {{department}}
                                     </div>
                                 </div>
                             </div>
                         </div>
-                    </div><!-- End Total Students Card -->
+                    </div>
 
-                    <!-- Total Lecturers Card -->
-                    <div class=" col-md-4">
-                        <div class="card info-card revenue-card">
-                            <div class="card-body">
-                                <h5 class="card-title">Active Lecturers</h5>
-                                <div class="d-flex align-items-center">
-                                    <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
-                                        <i class="fa fa-users" aria-hidden="true"></i>
-                                    </div>
-                                    <div class="ps-3">
-                                        <h6>{{lecturers}}</h6>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div><!-- End Total Lecturers Card -->
-
-                    <!-- Total Courses Card -->
+                    <!-- Total Subjects Card -->
                     <div class=" col-xl-4">
                         <div class="card info-card customers-card">
                             <div class="card-body">
-                                <h5 class="card-title">Active Courses</h5>
+                                <h5 class="card-title">My Subjects</h5>
                                 <div class="d-flex align-items-center">
                                     <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
-                                        <i class="fa fa-graduation-cap" aria-hidden="true"></i>
+                                        <i class="fa fa-pie-chart" aria-hidden="true"></i>
+
                                     </div>
                                     <div class="ps-3">
-                                        <h6>{{courses}}</h6>
+                                        <h6>{{subjects}}</h6>
                                     </div>
                                 </div>
                             </div>
                         </div>
-                    </div><!-- End Total Courses Card -->
-\
+                    </div>
 
                 </div>
             </div>

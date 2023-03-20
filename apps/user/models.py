@@ -284,14 +284,22 @@ class TakenSubject(models.Model):
 
 
 class SubjectAllocation(models.Model):
-    lecturer = models.ForeignKey(User,on_delete=models.CASCADE,related_name='allocated_lecturer')
-    # department = models.ManyToManyField(Department,related_name='allocated_course')
-    subject = models.ManyToManyField(Subject, related_name='allocated_subjects')
+    lecturer = models.ForeignKey(Teacher,on_delete=models.CASCADE,related_name='allocated_lecturer')
+    subject = models.ForeignKey(Subject,on_delete=models.CASCADE, related_name='allocated_subjects')
     def __str__(self):
-        return self.lecturer.get_full_name
+        return self.lecturer.user.get_full_name
 
+class UploadFiles(models.Model):
+    title = models.CharField(max_length=255)
+    subject = models.ForeignKey(Subject,on_delete=models.CASCADE,null=True,blank=True)
+    file = models.FileField(upload_to='subject_files', blank=True,null=True, verbose_name='Subject Files',
+                                   validators=[FileExtensionValidator(['svg', 'jpg', 'jpeg', 'png','avif' ,'webp','pdf', 'docx', 'doc', 'xls', 'xlsx', 'ppt', 'pptx', 'zip', 'rar', '7zip'])])
+    created_at = models.DateTimeField(_('Created'), auto_now_add=True)
+    updated_at = models.DateTimeField(_('Updated'), auto_now=True)
 
-#
+    def __str__(self):
+        return str(self.file)[6:]
+
 # class Levels(models.Model):
 #     level = models.CharField(max_length=200, unique=True, blank=True)
 #     level_description = models.TextField()
