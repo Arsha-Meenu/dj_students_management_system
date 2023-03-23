@@ -18,7 +18,8 @@
                 <div class="row">
                     <div class="col-md-8 p-0 mx-auto">
                         <div class="card">
-                            <p class="form-title">File Upload Form</p><br>
+                           <p style="  font-weight: 400;  font-size: 17px;  padding: 10px;  background: #f3f2f2;  text-align: center;  margin: 0px;">
+                             <i class="fa fa-upload" aria-hidden="true"></i>&nbsp;&nbsp;File Upload Form</p>
                             <form action="" method="POST" enctype="multipart/form-data">
                                 {% csrf_token %}
                                 <div class="container">
@@ -29,7 +30,7 @@
                                     <div class="form-group">
                                         <b>File</b><br>{{ form.file }}
                                     </div>
-                                    <p class="text-orange"><b>Valid Files: </b>pdf, docx, doc, xls, xlsx, ppt, pptx, zip, rar, 7zip</p>
+                                    <p class="text-orange">
                                     <div class="form-group">
                                         <select hidden name="subject" required="" id="">
                                             <option value="{{subject.id }}" selected>{{ subject }}</option>
@@ -37,7 +38,7 @@
                                     </div>
                                     <div class="form-group">
                                         <button class="btn btn-primary" type="submit">Upload</button>
-                                        <a class="btn btn-danger" href="" style="float: right;">Cancel</a>
+                                        <a class="btn btn-danger" href="{% url 'lecturer-single-subject' subject.id %}" style="float: right;">Cancel</a>
                                     </div>
 
                                 </div>

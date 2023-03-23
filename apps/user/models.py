@@ -295,7 +295,9 @@ class UploadFiles(models.Model):
     title = models.CharField(max_length=255)
     subject = models.ForeignKey(Subject,on_delete=models.CASCADE,null=True,blank=True)
     file = models.FileField(upload_to='subject_files', blank=True,null=True, verbose_name='Subject Files',
-                                   validators=[FileExtensionValidator(['svg', 'jpg', 'jpeg', 'png','avif' ,'webp','pdf', 'docx', 'doc', 'xls', 'xlsx', 'ppt', 'pptx', 'zip', 'rar', '7zip'])])
+                                   validators=[FileExtensionValidator(['svg', 'jpg', 'jpeg', 'png','avif' ,'webp','pdf',
+                                                                       'docx', 'doc', 'xls', 'xlsx', 'ppt', 'pptx', 'zip', 'rar', '7zip',
+                                                                       'mp4', 'mkv', 'wmv', '3gp', 'f4v', 'avi', 'mp3'])])
     created_at = models.DateTimeField(_('Created'), auto_now_add=True)
     updated_at = models.DateTimeField(_('Updated'), auto_now=True)
 

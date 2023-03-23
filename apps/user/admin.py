@@ -22,9 +22,13 @@ class SubjectAllocationAdmin(admin.ModelAdmin):
     list_display = ['lecturer','subject']
 admin.site.register(SubjectAllocation,SubjectAllocationAdmin)
 
+class StudentTakenSubjectAdmin(admin.ModelAdmin):
+    list_display = ['student','subject']
+admin.site.register(StudentTakenSubject,StudentTakenSubjectAdmin)
+
+
 admin.site.register(Academics)
 admin.site.register(Department)
-admin.site.register(StudentTakenSubject)
 admin.site.register(Session)
 admin.site.register(Teacher)
 admin.site.register(Semester)

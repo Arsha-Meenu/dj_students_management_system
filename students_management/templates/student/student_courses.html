@@ -11,6 +11,69 @@
   <div class="container ">
 
 
+
+
+    <div class="col" style="padding:120px;width:100%" >
+      <form action="{% url 'student-drop-subject' %}" method="POST">
+        {% csrf_token %}
+        <div class="card ">
+          <p style="font-weight: 400;  font-size: 17px;  padding: 10px;  background: #f3f2f2;  text-align: center;  margin: 0px;">
+            <i class="fa fa-book" aria-hidden="true"></i> &nbsp;&nbsp;Taken Subjects</p>
+          <br>
+          <div class="d-flex justify-content-between mb-3 " style="padding:5px">
+            <button title="Save Score" type="submit" class="btn btn-danger"><i class="fa fa-times-circle" aria-hidden="true"></i>
+              &nbsp;&nbsp; Drop Selected</button>
+          </div>
+          <div class="table-responsive p-0 px-2 mt-2">
+            <div class="table-shadow">
+              <table class="table">
+                <thead>
+                <tr>
+                  <th>Select</th>
+                  <th>Subject Id</th>
+                  <th>Subject Title</th>
+                  <th>Credit.Hr(s)</th>
+                  <th>Year</th>
+                  <th>Classification</th>
+                </tr>
+                </thead>
+                <tbody>{% if taken_subjects %}
+                {% for taken_subject in taken_subjects %}
+                <tr>
+                  <th scope="row">
+                    <input name="taken_subject" value="{{ taken_subject.subject.subject_code }}" type="checkbox">
+                  </th>
+                  <td> {{ taken_subject.subject.subject_code }}  </td>
+                  <td><a href="{% url 'lecturer-single-subject' taken_subject.subject.id  %}">{{ taken_subject.subject.subject_name }}</a></td>
+                  <td>{{ taken_subject.subject.credit }}</td>
+                  <td>{{ taken_subject.subject.year }}</td>
+                  {% if taken_subject.subject.is_elective %}
+                  <td>Elective</td>
+                  {% else %}
+                  <td>Core</td>
+                  {% endif %}
+                </tr>
+                {% endfor %}
+                {% else %}
+                <tr>
+                  <td></td>
+                  <td></td>
+                  <td>
+                    <span class="text-danger">
+                      <i class="far fa-frown"></i>No Course
+                    </span>
+                  </td>
+                  <td></td>
+                </tr>
+                {% endif %}
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </form>
+    </div>
+
     <div class="col" style="padding:120px;width:100%" >
       <form action="{% url 'student-add-subject' %}" method="POST">
         {% csrf_token %}
@@ -73,67 +136,6 @@
             </div>
           </div>
 
-        </div>
-      </form>
-    </div>
-
-    <div class="col" style="padding:120px;width:100%" >
-      <form action="{% url 'student-drop-subject' %}" method="POST">
-        {% csrf_token %}
-        <div class="card ">
-          <p style="font-weight: 400;  font-size: 17px;  padding: 10px;  background: #f3f2f2;  text-align: center;  margin: 0px;">
-            <i class="fa fa-book" aria-hidden="true"></i> &nbsp;&nbsp;Taken Subjects</p>
-          <br>
-          <div class="d-flex justify-content-between mb-3 " style="padding:5px">
-            <button title="Save Score" type="submit" class="btn btn-danger"><i class="fa fa-times-circle" aria-hidden="true"></i>
-              &nbsp;&nbsp; Drop Selected</button>
-          </div>
-          <div class="table-responsive p-0 px-2 mt-2">
-            <div class="table-shadow">
-              <table class="table">
-                <thead>
-                <tr>
-                  <th>Select</th>
-                  <th>Subject Id</th>
-                  <th>Subject Title</th>
-                  <th>Credit.Hr(s)</th>
-                  <th>Year</th>
-                  <th>Classification</th>
-                </tr>
-                </thead>
-                <tbody>{% if taken_subjects %}
-                {% for taken_subject in taken_subjects %}
-                <tr>
-                  <th scope="row">
-                    <input name="taken_subject" value="{{ taken_subject.subject.subject_code }}" type="checkbox">
-                  </th>
-                  <td> {{ taken_subject.subject.subject_code }}  </td>
-                  <td>{{ taken_subject.subject.subject_name }}</td>
-                  <td>{{ taken_subject.subject.credit }}</td>
-                  <td>{{ taken_subject.subject.year }}</td>
-                  {% if taken_subject.subject.is_elective %}
-                  <td>Elective</td>
-                  {% else %}
-                  <td>Core</td>
-                  {% endif %}
-                </tr>
-                {% endfor %}
-                {% else %}
-                <tr>
-                  <td></td>
-                  <td></td>
-                  <td>
-                    <span class="text-danger">
-                      <i class="far fa-frown"></i>No Course
-                    </span>
-                  </td>
-                  <td></td>
-                </tr>
-                {% endif %}
-                </tbody>
-              </table>
-            </div>
-          </div>
         </div>
       </form>
     </div>

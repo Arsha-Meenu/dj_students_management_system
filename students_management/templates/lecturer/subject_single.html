@@ -17,7 +17,7 @@
 
 
             <div class="container">
-
+                {% if request.user.user_type == 3 %}
                 <div class="manage-wrap">
                     <div class="row">
                         <div class="col ml-auto">
@@ -27,7 +27,7 @@
                         </div>
                     </div>
                 </div>
-
+                {% endif %}
                 <div class="title-1">{{ course }}</div>
                 <p class="program-description">{{ course.summary }}</p>
 
@@ -47,7 +47,9 @@
                                     <th>Uploaded Date</th>
                                     <th>Updated Date</th>
                                     <th>Downloads</th>
+                                    {% if request.user.user_type == 3 %}
                                     <th>Actions</th>
+                                    {% endif %}
                                 </tr>
                                 </thead>
                                 <tbody>
@@ -68,6 +70,7 @@
                                               <i class="fa fa-download" aria-hidden="true"></i> &nbsp; Download</a>
                                         </div>
                                     </th>
+                                    {% if request.user.user_type == 3 %}
                                     <td>
                                          <span class="widget-content">
                                              <button  type="button" value="{{file.id}}" style="border: none; background-color: transparent;"   id="edit" >
@@ -80,7 +83,7 @@
                                               </button>
                                             </span>
                                     </td>
-
+                                    {% endif %}
                                     {% empty %}
                                 <tr>
                                     <td></td>

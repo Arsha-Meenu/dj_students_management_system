@@ -52,8 +52,8 @@ class StudentDashboardView(TemplateView):
     def get(self,request):
         student = Student.objects.filter(user = request.user)
         if student:
-            department = student.values('department_id', 'department__title','department__course__course_title').first()
-            subjects = Subject.objects.filter(department_id=department['department_id']).count()
+            department = student.values('department_id', 'department__title','department__course__course_title','department__course_id').first()
+            subjects = Subject.objects.filter(course_id =department['department__course_id'] ,department_id=department['department_id']).count()
             department_name = department.get('department__title')
             course_name = department.get('department__course__course_title')
         else:
@@ -72,6 +72,7 @@ class LecturerDashboardView(View):
         teacher = Teacher.objects.filter(user = request.user)
         if teacher:
             department = teacher.values('department_id', 'department__title','department__course__course_title').first()
+            print('dept',department)
             subjects = Subject.objects.filter(department_id=department['department_id']).count()
             department_name = department.get('department__title')
             course_name = department.get('department__course__course_title')
@@ -250,7 +251,9 @@ class LecturerSubjectListView(ListView):
         teacher = Teacher.objects.filter(user=self.request.user)
         if teacher:
             teacher = teacher.values('id','department_id', 'department__title').first()
+            print('teac',teacher)
             taken_subjects = SubjectAllocation.objects.filter(lecturer=teacher['id']).filter(subject__department_id=teacher['department_id'])
+            print('subj',taken_subjects)
             t = ()
             for i in taken_subjects:
                 t += (i.subject.pk,)
