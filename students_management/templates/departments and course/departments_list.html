@@ -13,7 +13,7 @@
       <div class="col-1"></div>
       {% if request.user.user_type == 1 %}
       <div class="col-4">
-        <a class="edit-btn" href="{% url 'department-create' %}">
+        <a class="edit-btn" href="{% url 'department-create' course_id %}">
          <i class="fa fa-plus" aria-hidden="true"></i>
           <span class="mobile-hide">Add Department</span></a>
       </div>

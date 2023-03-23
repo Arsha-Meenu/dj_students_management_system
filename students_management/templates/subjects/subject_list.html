@@ -13,7 +13,7 @@
       <div class="col-1"></div>
       <div class="col-4">
         <a class="edit-btn" href="{% url 'subject-create' %}">
-         <i class="fa fa-plus" aria-hidden="true"></i>
+         <i class="fa fa-plus" aria-hidden="true"></i>&nbsp;
           <span class="mobile-hide">Add New Subject</span></a>
       </div>
     </div>
@@ -32,7 +32,6 @@
               <th> Credit (hrs) </th>
               <th> Elective </th>
               <th> Department  </th>
-              <th> Teacher  </th>
               <th> Action </th>
             </tr>
             </thead>
@@ -46,7 +45,6 @@
               <td>{{ subject.credit }}</td>
               <td>{{ subject.is_elective }}</td>
               <td>{{ subject.department }}</td>
-              <td>{{ subject.teacher }}</td>
               <td>
                  <span class="widget-content">
                      <button  type="button" value="{{subject.id}}" style="border: none; background-color: transparent;"   id="edit" >

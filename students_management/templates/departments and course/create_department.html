@@ -12,11 +12,27 @@
         <div class="col" style="padding:120px;width:100%">
             <div class="card ">
                 <p style="  font-weight: 400;  font-size: 17px;  padding: 10px;  background: #f3f2f2;  text-align: center;  margin: 0px;">
-                    <i class="fa fa-book" aria-hidden="true"></i> &nbsp;&nbsp;Create Department </p>
+                    <i class="fa fa-book" aria-hidden="true"></i> &nbsp;&nbsp;Department Details</p>
                 <form  method="POST" enctype="multipart/form-data">
                     {% csrf_token %}
-                    {{ form.as_p }}
-                    <input class="btn btn-outline-primary" type="submit" value="Submit">
+                    <div class="container">
+                        <div class="form-group">
+                            <b>Department Id</b>{{ form.department_id }}
+                        </div>
+                        <div class="form-group">
+                            <b>Title </b><br>{{ form.title }}
+                        </div>
+                        <div class="form-group">
+                            <select hidden name="course" >
+                                <option value="{{course_id }}" selected>{{ course }}</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <button class="btn btn-primary" type="submit">Submit</button>
+                            <a class="btn btn-danger" href="" style="float: right;">Cancel</a>
+                        </div>
+                    </div>
+
                 </form>
             </div>
         </div>

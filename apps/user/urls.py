@@ -26,7 +26,6 @@ urlpatterns = [
     path('subject/file/delete/<int:pk>/', views.DeleteFileView.as_view(),name='file-delete-view'),
 
     # students
-
     path('student/dashboard/', views.StudentDashboardView.as_view(), name='student-dashboard'),
     path('student/list', views.StudentListView.as_view(), name='student-list'),
     path('student/create', views.CreateStudentView.as_view(), name='student-create'),
@@ -39,7 +38,7 @@ urlpatterns = [
 
     # programs and courses
     path('department/list/<int:pk>/',views.DepartmentListView.as_view(),name = 'department-list'),
-    path('department/create', views.DepartmentCreateView.as_view(), name='department-create'),
+    path('department/create/<int:pk>/', views.DepartmentCreateView.as_view(), name='department-create'),
     path('department/edit/<int:pk>/', views.DepartmentUpdateView.as_view(), name='department-update'),
     path('department/delete/<int:pk>/', views.DepartmentDeleteView.as_view(), name='department-delete'),
     path('courses/list',views.CoursesListView.as_view(),name = 'courses-list'),
@@ -60,7 +59,6 @@ urlpatterns = [
     path('semester/delete/<int:pk>/', views.SemesterDeleteView.as_view(), name='semester-delete'),
 
     #academic year
-
     path('academic/list', views.AcademicsListView.as_view(), name='academic-list'),
     path('academic/create', views.AcademicsCreateView.as_view(), name='academic-create'),
     path('academic/edit/<int:pk>/', views.AcademicsUpdateView.as_view(), name='academic-update'),

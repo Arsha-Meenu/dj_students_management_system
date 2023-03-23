@@ -15,7 +15,9 @@
                     <i class="fa fa-book" aria-hidden="true"></i> &nbsp;&nbsp;Create Lecturer </p>
                 <form  method="POST" enctype="multipart/form-data">
                     {% csrf_token %}
-                    {{ form.as_p }}
+                    {{ form_class.as_p }}
+                    <hr>
+                    {{teacher_form.as_p}}
                     <input class="btn btn-outline-primary" type="submit" value="Submit">
                 </form>
             </div>

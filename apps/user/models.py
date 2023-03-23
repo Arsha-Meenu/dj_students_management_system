@@ -178,7 +178,7 @@ class Department(models.Model):
     department_id = models.CharField(_("department_id"), max_length=200, unique=True, blank=True)
     title = models.CharField(max_length=255, null=True)
     faculty  = models.ForeignKey(Faculties,on_delete=models.CASCADE, null=True, blank=True)
-    course = models.ForeignKey(Course, on_delete=models.DO_NOTHING, null=True, blank=True)
+    course = models.ForeignKey(Course, on_delete=models.CASCADE, null=True, blank=True)
     created_at = models.DateTimeField(_('Created'), auto_now_add=True)
     updated_at = models.DateTimeField(_('Updated'), auto_now=True)
 
@@ -216,6 +216,7 @@ class Student(models.Model):
     academic_year = models.ForeignKey(Academics,on_delete=models.DO_NOTHING)
     gender = models.CharField(max_length=1, choices=GENDER_CHOICES, blank=True, null=True)
     department = models.ForeignKey(Department, on_delete=models.CASCADE, null=True)
+    course = models.ForeignKey(Course, on_delete=models.CASCADE, null=True, blank=True)
     created_at = models.DateTimeField(_('Created'), auto_now_add=True)
     updated_at = models.DateTimeField(_('Updated'), auto_now=True)
 
@@ -233,6 +234,7 @@ class Teacher(models.Model):#for teacher
     teacher_code = models.CharField(_("teacher_code"), max_length=200, unique=True, blank=True)
     user  = models.ForeignKey(User,on_delete=models.CASCADE, null=True, blank=True)
     department = models.ForeignKey(Department, on_delete=models.CASCADE, null=True, blank=True)
+    course = models.ForeignKey(Course, on_delete=models.CASCADE, null=True, blank=True)
     faculty = models.ForeignKey(Faculties,on_delete=models.CASCADE, null=True, blank=True)
     created_at = models.DateTimeField(_('Created'), auto_now_add=True)
     updated_at = models.DateTimeField(_('Updated'), auto_now=True)
@@ -257,7 +259,7 @@ class Subject(models.Model):
     year = models.ForeignKey(Academics, on_delete=models.SET_NULL, blank=True, null=True)
     semester = models.ForeignKey(Semester, on_delete=models.SET_NULL, blank=True, null=True)
     department = models.ForeignKey(Department, on_delete=models.CASCADE, null=True, blank=True)
-    teacher = models.ForeignKey(Teacher, on_delete=models.DO_NOTHING, null=True, blank=True)
+    course = models.ForeignKey(Course, on_delete=models.DO_NOTHING, null=True, blank=True)
     created_at = models.DateTimeField(_('Created'), auto_now_add=True)
     updated_at = models.DateTimeField(_('Updated'), auto_now=True)
 
@@ -274,7 +276,7 @@ class Subject(models.Model):
         return self.subject_name
 
 
-class TakenSubject(models.Model):
+class StudentTakenSubject(models.Model):
     student = models.ForeignKey(Student, on_delete=models.CASCADE)
     subject  = models.ForeignKey(Subject, on_delete=models.CASCADE, related_name='taken_subjects')
     def __str__(self):
@@ -300,19 +302,6 @@ class UploadFiles(models.Model):
     def __str__(self):
         return str(self.file)[6:]
 
-# class Levels(models.Model):
-#     level = models.CharField(max_length=200, unique=True, blank=True)
-#     level_description = models.TextField()
-#     level_status = models.BooleanField(default=False)
-#     course = models.ForeignKey(Course, on_delete=models.CASCADE, null=True, blank=True)
-#     department = models.ForeignKey(Department, on_delete=models.CASCADE, null=True, blank=True)
-#     faculty = models.ForeignKey(Faculties, on_delete=models.CASCADE, null=True, blank=True)
-#     semester = models.ForeignKey(Semester, on_delete=models.CASCADE, null=True, blank=True)
-#     created_at = models.DateTimeField(_('Created'), auto_now_add=True)
-#     updated_at = models.DateTimeField(_('Updated'), auto_now=True)
-#
-#     def __str__(self):
-#         return self.level
 
 
 class Roll(models.Model):
@@ -326,15 +315,3 @@ class Roll(models.Model):
         return self.roll_no
 
 
-# class TakenSubjects(models.Model):
-#     student = models.ForeignKey(Student,on_delete=models.CASCADE)
-#     subjects = models.ForeignKey(Subjects,on_delete=models.CASCADE)
-#     exam = models.PositiveIntegerField(default=0)
-#     total = models.PositiveIntegerField(default=0)
-#     grade = models.CharField(choices=GRADE,max_length=5)
-#     remarks = models.CharField(choices=REMARK,max_length=5)
-#     created_at = models.DateTimeField(_('Created'), auto_now_add=True)
-#     updated_at = models.DateTimeField(_('Updated'), auto_now=True)
-#
-#     def __str__(self):
-#         return self.roll_no

@@ -27,10 +27,11 @@
             <tr>
               <th> ID No. </th>
               <th> UserName </th>
-              <th> Full Name </th>
               <th> Email </th>
               <th> Mob No. </th>
               <th> Address/city </th>
+              <th> Course </th>
+              <th>Department </th>
               <th> Profile </th>
               <th> Action </th>
             </tr>
@@ -39,15 +40,17 @@
             {% for lecturer in object_list %}
             <tr>
               <td> {{ forloop.counter }}.</td>
-              <td> <a href="{% url 'lecturer-profile' lecturer.id %}">{{ lecturer.username }} </a> </td>
-              <td>{{ lecturer.get_full_name }}</td>
-              <td>{{ lecturer.email }}</td>
-              <td>{{ lecturer.mobile_number }}</td>
-              <td>{{ lecturer.address }}</td>
-                <td><img src="{{lecturer.profile_image.url}}" alt={{user}}  class="rounded-circle img-fluid" style="width: 150px;"></td>
+              <td> <a href="{% url 'lecturer-profile' lecturer.id %}">{{ lecturer.user.username }} </a> </td>
+              <td>{{ lecturer.user.email }}</td>
+              <td>{{ lecturer.user.mobile_number }}</td>
+              <td>{{ lecturer.user.address }}</td>
+              <td>{{ lecturer.course }}</td>
+              <td>{{ lecturer.department }}</td>
+              <td><img src="{{lecturer.user.profile_image.url}}" alt={{user}}  class="rounded-circle img-fluid" style="width: 50px;"></td>
+
               <td>
                  <span class="widget-content">
-                     <button  type="button" value="{{lecturer.id}}" style="border: none; background-color: transparent;"   id="edit" >
+                     <button  type="button" value="{{user.id}}" style="border: none; background-color: transparent;"   id="edit" >
                        <a href="{% url 'lecturer-update' lecturer.id %}"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></a>
                      </button>
                  </span>

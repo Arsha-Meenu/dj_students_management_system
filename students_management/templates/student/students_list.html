@@ -27,10 +27,10 @@
             <tr>
               <th> ID No. </th>
               <th> UserName </th>
-              <th> Full Name </th>
               <th> Email </th>
               <th> Mob No. </th>
               <th> Time Period </th>
+              <th> Course </th>
               <th> Department </th>
               <th> Profile </th>
               <th> Action </th>
@@ -41,12 +41,12 @@
             <tr>
               <td> {{ forloop.counter }}.</td>
               <td> <a href="{% url 'student-profile' student.id %}">{{ student.user.username }} </a> </td>
-              <td>{{ student.user.get_full_name }}</td>
               <td>{{ student.user.email }}</td>
               <td>{{ student.user.mobile_number }}</td>
-              <td>{{ student.period }}</td>
+              <td>{{ student.academic_year }}</td>
+              <td>{{ student.course }}</td>
               <td>{{ student.department }}</td>
-              <td><img src="{{student.user.profile_image.url}}" alt={{user}}  class="rounded-circle img-fluid" style="width: 150px;"></td>
+              <td><img src="{{student.user.profile_image.url}}" alt={{user}}  class="rounded-circle img-fluid" style="width: 40px;"></td>
 
               <td>
                  <span class="widget-content">

@@ -20,8 +20,13 @@ class UserForm(forms.ModelForm):
 class StudentUserForm(forms.ModelForm):
     class Meta:
         model = Student
-        fields = ['department','academic_year']
+        fields = ['course','department','academic_year']
         exclude = ['user']
+
+class TeacherForm(forms.ModelForm):
+    class Meta:
+        model = Teacher
+        fields = ['course','department','faculty']
 
 
 class CourseForm(forms.ModelForm):
